@@ -20,6 +20,7 @@ import {
   CONNECTION_TEXT,
   ERROR_TEXT,
   INIT_FAILED,
+  CODE_TEXT,
   REPORT_TEXT,
   SD_STATE_NAMES,
 } from '../src/texts.js';
@@ -150,7 +151,7 @@ test('the name is the same in every language, the catalog description 10 charact
 
 test('every message table of the code has the four languages', () => {
   // Widget texts shown as status labels are short; the others are messages.
-  const rows = new Set(['lastEvent', 'armMode', 'unknownMode', 'isOnline', 'isOffline', 'armed']);
+  const rows = new Set(['lastEvent', 'armMode', 'unknownMode', 'isOnline', 'isOffline']);
   const found = [
     ...problems(INIT_FAILED, 'INIT_FAILED', MAX.message),
     ...Object.entries(CONNECTION_TEXT).flatMap(([key, value]) =>
@@ -195,6 +196,11 @@ test('the reports exist in every language', () => {
   const ok = Object.fromEntries(LANGS.map((lang) => [lang, { ok: REPORT_TEXT[lang].ok }]));
   assert.deepEqual(tableProblems(ok, 'REPORT_TEXT', MAX.message, render), []);
   assert.deepEqual(tableProblems(REPORT_TEXT, 'REPORT_TEXT', MAX.message, render), []);
+});
+
+test('the texts of the verification codes exist in every language', () => {
+  const render = (value) => value('Living room (EZFAKE004), Driveway (EZFAKE014)');
+  assert.deepEqual(tableProblems(CODE_TEXT, 'CODE_TEXT', MAX.message + 100, render), []);
 });
 
 test('the guard catches a missing language, an empty text and the polite German form', () => {

@@ -31,18 +31,20 @@ Gladys before reporting a problem.
 In scope: the code of this repository and the Docker image it publishes. In
 particular:
 
-- **Secrets**: the password of the EZVIZ account and the verification codes of
-  the cameras live in the Gladys configuration of the integration (`secret`
-  fields). The password is sent only to the EZVIZ cloud (hosts under
+- **Secrets**: the password of the EZVIZ account lives in the Gladys
+  configuration of the integration (a `secret` field); the verification codes
+  of the cameras, there too (`secret` field) or in `/data` when saved with the
+  "Set a camera verification code" action. The password is sent only to the EZVIZ cloud (hosts under
   `ezvizlife.com`, `ezvizru.com` or `ezviz.com`, HTTPS), as the MD5 digest the
   EZVIZ apps send; the codes are never sent anywhere (they decrypt pictures
   locally and build the RTSP address shown on request). None of them is
-  written to the logs or to `/data`.
+  written to the logs, and the password never to `/data`.
 - **`/data`**: one file, `ezviz-state.json`, mode 0600: the session of the
   account (session and refresh ids, API domain, EZVIZ user id) keyed by a hash
-  of the account and server, a random terminal id, and the serials of the
-  cameras seen ringing. Whoever reads this file can use the EZVIZ session
-  until it expires or the password changes.
+  of the account and server, a random terminal id, the serials of the cameras
+  seen ringing, and the verification codes saved by the action, by serial.
+  Whoever reads this file can use the EZVIZ session until it expires or the
+  password changes, and decrypt the pictures of those cameras.
 - **Network**: the integration talks only to the EZVIZ cloud over HTTPS (API
   and picture downloads, `https://` addresses only), never to the cameras.
 - **Camera images** stay in memory (the last ones, for the widget) and go to

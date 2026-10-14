@@ -19,23 +19,25 @@ pan and tilt, battery, Wi-Fi and SD card.
 ## Features
 
 - **Cameras and doorbells** (one Gladys device each): image (the picture of
-  each alarm, fresh captures on a timer and on demand, decrypted with the
+  each alarm, then fresh captures on a timer, decrypted with the
   verification code when the camera encrypts its pictures), pan and tilt
   arrows on motorized cameras, motion, doorbell ring, last event ("Person ·
   18:32"), online, motion detection on/off, privacy mode, floodlight, siren
   (opt-in), battery, Wi-Fi signal, SD card state and size.
 - **The account**: its arming mode (at home, away, sleep), as on the home page
-  of the EZVIZ app — read-only if you prefer.
+  of the EZVIZ app — one mode for the whole account, read-only if you prefer.
 - **Scene triggers**: _Detection by an EZVIZ camera_ (filter by camera and by
   motion, person or other alarm) and _Someone rang an EZVIZ doorbell_. The
   camera image is the alarm picture when the scene starts.
 - **Scene actions**: _Take a fresh EZVIZ picture_, _Turn an EZVIZ camera_
   (one pan/tilt step), _Set the EZVIZ arming mode_.
-- **Dashboard widget** _EZVIZ_: the picture of the last alarm, the last event,
-  and buttons to switch the arming mode.
+- **Dashboard widget** _EZVIZ_: the picture of the newest alarm of one,
+  several or all cameras, one line per camera, and buttons to switch the
+  EZVIZ account mode.
 - **Configuration actions**: _Test the connection_, _Enter the verification
-  code_ (two-step verification), _Show the RTSP address_ (for the "RTSP
-  camera" integration of Gladys).
+  code_ (two-step verification), _Set a camera verification code_ (kept in
+  `/data`, checked on the last picture), _Show the RTSP address_ (for the
+  "RTSP camera" integration of Gladys).
 - Four languages: English, French, German, Spanish.
 
 ## Requirements
@@ -80,9 +82,15 @@ links it from the Configuration screen.
   container reads the cloud on its own timers (GladysAssistant/Gladys#3198):
   the alarms of every camera every 30 s by default (15 to 120 s), the device
   list and the arming mode every 5 minutes and after each command, a capture
-  of the mains-powered cameras every 15 minutes by default — never a battery
-  camera. About 3,500 requests a day with the defaults, the pace of Home
-  Assistant.
+  of the mains-powered cameras every 5 minutes by default (1 to 60, or never)
+  — never a battery camera. About 3,500 requests a day plus 288 per
+  mains-powered camera with the defaults, the pace of Home Assistant.
+- **Images in Gladys 5.2.1**: the camera box of the dashboard shows the last
+  image the integration published (`publishCameraImage`) and never asks for a
+  new one; only the "send camera image" and "ask the AI" scene actions call
+  `onGetImage`, which sends the alarm picture of the last 30 seconds, else a
+  fresh capture. So the dashboard is as fresh as the capture timer; live video
+  goes through the RTSP address.
 - **Alarms**: each new alarm pulses the motion (one minute) or ring feature,
   updates the last event, downloads its picture, decrypts it if needed
   (`hikencodepicture`, AES-128-CBC keyed by the verification code), sends it

@@ -46,19 +46,26 @@ speichere und klicke dann auf **Verbindung testen**. Öffne den Tab
   die Integration folgt. Sonst gib den Server deiner Region ein
   (`apiius.ezvizlife.com` für Amerika, `apirus.ezvizru.com` für Russland)
   oder sein Kürzel (`us`).
-- **Bestätigungscodes der Kameras** (optional): Paare `SERIE:CODE`, mit
-  Kommas getrennt, zum Beispiel `BD1234567:ABCDEF, C78901234:GHIJKL`, oder ein
-  einziger Code für alle Kameras. Die Seriennummer steht auf demselben
-  Etikett. Nötig, wenn eine Kamera **ihre Bilder verschlüsselt** (die
-  „Bildverschlüsselung“ der EZVIZ-App, bei vielen Modellen standardmäßig an),
-  und für die RTSP-Adresse.
+- **Bestätigungscodes der Kameras** (optional, der frühere Weg): Paare
+  `SERIE:CODE`, mit Kommas getrennt, zum Beispiel
+  `BD1234567:ABCDEF, C78901234:GHIJKL`, oder ein einziger Code für alle
+  Kameras. Am einfachsten ist die Aktion **Bestätigungscode einer Kamera**,
+  weiter unten. Mehrere Codes ohne Seriennummer, etwa `ABCDEF,GHIJKL`, lassen
+  sich den Kameras nicht zuordnen: Die Integration ignoriert sie, und ihr
+  Status listet deine Kameras mit ihrer Seriennummer auf. Ein Code ist nötig,
+  wenn eine Kamera **ihre Bilder verschlüsselt** (die „Bildverschlüsselung“
+  der EZVIZ-App, bei vielen Modellen standardmäßig an), und für die
+  RTSP-Adresse.
 - **Alarmabfrage**: wie oft die Alarmliste gelesen wird (alle 15, 30, 60 oder
   120 Sekunden; standardmäßig 30). Eine Anfrage liest die Alarme aller
   Kameras.
 - **Kamerabilder**: wie oft ein neues Bild jeder Kamera **mit Netzteil**
-  aufgenommen wird (alle 5, 15 oder 60 Minuten, oder nur bei Alarm).
-  Akkukameras werden von diesem Timer nie geweckt: Als Bild zeigen sie das
-  ihres letzten Alarms.
+  aufgenommen wird (jede Minute, alle 5, 15 oder 60 Minuten, oder nur bei
+  Alarm; standardmäßig 5 Minuten). So aktuell ist die Kamera im Dashboard:
+  Gladys zeigt das letzte Bild, das die Integration gesendet hat, und fordert
+  beim Öffnen kein neues an. Jede Minute kostet eine Cloud-Anfrage pro Kamera
+  und Minute. Akkukameras werden von diesem Timer nie geweckt: Als Bild zeigen
+  sie das ihres letzten Alarms.
 - **Scharfschalten über Gladys erlauben** (standardmäßig an): Der
   Scharfschaltmodus lässt sich über Dashboard, Szenen und Widget ändern.
   Deaktiviere es, um ihn nur anzuzeigen.
@@ -86,6 +93,10 @@ Kontos entfernt).
   der Konfiguration verschlüsseln. Nach einem abgelehnten Passwort oder einem
   gesperrten Konto bittest du die Integration so auch um einen neuen Versuch.
 - **Bestätigungscode eingeben**: siehe oben.
+- **Bestätigungscode einer Kamera**: Wähle eine Kamera (füge sie zuerst Gladys
+  hinzu) und gib die 6 Großbuchstaben ihres Etiketts ein. Die Integration
+  behält den Code (ein leerer Code entfernt ihn) und prüft ihn am letzten Bild
+  der Kamera, wenn es verschlüsselt ist. Einmal pro Kamera.
 - **RTSP-Adresse anzeigen**: die lokale Videoadresse einer Kamera (siehe
   Live-Video).
 
@@ -96,9 +107,10 @@ Kontos entfernt).
 Ein Gerät pro Kamera oder Türklingel, benannt wie in der EZVIZ-App, mit den
 Funktionen des Modells:
 
-- **Bild**: das Bild des letzten Alarms, die neuen Bilder des Timers und eine
-  frische Aufnahme, wenn du die Kamera im Dashboard öffnest (eine schlafende
-  oder offline Kamera zeigt ihr letztes Bild).
+- **Bild**: das Bild des letzten Alarms, dann die Aufnahmen des Timers (siehe
+  Kamerabilder): Die Kamera im Dashboard zeigt das neueste davon, und Gladys
+  blendet ein Bild aus, das älter als eine Stunde ist. Für Live-Video siehe
+  Live-Video (RTSP).
 - **Schwenken und Neigen** (motorisierte Kameras): die Pfeile der Kamera im
   Dashboard; jedes Tippen dreht sie um einen Schritt.
 - **Bewegung**: 1 für eine Minute nach einem Erkennungsalarm (Bewegung,
@@ -127,17 +139,21 @@ Das Gerät **EZVIZ-Konto** trägt den **Scharfschaltmodus** des Kontos, wie auf
 der Startseite der EZVIZ-App: **Zuhause**, **Abwesend** oder **Schlafen**. Was
 jeder Modus tut (welche Kamera erkennt, ertönt oder benachrichtigt), stellst
 du in der EZVIZ-App ein. Nur lesbar, wenn das Scharfschalten in der
-Konfiguration nicht erlaubt ist.
+Konfiguration nicht erlaubt ist. Es ist ein Modus für das ganze Konto, also
+für alle Kameras: Die EZVIZ-App kennt keinen Modus pro Kamera.
 
 ## Dashboard
 
 Füge die Kameras einem Raum hinzu, um ihr Bild, ihre Pfeile und Schalter zu
 sehen, und das Widget **EZVIZ** für einen schnellen Blick: das Bild des
-letzten Alarms (einer Kamera, in den Widget-Einstellungen gewählt, oder
-aller), das letzte Ereignis, den Scharfschaltmodus und drei Knöpfe, um den
-Modus zu wechseln (der aktuelle trägt einen Haken; „Zuhause“ fragt nach einer
-Bestätigung, da es die Erkennungen ausschaltet). Keine Knöpfe, wenn das
-Scharfschalten nicht erlaubt ist.
+neuesten Alarms, eine Zeile pro Kamera (ihr letztes Ereignis, oder ob sie
+online ist), den **Modus des EZVIZ-Kontos** und drei Knöpfe, um ihn zu
+wechseln (der aktuelle trägt einen Haken; „Zuhause“ fragt nach einer
+Bestätigung, da es die Erkennungen ausschaltet). Wähle in den
+Widget-Einstellungen eine oder mehrere Kameras, oder keine für alle. Die
+Knöpfe ändern den Modus des ganzen Kontos, also aller Kameras, egal welche
+Kameras angezeigt werden. Keine Knöpfe, wenn das Scharfschalten nicht erlaubt
+ist.
 
 ## Szenen
 
@@ -181,15 +197,17 @@ die Art der Erkennung und das Bild des Alarms hinzu.
 
 ## Live-Video (RTSP)
 
-Die Integration liefert Gladys Bilder, kein durchgehendes Video. Für einen
-Livestream bieten viele EZVIZ-Kameras RTSP im lokalen Netz: Aktiviere es in
-der EZVIZ-App, wenn das Modell es anbietet (Kameraeinstellungen,
-„LAN-Liveansicht“ oder „RTSP“), trage den Bestätigungscode der Kamera in die
-Konfiguration ein und starte dann **RTSP-Adresse anzeigen**: Kopiere die
-Adresse in die Integration „RTSP-Kamera“ von Gladys. Die Adresse lautet
+Die Integration liefert Gladys Bilder, kein durchgehendes Video: Die Bilder
+hängen der Kamera um bis zu das Aufnahmeintervall hinterher (standardmäßig 5
+Minuten). Für Live-Bilder bieten viele EZVIZ-Kameras RTSP im lokalen Netz:
+Aktiviere es in der EZVIZ-App, wenn das Modell es anbietet
+(Kameraeinstellungen, „LAN-Liveansicht“ oder „RTSP“), speichere den
+Bestätigungscode der Kamera mit **Bestätigungscode einer Kamera** und starte
+dann **RTSP-Adresse anzeigen**: Kopiere die Adresse in die Integration
+„RTSP-Kamera“ von Gladys. Die Adresse lautet
 `rtsp://admin:<Code>@<lokale IP>:554/Streaming/Channels/101` (`102` für den
-leichteren Substream). Die Adresse enthält den Code der Kamera: Behalte sie für dich.
-Akkukameras und Türklingeln haben meist kein RTSP.
+leichteren Substream). Die Adresse enthält den Code der Kamera: Behalte sie
+für dich. Akkukameras und Türklingeln haben meist kein RTSP.
 
 ## Aktualisierung und Grenzen der Cloud
 
@@ -201,8 +219,10 @@ bleibt im Takt von Home Assistant oder langsamer:
 - die **Alarme** aller Kameras: standardmäßig eine Anfrage alle 30 Sekunden;
 - die **Geräte** und der Scharfschaltmodus: alle 5 Minuten und direkt nach
   einem Befehl;
-- die **Aufnahmen** der Kameras mit Netzteil: standardmäßig alle 15 Minuten;
-- etwa 3.500 Anfragen pro Tag mit den Standardeinstellungen.
+- die **Aufnahmen** der Kameras mit Netzteil: standardmäßig alle 5 Minuten,
+  eine Anfrage pro Kamera;
+- etwa 3.500 Anfragen pro Tag, plus 288 pro Kamera mit Netzteil, mit den
+  Standardeinstellungen.
 
 **Erwartete Verzögerung** für eine Erkennung oder ein Klingeln: die Zeit, die
 die Kamera braucht, um ihren Alarm an die EZVIZ-Cloud zu senden (einige
@@ -225,10 +245,18 @@ eigenen Timern.
   testen**.
 - **„EZVIZ hat einen Bestätigungscode gesendet“**: siehe
   Zwei-Faktor-Authentifizierung.
-- **Kein Bild, „das Bild ist verschlüsselt“**: Füge den Bestätigungscode der
-  Kamera der Konfiguration hinzu (oder schalte die Bildverschlüsselung in der
-  EZVIZ-App aus). **Verbindung testen** sagt, wie viele Kameras betroffen
-  sind.
+- **Kein Bild, „das Bild ist verschlüsselt“**: Speichere den Bestätigungscode
+  der Kamera mit **Bestätigungscode einer Kamera** (oder schalte die
+  Bildverschlüsselung in der EZVIZ-App aus). **Verbindung testen** sagt, wie
+  viele Kameras betroffen sind.
+- **Das Bild im Dashboard ist mehrere Minuten alt**: Es ist die letzte
+  Aufnahme, und Gladys fordert beim Öffnen des Dashboards kein neues an.
+  Verkürze **Kamerabilder** (höchstens jede Minute), oder nutze die
+  RTSP-Adresse für Live-Video.
+- **Die RTSP-Adresse zeigt denselben Code für zwei Kameras**, oder der Status
+  meldet ignorierte Codes: Die Codes wurden ohne Seriennummer eingegeben.
+  Speichere jeden mit **Bestätigungscode einer Kamera** und leere dann das
+  Feld **Bestätigungscodes der Kameras**.
 - **Das Bild einer Akkukamera ändert sich nie**: normal zwischen zwei
   Alarmen, die Integration weckt sie nicht per Timer.
 - **Eine Erkennung startet meine Szene nicht**: Prüfe den Filter „Was erkannt

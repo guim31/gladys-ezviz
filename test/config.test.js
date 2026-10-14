@@ -9,12 +9,12 @@ import {
   parseServer,
 } from '../src/config.js';
 
-test('the defaults: European server, alarms every 30 s, captures every 15 min, French names', () => {
+test('the defaults: European server, alarms every 30 s, captures every 5 min, French names', () => {
   const config = normalizeConfig({});
   assert.equal(config.server, DEFAULT_SERVER);
   assert.equal(config.serverInvalid, false);
   assert.equal(config.alarmIntervalMs, 30_000);
-  assert.equal(config.snapshotIntervalMs, 15 * 60_000);
+  assert.equal(config.snapshotIntervalMs, 5 * 60_000);
   assert.equal(config.allowArming, true);
   assert.equal(config.allowSiren, false, 'the siren stays off unless ticked');
   assert.equal(config.language, 'fr');
@@ -65,7 +65,24 @@ test('the verification codes: SERIAL:CODE pairs and one code for the others', ()
   assert.equal(codes.bySerial.get('EZFAKE004'), 'ABCDEF');
   assert.equal(codes.bySerial.get('EZFAKE006'), 'QWERTY');
   assert.equal(codes.fallback, 'ZXCVBN');
+  assert.equal(codes.ambiguous, false);
   assert.equal(codes.invalid, 1);
+  // "CODE1,CODE2" (first field report): which one is whose? None is used.
+  const two = parseCodes('ABCDEF,GHIJKL');
+  assert.equal(two.ambiguous, true);
+  assert.equal(two.bare, 2);
+  assert.equal(two.fallback, null);
+  assert.equal(
+    codeFor(normalizeConfig({ verification_codes: 'ABCDEF,GHIJKL' }), 'EZFAKE004'),
+    null,
+  );
+  // A code saved by the action wins over the configuration.
+  assert.equal(
+    codeFor(normalizeConfig({ verification_codes: 'ZXCVBN' }), 'ezfake004', {
+      EZFAKE004: 'QWERTY',
+    }),
+    'QWERTY',
+  );
   const config = normalizeConfig({ verification_codes: 'EZFAKE004:ABCDEF ZXCVBN' });
   assert.equal(codeFor(config, 'EZFAKE004'), 'ABCDEF');
   assert.equal(codeFor(config, 'ezfake004'), 'ABCDEF');

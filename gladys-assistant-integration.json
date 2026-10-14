@@ -117,10 +117,10 @@
         "es": "Códigos de verificación de las cámaras"
       },
       "description": {
-        "en": "Optional: the 6 letters on the label of each camera, as SERIAL:CODE separated by commas, or one code for all. Needed for encrypted pictures and the RTSP address.",
-        "fr": "Facultatif : les 6 lettres de l’étiquette de chaque caméra, en SÉRIE:CODE séparés par des virgules, ou un code pour toutes. Pour les images chiffrées et l’adresse RTSP.",
-        "de": "Optional: die 6 Buchstaben auf dem Etikett jeder Kamera, als SERIE:CODE mit Kommas getrennt, oder ein Code für alle. Für verschlüsselte Bilder und die RTSP-Adresse.",
-        "es": "Opcional: las 6 letras de la etiqueta de cada cámara, como SERIE:CÓDIGO separados por comas, o un código para todas. Para imágenes cifradas y la dirección RTSP."
+        "en": "Simplest: the \"Set a camera verification code\" action, camera by camera. Here: SERIAL:CODE pairs separated by commas (serial and code are on the camera label), or one code for all.",
+        "fr": "Le plus simple : l’action « Code de vérification d’une caméra », caméra par caméra. Ici : des paires SÉRIE:CODE séparées par des virgules (série et code sur l’étiquette), ou un code pour toutes.",
+        "de": "Am einfachsten: die Aktion „Bestätigungscode einer Kamera“, Kamera für Kamera. Hier: Paare SERIE:CODE mit Kommas getrennt (Serie und Code auf dem Etikett), oder ein Code für alle.",
+        "es": "Lo más sencillo: la acción «Código de verificación de una cámara», cámara por cámara. Aquí: pares SERIE:CÓDIGO separados por comas (serie y código en la etiqueta), o un código para todas."
       },
       "required": false
     },
@@ -190,13 +190,13 @@
         "es": "Imágenes de las cámaras"
       },
       "description": {
-        "en": "How often a fresh picture of the mains-powered cameras is taken. Alarms always send their picture; battery cameras only on alarm.",
-        "fr": "Fréquence d’une capture neuve des caméras sur secteur. Les alarmes envoient toujours leur image ; caméras sur batterie : seulement à l’alarme.",
-        "de": "Wie oft ein neues Bild der Kameras mit Netzteil aufgenommen wird. Alarme senden immer ihr Bild; Akkukameras nur bei Alarm.",
-        "es": "Frecuencia de una captura nueva de las cámaras con corriente. Las alarmas siempre envían su imagen; cámaras con batería: solo al alarmar."
+        "en": "How often a fresh picture of the mains-powered cameras is taken: the camera box of the dashboard shows it. Alarms always send their picture; battery cameras only on alarm.",
+        "fr": "Fréquence d’une capture neuve des caméras sur secteur : c’est elle qu’affiche la boîte caméra du tableau de bord. Les alarmes envoient toujours leur image ; batterie : seulement à l’alarme.",
+        "de": "Wie oft ein neues Bild der Kameras mit Netzteil aufgenommen wird: Die Kamerabox des Dashboards zeigt es. Alarme senden immer ihr Bild; Akkukameras nur bei Alarm.",
+        "es": "Frecuencia de una captura nueva de las cámaras con corriente: es la que muestra la caja de cámara del panel. Las alarmas siempre envían su imagen; con batería: solo al alarmar."
       },
       "required": false,
-      "default": "15",
+      "default": "5",
       "options": [
         {
           "value": "0",
@@ -205,6 +205,15 @@
             "fr": "Seulement à l’alarme",
             "de": "Nur bei Alarm",
             "es": "Solo al alarmar"
+          }
+        },
+        {
+          "value": "1",
+          "label": {
+            "en": "Every minute (more cloud requests)",
+            "fr": "Chaque minute (plus de requêtes cloud)",
+            "de": "Jede Minute (mehr Cloud-Anfragen)",
+            "es": "Cada minuto (más peticiones a la nube)"
           }
         },
         {
@@ -364,6 +373,45 @@
             "fr": "Laissez vide pour recevoir un nouveau code.",
             "de": "Leer lassen, um einen neuen Code zu erhalten.",
             "es": "Déjelo vacío para recibir un código nuevo."
+          }
+        }
+      ]
+    },
+    {
+      "key": "camera_code",
+      "label": {
+        "en": "Set a camera verification code",
+        "fr": "Code de vérification d’une caméra",
+        "de": "Bestätigungscode einer Kamera",
+        "es": "Código de verificación de una cámara"
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "camera",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Camera",
+            "fr": "Caméra",
+            "de": "Kamera",
+            "es": "Cámara"
+          }
+        },
+        {
+          "key": "code",
+          "type": "string",
+          "label": {
+            "en": "Verification code",
+            "fr": "Code de vérification",
+            "de": "Bestätigungscode",
+            "es": "Código de verificación"
+          },
+          "description": {
+            "en": "The 6 capital letters on the label of this camera. Empty: removes the saved code.",
+            "fr": "Les 6 lettres majuscules de l’étiquette de cette caméra. Vide : retire le code enregistré.",
+            "de": "Die 6 Großbuchstaben auf dem Etikett dieser Kamera. Leer: entfernt den gespeicherten Code.",
+            "es": "Las 6 letras mayúsculas de la etiqueta de esta cámara. Vacío: elimina el código guardado."
           }
         }
       ]
@@ -734,23 +782,34 @@
         "es": "EZVIZ"
       },
       "description": {
-        "en": "Picture of the last alarm, last event and arming buttons.",
-        "fr": "Image de la dernière alarme, dernier événement et boutons d’armement.",
-        "de": "Bild des letzten Alarms, letztes Ereignis und Scharfschalt-Knöpfe.",
-        "es": "Imagen de la última alarma, último evento y botones de armado."
+        "en": "Last alarm picture and events of your cameras, and the EZVIZ account mode buttons.",
+        "fr": "Dernière image d’alarme et événements de vos caméras, et boutons du mode du compte EZVIZ.",
+        "de": "Letztes Alarmbild und Ereignisse deiner Kameras und Knöpfe für den Modus des EZVIZ-Kontos.",
+        "es": "Última imagen de alarma y eventos de sus cámaras, y botones del modo de la cuenta EZVIZ."
       },
       "icon": "video",
       "action_timeout_seconds": 20,
       "settings": [
         {
+          "key": "cameras",
+          "type": "multi_select",
+          "source": "devices",
+          "label": {
+            "en": "Cameras (empty: all)",
+            "fr": "Caméras (vide : toutes)",
+            "de": "Kameras (leer: alle)",
+            "es": "Cámaras (vacío: todas)"
+          }
+        },
+        {
           "key": "camera",
           "type": "select",
           "source": "devices",
           "label": {
-            "en": "Camera (empty: all)",
-            "fr": "Caméra (vide : toutes)",
-            "de": "Kamera (leer: alle)",
-            "es": "Cámara (vacío: todas)"
+            "en": "One camera (former setting)",
+            "fr": "Une caméra (ancien réglage)",
+            "de": "Eine Kamera (alte Einstellung)",
+            "es": "Una cámara (ajuste anterior)"
           }
         }
       ]

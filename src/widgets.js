@@ -4,14 +4,20 @@
 // The use case: a glance at the wall tablet when leaving or coming home —
 // "what did the cameras see last, and is the house armed?". So the widget
 // shows:
-//   - the picture of the last alarm (of the camera chosen in the widget
-//     settings, or of every camera);
-//   - a status: the last event (camera, kind, time), the arming mode, and the
-//     camera online or not when one is chosen;
+//   - the picture of the newest alarm of the cameras chosen in the widget
+//     settings (several, a `multi_select` of the integration's devices), or
+//     of every camera;
+//   - a status: one row per camera (its last event, or online / offline),
+//     then the arming mode;
 //   - three buttons to set the arming mode (at home, away, sleep), the
 //     current one marked by its icon (the `primary` style does not show in
 //     dark mode, GladysAssistant/Gladys#3153). "At home" disarms: it asks
 //     for a confirmation. No button when arming is not allowed.
+// The arming mode belongs to the EZVIZ account, not to a camera (EZVIZ has
+// one mode for the "default group" of the account): the widget says so, so a
+// widget showing one camera does not look like it arms that camera only.
+// The former single `camera` setting stays, read with the new `cameras` one:
+// a setting key is permanent, and a saved box keeps its string value.
 //
 // Budget (8 components, ≤ 2 texts, one focal component, one status, ≤ 4
 // buttons): one caption, one image, one status, three buttons. Images: keys
@@ -52,19 +58,19 @@ export const TEXT = {
     es: 'Último evento',
   },
   armMode: {
-    en: 'Arming mode',
-    fr: 'Mode d’armement',
-    de: 'Scharfschaltmodus',
-    es: 'Modo de armado',
+    en: 'EZVIZ account mode',
+    fr: 'Mode du compte EZVIZ',
+    de: 'Modus des EZVIZ-Kontos',
+    es: 'Modo de la cuenta EZVIZ',
   },
   unknownMode: { en: 'Unknown', fr: 'Inconnu', de: 'Unbekannt', es: 'Desconocido' },
   isOnline: { en: 'Online', fr: 'En ligne', de: 'Online', es: 'En línea' },
   isOffline: { en: 'Offline', fr: 'Hors ligne', de: 'Offline', es: 'Sin conexión' },
   armed: {
-    en: 'Arming mode:',
-    fr: 'Mode d’armement :',
-    de: 'Scharfschaltmodus:',
-    es: 'Modo de armado:',
+    en: 'EZVIZ account mode (all cameras):',
+    fr: 'Mode du compte EZVIZ (toutes les caméras) :',
+    de: 'Modus des EZVIZ-Kontos (alle Kameras):',
+    es: 'Modo de la cuenta EZVIZ (todas las cámaras):',
   },
 };
 
@@ -86,18 +92,46 @@ function message(text, language) {
   };
 }
 
-/** The alarm the widget shows: of the chosen camera, else the newest of all. */
-function shownAlarm(view, camera) {
-  if (camera) {
-    return view.lastAlarms.get(camera.serial) ?? null;
-  }
+/** The ids of the cameras chosen in the settings (several, or one with the former setting). */
+function chosenIds(settings) {
+  const ids = [...(Array.isArray(settings?.cameras) ? settings.cameras : []), settings?.camera];
+  return [...new Set(ids.filter((id) => typeof id === 'string' && id))];
+}
+
+/** The newest alarm of some cameras. */
+function newestAlarm(view, cameras) {
   let newest = null;
-  for (const alarm of view.lastAlarms.values()) {
-    if (!newest || (alarm.at ?? 0) > (newest.at ?? 0)) {
+  for (const camera of cameras) {
+    const alarm = view.lastAlarms.get(camera.serial);
+    if (alarm && (!newest || (alarm.at ?? 0) > (newest.at ?? 0))) {
       newest = alarm;
     }
   }
   return newest;
+}
+
+/** One status row per camera: its last event, else whether it is online. */
+function cameraRow(view, camera, language) {
+  const alarm = view.lastAlarms.get(camera.serial);
+  const kinds = ALARM_NAMES[language] ?? ALARM_NAMES.en;
+  if (alarm) {
+    return {
+      label: fit(cameraName(camera, language), 40),
+      icon: KIND_ICONS[alarm.kind] ?? KIND_ICONS.other,
+      value: fit(`${kinds[alarm.kind]} · ${formatTime(alarm.at, language, view.now)}`, 40),
+      color: !camera.online
+        ? WIDGET_COLORS.DANGER
+        : alarm.kind === ALARM_KINDS.OTHER
+          ? WIDGET_COLORS.WARNING
+          : WIDGET_COLORS.INFO,
+    };
+  }
+  return {
+    label: fit(cameraName(camera, language), 40),
+    icon: camera.online ? 'video' : 'video-off',
+    value: t(camera.online ? TEXT.isOnline : TEXT.isOffline, language),
+    color: camera.online ? WIDGET_COLORS.SUCCESS : WIDGET_COLORS.DANGER,
+  };
 }
 
 async function get(hub, { settings, language = 'en' }) {
@@ -105,10 +139,11 @@ async function get(hub, { settings, language = 'en' }) {
   if (!view.configured) {
     return message(TEXT.configure, language);
   }
-  let camera = null;
-  if (settings?.camera) {
-    camera = view.cameras.find((entry) => view.cameraId(entry) === settings.camera) ?? null;
-    if (!camera) {
+  const ids = chosenIds(settings);
+  let shown = view.cameras;
+  if (ids.length > 0) {
+    shown = view.cameras.filter((camera) => ids.includes(view.cameraId(camera)));
+    if (shown.length === 0) {
       return message(TEXT.unknown, language);
     }
   }
@@ -121,7 +156,7 @@ async function get(hub, { settings, language = 'en' }) {
     });
   }
 
-  const alarm = shownAlarm(view, camera);
+  const alarm = newestAlarm(view, shown);
   if (alarm?.imageKey) {
     components.push({
       type: 'image',
@@ -133,17 +168,12 @@ async function get(hub, { settings, language = 'en' }) {
     components.push({ type: 'text', variant: 'caption', text: t(TEXT.noAlarm, language) });
   }
 
-  const items = [];
-  if (alarm) {
-    const source = view.cameras.find((entry) => entry.serial === alarm.serial);
-    const kinds = ALARM_NAMES[language] ?? ALARM_NAMES.en;
-    items.push({
-      label: fit(source ? cameraName(source, language) : t(TEXT.lastEvent, language), 40),
-      icon: KIND_ICONS[alarm.kind] ?? KIND_ICONS.other,
-      value: fit(`${kinds[alarm.kind]} · ${formatTime(alarm.at, language, view.now)}`, 40),
-      color: alarm.kind === ALARM_KINDS.OTHER ? WIDGET_COLORS.WARNING : WIDGET_COLORS.INFO,
-    });
-  }
+  // The cameras, the one of the newest alarm first; the arming mode, which is
+  // the mode of the whole EZVIZ account, last.
+  const ordered = [...shown].sort(
+    (a, b) => (view.lastAlarms.get(b.serial)?.at ?? 0) - (view.lastAlarms.get(a.serial)?.at ?? 0),
+  );
+  const items = ordered.slice(0, 8).map((camera) => cameraRow(view, camera, language));
   const modes = ARM_MODE_NAMES[language] ?? ARM_MODE_NAMES.en;
   items.push({
     label: t(TEXT.armMode, language),
@@ -156,14 +186,6 @@ async function get(hub, { settings, language = 'en' }) {
           ? WIDGET_COLORS.SUCCESS
           : WIDGET_COLORS.WARNING,
   });
-  if (camera) {
-    items.push({
-      label: fit(cameraName(camera, language), 40),
-      icon: camera.online ? 'video' : 'video-off',
-      value: t(camera.online ? TEXT.isOnline : TEXT.isOffline, language),
-      color: camera.online ? WIDGET_COLORS.SUCCESS : WIDGET_COLORS.DANGER,
-    });
-  }
   components.push({ type: 'status', items });
 
   if (view.allowArming && view.reachable !== false) {

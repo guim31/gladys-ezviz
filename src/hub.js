@@ -35,7 +35,7 @@
 
 import { createHash } from 'node:crypto';
 import { DEVICE_TRANSPORTS, createLogger } from '@gladysassistant/integration-sdk';
-import { codeFor } from './config.js';
+import { codeFor, isCode } from './config.js';
 import {
   FEATURE_KEYS,
   MOVES,
@@ -54,6 +54,7 @@ import { toCameraImage } from './image.js';
 import {
   ACTION_TEXT,
   ALARM_NAMES,
+  CODE_TEXT,
   CONNECTION_TEXT,
   ERROR_TEXT,
   REPORT_TEXT,
@@ -87,6 +88,9 @@ export const HUB_TIMINGS = {
   holdMs: 60_000,
   // The core takes 12 images a minute per camera at most.
   imageSpacingMs: 6_000,
+  // "Send the camera image" right after an alarm sends the alarm picture,
+  // not a capture taken seconds later (the scene runs within this delay).
+  liveReuseMs: 30_000,
   // A scene event waits this long at most for the picture of its alarm.
   eventImageWaitMs: 8_000,
   // An alarm the cloud lists later than this is shown, but fires nothing.
@@ -424,6 +428,14 @@ export class EzvizHub {
     }
     this.warned.delete('read');
     this.read.downSince = null;
+    if (this.ambiguousCodes()) {
+      this.problem(
+        'codes',
+        `${this.config.codes.bare} verification codes without a serial number in the configuration: none is used`,
+      );
+    } else {
+      this.resolved('codes');
+    }
   }
 
   async readFailed(err) {
@@ -622,9 +634,9 @@ export class EzvizHub {
    * younger than `imageSpacingMs` is reused (the core takes 12 images a minute
    * per camera).
    */
-  cameraImage(camera, { fresh = false } = {}) {
+  cameraImage(camera, { fresh = false, reuseMs = this.timings.imageSpacingMs } = {}) {
     const last = this.images.get(camera.serial);
-    if (!fresh && last && this.now() - last.at < this.timings.imageSpacingMs) {
+    if (!fresh && last && this.now() - last.at < reuseMs) {
       return Promise.resolve(last.image);
     }
     const running = this.imageReads.get(camera.serial);
@@ -674,7 +686,7 @@ export class EzvizHub {
     if (!isEncrypted(bytes)) {
       return bytes;
     }
-    const candidates = [codeFor(this.config, camera.serial)];
+    const candidates = [this.codeOf(camera.serial)];
     if (!this.keys.has(camera.serial)) {
       this.keys.set(
         camera.serial,
@@ -716,14 +728,22 @@ export class EzvizHub {
     }
   }
 
-  /** Gladys asks for a fresh image (dashboard live view, chat). */
+  /**
+   * Gladys asks for a fresh image. In Gladys 5.2.1 only the "send camera
+   * image" and "ask the AI" scene actions do (camera.getLiveImage): the
+   * camera box of the dashboard shows the last image published and never
+   * asks. An image of the last 30 seconds is the one of the alarm that
+   * started the scene: it is sent as is.
+   */
   async getImage(device) {
     const camera = this.findCamera(device.external_id);
     if (!camera) {
       throw new Error(pick(ACTION_TEXT.unknownCamera, this.language));
     }
     // A camera asleep or offline still shows its last picture.
-    const image = (await this.cameraImage(camera)) ?? this.images.get(camera.serial)?.image;
+    const image =
+      (await this.cameraImage(camera, { reuseMs: this.timings.liveReuseMs })) ??
+      this.images.get(camera.serial)?.image;
     if (!image) {
       throw new Error(pick(ACTION_TEXT.snapshotFailed, this.language));
     }
@@ -946,7 +966,89 @@ export class EzvizHub {
     if (this.read.ok === null) {
       return null; // first read not done yet
     }
-    return { connected: true };
+    const ambiguous = this.ambiguousCodes();
+    return ambiguous ? { connected: true, message: ambiguous } : { connected: true };
+  }
+
+  // --- Verification codes ----------------------------------------------------------
+
+  /** The verification code of a camera: saved by the action, else the configuration. */
+  codeOf(serial) {
+    return codeFor(this.config, serial, this.store.get('codes') ?? {});
+  }
+
+  /**
+   * Several codes typed without a serial number cannot be matched to the
+   * cameras: none is used, and this message says which serials to write.
+   * @returns {object|null} a multi-language message, null when all is clear
+   */
+  ambiguousCodes() {
+    if (!this.config?.codes?.ambiguous) {
+      return null;
+    }
+    // Once every camera has its own code (the action), the old field is moot.
+    const missing = [...this.cameras.values()].filter((camera) => !this.codeOf(camera.serial));
+    if (missing.length === 0) {
+      return null;
+    }
+    const list = missing
+      .map((camera) => `${cameraName(camera, this.language)} (${camera.serial})`)
+      .join(', ');
+    return localized((language) => CODE_TEXT[language].ambiguous(list));
+  }
+
+  /**
+   * "Set a camera verification code": the code of one camera, kept in /data
+   * (an empty code removes it), checked on its last alarm picture when that
+   * one is encrypted. Never logged.
+   */
+  async setCameraCode(externalId, raw) {
+    const camera = this.requireCamera(externalId);
+    const code = typeof raw === 'string' ? raw.trim() : raw ? String(raw).trim() : '';
+    const name = cameraName(camera);
+    const say = (key) =>
+      localized((language) => CODE_TEXT[language][key](cameraName(camera, language)));
+    if (code && !isCode(code)) {
+      return localized((language) => CODE_TEXT[language].invalid());
+    }
+    const codes = { ...(this.store.get('codes') ?? {}) };
+    if (code) {
+      codes[camera.serial.toUpperCase()] = code;
+    } else {
+      delete codes[camera.serial.toUpperCase()];
+    }
+    await this.store.set('codes', codes);
+    this.keys.delete(camera.serial);
+    await this.publishConnectionStatus();
+    if (!code) {
+      logger.info(`Configuration action: verification code of ${name} removed`);
+      return say('removed');
+    }
+    logger.info(`Configuration action: verification code of ${name} saved`);
+    const verdict = await this.checkCode(camera, code);
+    if (verdict === true) {
+      // The picture the code opens is shown at once.
+      this.alarmImage(camera.serial).catch(() => {});
+    }
+    return say(verdict === true ? 'checked' : verdict === false ? 'wrong' : 'saved');
+  }
+
+  /** Whether a code opens the last alarm picture: true, false, or null when it cannot tell. */
+  async checkCode(camera, code) {
+    const picture = this.alarms.last.get(camera.serial)?.picture;
+    if (!picture) {
+      return null;
+    }
+    try {
+      const bytes = await this.withSession((client) => client.download(picture));
+      if (!isEncrypted(bytes)) {
+        return null;
+      }
+      decryptPicture(bytes, code);
+      return true;
+    } catch (err) {
+      return err instanceof WrongCodeError ? false : null;
+    }
   }
 
   async publishConnectionStatus() {
@@ -1169,13 +1271,17 @@ export class EzvizHub {
     }
     logger.info('Connection test: success');
     const encrypted = [...this.cameras.values()].filter(
-      (camera) => camera.encrypted && !codeFor(this.config, camera.serial),
+      (camera) => camera.encrypted && !this.codeOf(camera.serial),
     ).length;
     return localized((language) => {
       const text = REPORT_TEXT[language];
       const parts = [text.ok(this.cameras.size, this.client.apiDomain)];
       if (encrypted > 0) {
         parts.push(text.encrypted(encrypted));
+      }
+      const ambiguous = this.ambiguousCodes();
+      if (ambiguous) {
+        parts.push(ambiguous[language]);
       }
       return parts.join(' ');
     });
@@ -1229,7 +1335,7 @@ export class EzvizHub {
    */
   streamUrl(externalId) {
     const camera = this.requireCamera(externalId);
-    const code = codeFor(this.config, camera.serial);
+    const code = this.codeOf(camera.serial);
     if (!camera.localIp) {
       return ACTION_TEXT.noLocalAddress;
     }

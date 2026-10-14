@@ -294,11 +294,11 @@ test('encrypted pictures: the code of the configuration, else the key of the clo
   assert.ok(encryptPicture(JPEG, VERIFICATION_CODE).length > JPEG.length);
 });
 
-test('the live view captures a fresh picture; an asleep camera shows its last one', async (t) => {
+test('Gladys asking for a live image gets a fresh capture; an asleep camera its last picture', async (t) => {
   const w = await world(t);
   await createAll(w);
   const ptz = discovered(w, SERIALS.PTZ);
-  w.clock.advance(10_000); // the image of the start is older than 6 s
+  w.clock.advance(40_000); // the image of the start is older than 30 s
   const ack = await w.fake.getImage(ptz);
   assert.equal(ack.success, true);
   assert.match(ack.data.image, /^image\/jpg;base64,/);
@@ -312,6 +312,115 @@ test('the live view captures a fresh picture; an asleep camera shows its last on
   await w.hub.checkAlarms();
   const last = await w.fake.getImage(battery);
   assert.equal(last.success, true);
+});
+
+test('"send the camera image" right after an alarm sends the alarm picture', async (t) => {
+  const w = await world(t);
+  await createAll(w);
+  w.clock.advance(5 * 60_000);
+  w.cloud.addAlarm(SERIALS.FLOODLIGHT, { at: w.clock.now() });
+  await w.hub.checkAlarms();
+  const alarmImage = w.fake.cameraImages.at(-1).image;
+  const before = captures(w).length;
+  w.clock.advance(20_000); // the scene runs: within 30 s
+  const ack = await w.fake.getImage(discovered(w, SERIALS.FLOODLIGHT));
+  assert.equal(ack.data.image, alarmImage);
+  assert.equal(captures(w).length, before, 'no capture: the alarm picture is sent');
+});
+
+test('the verification code of a camera, saved by the action, checked on its last picture', async (t) => {
+  const cloud = new FakeCloud();
+  cloud.encryptedSerials.add(SERIALS.PTZ);
+  cloud.encryptedSerials.add(SERIALS.DRIVEWAY);
+  const w = await world(t, { cloud });
+  await createAll(w);
+  const ptz = cameraIds(w.gladys, SERIALS.PTZ).device;
+  // The alarm of the fixture is plain: a new, encrypted one.
+  cloud.addAlarm(SERIALS.PTZ, { at: w.clock.now() });
+  cloud.addAlarm(SERIALS.DRIVEWAY, { at: w.clock.now() });
+  await w.hub.checkAlarms();
+
+  let ack = await w.fake.action('camera_code', { camera: ptz, code: ' ABCDEF ' });
+  assert.equal(
+    ack.data.message.fr,
+    'Code de vérification enregistré pour Living room : il ouvre sa dernière image.',
+  );
+  // The picture it opens is shown at once.
+  await settle();
+  const image = w.fake.cameraImages.filter((entry) => entry.device_external_id === ptz).at(-1);
+  assert.equal(image.image, `image/jpg;base64,${JPEG.toString('base64')}`);
+  // Kept in /data, used for the RTSP address; never in the logs (see logs.test.js).
+  await w.app.stop();
+  const saved = JSON.parse(readFileSync(join(w.dataDir, 'ezviz-state.json'), 'utf8'));
+  assert.deepEqual(saved.codes, { [SERIALS.PTZ]: 'ABCDEF' });
+
+  const again = await world(t, { cloud, dataDir: w.dataDir });
+  await createAll(again);
+  ack = await again.fake.action('stream_url', { camera: ptz });
+  assert.match(ack.data.message.en, /rtsp:\/\/admin:ABCDEF@/);
+  const driveway = cameraIds(again.gladys, SERIALS.DRIVEWAY).device;
+  ack = await again.fake.action('camera_code', { camera: driveway, code: 'QWERTY' });
+  assert.match(ack.data.message.en, /does not open its last picture/);
+  ack = await again.fake.action('camera_code', { camera: driveway, code: 'not a code!' });
+  assert.match(ack.data.message.en, /letters and digits/);
+  ack = await again.fake.action('camera_code', { camera: driveway });
+  assert.equal(ack.data.message.en, 'Verification code removed for Driveway.');
+  ack = await again.fake.action('camera_code', {
+    camera: cameraIds(again.gladys, SERIALS.GARAGE).device,
+    code: 'ABCDEF',
+  });
+  assert.equal(
+    ack.data.message.en,
+    'Verification code saved for Garage.',
+    'nothing to check it on',
+  );
+  ack = await again.fake.action('camera_code', { code: 'ABCDEF' });
+  assert.equal(ack.success, false);
+});
+
+test('several codes without a serial number are not applied: the cameras are listed', async (t) => {
+  const cloud = new FakeCloud();
+  cloud.encryptedSerials.add(SERIALS.PTZ);
+  const w = await world(t, {
+    cloud,
+    config: { ...BASE_CONFIG, verification_codes: `QWERTY,${VERIFICATION_CODE}` },
+  });
+  await createAll(w);
+  const status = w.fake.connectionStatus;
+  assert.equal(status.connected, true);
+  assert.match(
+    status.message.fr,
+    /Plusieurs codes de vérification sans numéro de série sont ignorés/,
+  );
+  assert.match(status.message.en, /Living room \(EZFAKE004\), Back door \(EZFAKE006\)/);
+  const ack = await w.fake.action('test_connection', {});
+  assert.match(ack.data.message.en, /Your cameras: Garden floodlight \(EZFAKE001\)/);
+  // Not even the right one is tried on the camera: no image from it.
+  const ptz = cameraIds(w.gladys, SERIALS.PTZ).device;
+  const count = w.fake.cameraImages.filter((entry) => entry.device_external_id === ptz).length;
+  cloud.addAlarm(SERIALS.PTZ, { at: w.clock.now() });
+  await w.hub.checkAlarms();
+  assert.equal(
+    w.fake.cameraImages.filter((entry) => entry.device_external_id === ptz).length,
+    count,
+  );
+  const rtsp = await w.fake.action('stream_url', { camera: ptz });
+  assert.match(rtsp.data.message.en, /Set a camera verification code/);
+  // A code saved through the action: that camera leaves the list.
+  await w.fake.action('camera_code', { camera: ptz, code: VERIFICATION_CODE });
+  assert.ok(!w.fake.connectionStatus.message.en.includes('EZFAKE004'));
+  assert.match(w.fake.connectionStatus.message.en, /Garage \(EZFAKE010\)/);
+  // Every camera with its code, or the field emptied: the message goes away.
+  for (const serial of Object.values(SERIALS)) {
+    await w.fake.action('camera_code', {
+      camera: cameraIds(w.gladys, serial).device,
+      code: 'ABCDEF',
+    });
+  }
+  assert.deepEqual(w.fake.connectionStatus, { connected: true });
+  await w.fake.configUpdated({ ...BASE_CONFIG, verification_codes: '' });
+  await settle();
+  assert.deepEqual(w.fake.connectionStatus, { connected: true });
 });
 
 test('the periodic captures skip the battery cameras, the offline ones and privacy mode', async (t) => {
