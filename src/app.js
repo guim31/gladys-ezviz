@@ -6,7 +6,7 @@
 
 import { createLogger } from '@gladysassistant/integration-sdk';
 import { normalizeConfig } from './config.js';
-import { EzvizHub } from './hub.js';
+import { EzvizHub, WIDGET_KEY } from './hub.js';
 import { SCENE_ACTIONS } from './scenes.js';
 import { Store } from './store.js';
 import { INIT_FAILED } from './texts.js';
@@ -73,6 +73,9 @@ export function registerHandlers(gladys, options = {}) {
   gladys.onPoll(whenReady(() => hub.checkAlarms()));
 
   gladys.onDeviceCreated(whenReady((device) => hub.onDeviceCreated(device)));
+
+  // A device renamed in Gladys: the widget shows the names of Gladys.
+  gladys.onDeviceUpdated(whenReady(async () => hub.gladys.requestWidgetRefresh(WIDGET_KEY)));
 
   gladys.onConfigUpdated(
     whenReady(async (newConfig) => {

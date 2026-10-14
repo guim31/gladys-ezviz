@@ -153,6 +153,11 @@ Los botones cambian el modo de toda la cuenta, es decir, de todas las cámaras,
 sean cuales sean las cámaras mostradas. Sin botones cuando el armado no está
 permitido.
 
+El widget nombra cada cámara como usted la nombró en Gladys (el nombre EZVIZ
+mientras no se añada). Gladys ofrece todos los dispositivos de la integración
+en la lista de cámaras del widget, «Cuenta EZVIZ» incluida: esa no es una
+cámara y se ignora.
+
 ## Escenas
 
 ### Desencadenantes

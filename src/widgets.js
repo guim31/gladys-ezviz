@@ -27,7 +27,6 @@
 // -----------------------------------------------------------------------------
 
 import { WIDGET_COLORS } from '@gladysassistant/integration-sdk';
-import { cameraName } from './devices.js';
 import { WIDGET_KEY } from './hub.js';
 import { ALARM_KINDS, ARM_MODES } from './ezviz/model.js';
 import { ALARM_NAMES, ARM_MODE_NAMES, ERROR_TEXT, formatTime, pick } from './texts.js';
@@ -116,7 +115,7 @@ function cameraRow(view, camera, language) {
   const kinds = ALARM_NAMES[language] ?? ALARM_NAMES.en;
   if (alarm) {
     return {
-      label: fit(cameraName(camera, language), 40),
+      label: fit(view.nameOf(camera, language), 40),
       icon: KIND_ICONS[alarm.kind] ?? KIND_ICONS.other,
       value: fit(`${kinds[alarm.kind]} · ${formatTime(alarm.at, language, view.now)}`, 40),
       color: !camera.online
@@ -127,7 +126,7 @@ function cameraRow(view, camera, language) {
     };
   }
   return {
-    label: fit(cameraName(camera, language), 40),
+    label: fit(view.nameOf(camera, language), 40),
     icon: camera.online ? 'video' : 'video-off',
     value: t(camera.online ? TEXT.isOnline : TEXT.isOffline, language),
     color: camera.online ? WIDGET_COLORS.SUCCESS : WIDGET_COLORS.DANGER,
@@ -139,7 +138,9 @@ async function get(hub, { settings, language = 'en' }) {
   if (!view.configured) {
     return message(TEXT.configure, language);
   }
-  const ids = chosenIds(settings);
+  // "EZVIZ account" is offered in the list too (the core lists every device
+  // of the integration): choosing it alone means no camera, so all of them.
+  const ids = chosenIds(settings).filter((id) => !view.isAccountId(id));
   let shown = view.cameras;
   if (ids.length > 0) {
     shown = view.cameras.filter((camera) => ids.includes(view.cameraId(camera)));

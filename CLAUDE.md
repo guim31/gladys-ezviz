@@ -292,3 +292,7 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - **Réglages de widget** : `multi_select` + `source: "devices"` est accepté par le cœur 5.2.1 (serveur
   et `ConfigSchemaForm`). Changer le type d’un réglage existant casserait les boîtes enregistrées
   (une chaîne n’est pas un tableau → 422) : nouveau réglage `cameras`, l’ancien `camera` reste.
+- **Source `devices` non filtrable en 5.2.1** : serveur (`getDynamicOptions`) et front
+  (`dynamicOptions.js`) proposent **tous** les appareils créés de l’intégration, libellés avec leur nom
+  Gladys, sans filtre (catégorie, modèle…). Le « Compte EZVIZ » apparaît donc dans les listes de caméras :
+  le widget l’ignore, et les noms affichés sont ceux de Gladys (`hub.nameOf`, `gladys.devices`).

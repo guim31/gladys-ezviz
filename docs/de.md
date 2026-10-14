@@ -155,6 +155,11 @@ Knöpfe ändern den Modus des ganzen Kontos, also aller Kameras, egal welche
 Kameras angezeigt werden. Keine Knöpfe, wenn das Scharfschalten nicht erlaubt
 ist.
 
+Das Widget nennt jede Kamera so, wie du sie in Gladys benannt hast (den
+EZVIZ-Namen, solange sie nicht hinzugefügt ist). Gladys bietet in der
+Kameraliste des Widgets alle Geräte der Integration an, auch „EZVIZ-Konto“:
+Das ist keine Kamera und wird ignoriert.
+
 ## Szenen
 
 ### Auslöser

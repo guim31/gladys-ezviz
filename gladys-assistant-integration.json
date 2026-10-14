@@ -799,6 +799,12 @@
             "fr": "Caméras (vide : toutes)",
             "de": "Kameras (leer: alle)",
             "es": "Cámaras (vacío: todas)"
+          },
+          "description": {
+            "en": "Gladys lists every device of the integration: \"EZVIZ account\" is not a camera and is ignored here.",
+            "fr": "Gladys liste tous les appareils de l’intégration : « Compte EZVIZ » n’est pas une caméra et est ignoré ici.",
+            "de": "Gladys listet alle Geräte der Integration: „EZVIZ-Konto“ ist keine Kamera und wird hier ignoriert.",
+            "es": "Gladys lista todos los dispositivos de la integración: «Cuenta EZVIZ» no es una cámara y aquí se ignora."
           }
         },
         {

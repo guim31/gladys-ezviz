@@ -562,13 +562,13 @@ export class EzvizHub {
     if (alarm.kind === ALARM_KINDS.DOORBELL) {
       await this.fire(TRIGGERS.DOORBELL, {
         doorbell: ids.device,
-        doorbell_name: cameraName(camera, this.language),
+        doorbell_name: this.nameOf(camera),
       });
     } else {
       await this.fire(TRIGGERS.DETECTION, {
         camera: ids.device,
         kind: alarm.kind,
-        camera_name: cameraName(camera, this.language),
+        camera_name: this.nameOf(camera),
         kind_name: names[alarm.kind],
         alarm_name: alarm.title || names[alarm.kind],
         alarm_code: alarm.code,
@@ -751,6 +751,18 @@ export class EzvizHub {
   }
 
   // --- Publishing to Gladys ----------------------------------------------------
+
+  /**
+   * The name a person reads for a camera: the one it has in Gladys once added
+   * (users rename "C6N(G12345678)" to "Baby monitor"), else the EZVIZ one.
+   * The SDK keeps `gladys.devices` up to date on every rename.
+   */
+  nameOf(camera, language = this.language) {
+    const externalId = cameraIds(this.gladys, camera.serial).device;
+    const created = (this.gladys.devices ?? []).find((device) => device.external_id === externalId);
+    const name = typeof created?.name === 'string' ? created.name.trim() : '';
+    return name || cameraName(camera, language);
+  }
 
   /** Whether the user added the device to Gladys. */
   isCreated(externalId) {
@@ -991,9 +1003,7 @@ export class EzvizHub {
     if (missing.length === 0) {
       return null;
     }
-    const list = missing
-      .map((camera) => `${cameraName(camera, this.language)} (${camera.serial})`)
-      .join(', ');
+    const list = missing.map((camera) => `${this.nameOf(camera)} (${camera.serial})`).join(', ');
     return localized((language) => CODE_TEXT[language].ambiguous(list));
   }
 
@@ -1007,7 +1017,7 @@ export class EzvizHub {
     const code = typeof raw === 'string' ? raw.trim() : raw ? String(raw).trim() : '';
     const name = cameraName(camera);
     const say = (key) =>
-      localized((language) => CODE_TEXT[language][key](cameraName(camera, language)));
+      localized((language) => CODE_TEXT[language][key](this.nameOf(camera, language)));
     if (code && !isCode(code)) {
       return localized((language) => CODE_TEXT[language].invalid());
     }
@@ -1361,6 +1371,11 @@ export class EzvizHub {
       lastAlarms: this.alarms.last,
       now: this.now(),
       cameraId: (camera) => cameraIds(this.gladys, camera.serial).device,
+      nameOf: (camera, language) => this.nameOf(camera, language),
+      // The account device is listed with the cameras in every `devices`
+      // select (Gladys 5.2.1 cannot filter that source): not a camera.
+      isAccountId: (id) =>
+        Boolean(this.accountUser) && id === accountIds(this.gladys, this.accountUser).device,
     };
   }
 
