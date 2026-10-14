@@ -1,0 +1,2306 @@
+{
+  "meta": {
+    "code": 200,
+    "message": "操作成功",
+    "moreInfo": {}
+  },
+  "page": {
+    "hasNext": false,
+    "limit": 30,
+    "offset": 0,
+    "totalResults": 6
+  },
+  "STATUS": {
+    "EZFAKE001": {
+      "alarmSoundMode": 2,
+      "cloudType": 1,
+      "diskNum": 0,
+      "diskState": "----------------",
+      "diskStatus": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+      "encryptPwd": "<redacted>",
+      "globalStatus": 1,
+      "isEncrypt": 1,
+      "optionals": {
+        "4G_Info": "{\"status\": 0, \"sigal\": 0, \"type\": 0, \"network\": \"\", \"ICCID\": \"\", \"IMEI\": \"\"}",
+        "Alarm_DetectHumanCar": "{\"type\": 3}",
+        "Alarm_Interval": "-1",
+        "Alarm_Light": "{\"luminance\": 50}",
+        "AlgorithmInfo": "[{\"SubType\": \"0\", \"channel\": 1, \"Value\": \"5\"}]",
+        "Auto_night_vision": "0",
+        "Battery_WorkStatus": "{\"KeepAlive\": 0, \"WorkTime\": 0, \"SpecialBusiness\": 0}",
+        "BodyDetectTimeInterval": "-1",
+        "ChimeMusic": "{\"doorbell\": 0, \"pir\": 0, \"volume\": 90}",
+        "CustomVoice": "[]",
+        "CustomVoice_Volume": "{\"volume\": 90, \"microphone_volume\": 75}",
+        "DB_Chime_ConnInfo": "{\"Conn\": \"-1\", \"Name\": \"\", \"Address\": \"\", \"Mask\": \"\", \"Gateway\": \"\", \"Signal\": \"0\", \"SSID\": \"\", \"Dbserial\": \"\"}",
+        "ICR": "1",
+        "IndicatorLight": "{\"enable\": 1, \"mode\": 1}",
+        "NightVision_Model": "{\"graphicType\": 0, \"luminance\": 0, \"duration\": 0}",
+        "OSD": "[{\"name\": \"\", \"channel\": \"0\"}]",
+        "OnlineStatus": "1",
+        "PresetEffect": "{\"channel\": 0, \"index\": \"\"}",
+        "ROI": "{\"xCoord\": \"0.00\", \"yCoord\": \"0.00\", \"width\": \"0.00\", \"height\": \"0.00\"}",
+        "Record_Mode": "{\"mode\": 0}",
+        "Remind_Way": "-1",
+        "Route_LinkageStatus": "0",
+        "Temperature_Threshold": "-1",
+        "cloudChannelList": "[{\"status\": 0, \"compression\": 0, \"channel\": 0}, {\"status\": 0, \"compression\": 0, \"channel\": 1}]",
+        "daylightSavingTime": "0",
+        "device_ICR_DSS": "{\"mode\": 0, \"sensitivity\": 2, \"autoTimeBegin\": \"00:00\", \"autoTimeEnd\": \"00:00\"}",
+        "device_static_DNS": "-1",
+        "device_wifi_mode": "-1",
+        "diskCapacity": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "diskHealth": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "display_mode": "{\"mode\": 1}",
+        "image_para": "{\"brightness\": 50, \"contrast\": 50, \"saturation\": 50, \"sharpness\": 50}",
+        "inverse_mode": "{\"mode\": 0, \"enable\": 1, \"position\": 0}",
+        "kms_version": "100",
+        "language": "ENG",
+        "lastUpgradeTime": "1718210587345",
+        "latestUnbandTime": "1663404063040",
+        "latestUnbindTime": "1663404063040",
+        "preset": "0",
+        "pri_cover_area": "{\"cover_num\": 0, \"cover_data\": [{\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}]}",
+        "returnToPoint": "0",
+        "superState": "0",
+        "talkMode": "{\"mode\": 1}",
+        "talk_speaker_volume": "9",
+        "timeFormat": "0",
+        "timeZone": "UTC+02:00",
+        "tzCode": "122",
+        "updateCode": "0",
+        "updateProcessExtend": "",
+        "video_para": "{\"channel\": 1, \"MainEncode\": 1, \"SubEncode\": 1}",
+        "voiceIndex": "0",
+        "wanIp": "192.0.2.4"
+      },
+      "pirStatus": 0,
+      "privacyStatus": 0,
+      "upgradeAvailable": 0,
+      "upgradeProcess": 0,
+      "upgradeStatus": 2
+    },
+    "EZFAKE004": {
+      "alarmSoundMode": 2,
+      "cloudType": 1,
+      "diskNum": 1,
+      "diskState": "0---------------",
+      "diskStatus": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+      "encryptPwd": "<redacted>",
+      "globalStatus": 1,
+      "isEncrypt": 1,
+      "optionals": {
+        "Alarm_DetectHumanCar": "{\"type\": 3}",
+        "Alarm_Interval": "-1",
+        "Alarm_Light": "{\"luminance\": 100}",
+        "AlgorithmInfo": "[{\"SubType\": \"0\", \"channel\": 1, \"Value\": \"6\"}]",
+        "Auto_night_vision": "0",
+        "Battery_WorkStatus": "{\"KeepAlive\": 0, \"WorkTime\": 0, \"SpecialBusiness\": 0}",
+        "BodyDetectTimeInterval": "-1",
+        "ChimeMusic": "{\"doorbell\": 0, \"pir\": 0, \"volume\": 80}",
+        "CustomVoice": "[]",
+        "CustomVoice_Volume": "{\"volume\": 80, \"microphone_volume\": 80}",
+        "ICR": "0",
+        "IndicatorLight": "{\"enable\": 1, \"mode\": 1}",
+        "NightVision_Model": "{\"graphicType\": 0, \"luminance\": 0, \"duration\": 0}",
+        "OSD": "[{\"name\": \"\", \"channel\": \"0\"}]",
+        "OnlineStatus": "1",
+        "ROI": "{\"xCoord\": \"0.00\", \"yCoord\": \"0.00\", \"width\": \"0.00\", \"height\": \"0.00\"}",
+        "Record_Mode": "{\"mode\": 0}",
+        "Remind_Way": "-1",
+        "Route_LinkageStatus": "0",
+        "StorageFirstRecordTime": "2024-01-01 00:00:00",
+        "Temperature_Threshold": "-1",
+        "cloudChannelList": "[{\"status\": 0, \"channel\": 0}, {\"status\": 0, \"channel\": 1}]",
+        "daylightSavingTime": "0",
+        "device_ICR_DSS": "{\"mode\": 0, \"sensitivity\": 4, \"autoTimeBegin\": \"00:00\", \"autoTimeEnd\": \"00:00\"}",
+        "diskCapacity": "59380,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "diskCid": "<redacted>",
+        "diskHealth": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "display_mode": "{\"mode\": 1}",
+        "image_para": "{\"brightness\": 50, \"contrast\": 50, \"saturation\": 50, \"sharpness\": 50}",
+        "inverse_mode": "{\"mode\": 0, \"enable\": 0, \"position\": 0}",
+        "kms_version": "100",
+        "language": "ENG",
+        "lastUpgradeTime": "1698330608437",
+        "latestUnbandTime": "1610282824200",
+        "latestUnbindTime": "1610282824200",
+        "superState": "0",
+        "talkMode": "{\"mode\": 1}",
+        "timeFormat": "0",
+        "timeZone": "UTC+02:00",
+        "tzCode": "122",
+        "updateCode": "0",
+        "updateProcessExtend": "",
+        "video_para": "{\"channel\": 1, \"MainEncode\": 0, \"SubEncode\": 0}",
+        "voiceIndex": "0",
+        "wanIp": "192.0.2.4"
+      },
+      "pirStatus": 0,
+      "privacyStatus": 0,
+      "upgradeAvailable": 0,
+      "upgradeProcess": 0,
+      "upgradeStatus": 2
+    },
+    "EZFAKE006": {
+      "alarmSoundMode": 2,
+      "cloudType": 1,
+      "diskNum": 1,
+      "diskState": "0---------------",
+      "diskStatus": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+      "encryptPwd": "<redacted>",
+      "globalStatus": 1,
+      "isEncrypt": 1,
+      "optionals": {
+        "Alarm_AdvancedDetect": "{\"type\": 8}",
+        "Alarm_DetectHumanCar": "{\"type\": 0}",
+        "Alarm_Light": "{\"luminance\": 100}",
+        "AlgorithmInfo": "[{\"SubType\": \"0\", \"channel\": 1, \"Value\": \"3\"}, {\"SubType\": \"2\", \"channel\": 1, \"Value\": \"6\"}, {\"SubType\": \"3\", \"channel\": 1, \"Value\": \"80\"}, {\"SubType\": \"5\", \"channel\": 1, \"Value\": \"0\"}, {\"SubType\": \"7\", \"channel\": 1, \"Value\": \"0\"}]",
+        "Auto_night_vision": "0",
+        "Battery_WorkStatus": "{\"KeepAlive\": 180, \"WorkTime\": 240, \"SpecialBusiness\": 0}",
+        "BodyDetectTimeInterval": "1",
+        "ChimeMusic": "{\"doorbell\": 0, \"pir\": 0, \"volume\": 90, \"doorbell_enable\": 0, \"pir_enable\": 0}",
+        "CustomVoice": "[]",
+        "CustomVoice_Volume": "{\"volume\": 90, \"microphone_volume\": 80}",
+        "ICR": "0",
+        "IndicatorLight": "{\"enable\": 1, \"mode\": 1}",
+        "NightVision_Model": "{\"graphicType\": 0, \"luminance\": 100, \"duration\": 90}",
+        "OSD": "[{\"name\": \"\", \"channel\": \"0\"}]",
+        "OneClickMute": "-1",
+        "OnlineStatus": "2",
+        "PresetEffect": "{\"channel\": 0, \"index\": \"\"}",
+        "ROI": "{\"xCoord\": \"0.00\", \"yCoord\": \"0.00\", \"width\": \"0.00\", \"height\": \"0.00\"}",
+        "RecordCoverStorage": "1",
+        "Record_Mode": "{\"mode\": 0}",
+        "Route_LinkageStatus": "0",
+        "SpeakerConfig": "{\"RingSwitch\": -1, \"RingIndex\": -1, \"IntelligentSwitch\": -1, \"IntelligentIndex\": -1}",
+        "StorageFirstRecordTime": "2024-01-01 00:00:00",
+        "batteryCameraWorkMode": "1",
+        "cloudChannelList": "[{\"status\": 1, \"channel\": 0}, {\"status\": 1, \"channel\": 1}]",
+        "daylightSavingTime": "0",
+        "device_ICR_DSS": "{\"mode\": 0, \"sensitivity\": 2, \"autoTimeBegin\": \"00:00\", \"autoTimeEnd\": \"00:00\"}",
+        "device_auto_rouse": "0",
+        "device_bell": "{\"Type\": 0, \"CustomRingIndex\": 0, \"Volume\": 0}",
+        "device_screen_lightness": "5",
+        "device_screen_overtime": "10",
+        "device_static_DNS": "0",
+        "device_video_time": "0",
+        "device_wifi_mode": "1",
+        "diskCapacity": "60906,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "diskCid": "<redacted>",
+        "diskHealth": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "display_mode": "{\"mode\": 1}",
+        "gesture_remind_type": "0",
+        "image_para": "{\"brightness\": 50, \"contrast\": 50, \"saturation\": 50, \"sharpness\": 50}",
+        "inverse_mode": "{\"mode\": 0, \"enable\": 0, \"position\": 0}",
+        "kms_version": "100",
+        "language": "ENG",
+        "lastUpgradeTime": "1751367860842",
+        "latestUnbandTime": "1750178958542",
+        "latestUnbindTime": "1750178958542",
+        "networkingMode": "0",
+        "powerRemaining": "100",
+        "powerStatus": "0",
+        "powerType": "1",
+        "preset": "0",
+        "pri_cover_area": "{\"cover_num\": 0, \"cover_data\": [{\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}]}",
+        "returnToPoint": "0",
+        "sound_detect_type": "{\"type\": 0, \"db\": 0}",
+        "superState": "0",
+        "talkMode": "{\"mode\": 1}",
+        "talk_speaker_volume": "9",
+        "timeFormat": "2",
+        "timeZone": "UTC+02:00",
+        "tzCode": "122",
+        "updateCode": "0",
+        "updateProcessExtend": "",
+        "video_para": "{\"channel\": 1, \"MainEncode\": -1, \"SubEncode\": -1}",
+        "voiceIndex": "0",
+        "wanIp": "192.0.2.4"
+      },
+      "pirStatus": 0,
+      "privacyStatus": 0,
+      "upgradeAvailable": 0,
+      "upgradeProcess": 0,
+      "upgradeStatus": 2
+    },
+    "EZFAKE014": {
+      "alarmSoundMode": 2,
+      "cloudType": 1,
+      "diskNum": 1,
+      "diskState": "0---------------",
+      "diskStatus": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+      "encryptPwd": "<redacted>",
+      "globalStatus": 1,
+      "isEncrypt": 1,
+      "optionals": {
+        "4G_Info": "{\"status\": 0, \"sigal\": 0, \"type\": 0, \"network\": \"\", \"ICCID\": \"\", \"IMEI\": \"\"}",
+        "Alarm_AdvancedDetect": "{\"type\": 8}",
+        "Alarm_DetectHumanCar": "{\"type\": 1}",
+        "Alarm_Light": "{\"luminance\": 100}",
+        "AlgorithmInfo": "[{\"SubType\": \"0\", \"channel\": 1, \"Value\": \"3\"}]",
+        "Auto_night_vision": "0",
+        "Battery_WorkStatus": "{\"KeepAlive\": 0, \"WorkTime\": 0, \"SpecialBusiness\": 0}",
+        "BodyDetectTimeInterval": "-1",
+        "ChimeMusic": "{\"doorbell\": 0, \"pir\": 0, \"volume\": 100, \"doorbell_enable\": 0, \"pir_enable\": 0}",
+        "CustomVoice": "[]",
+        "CustomVoice_Volume": "{\"volume\": 100, \"microphone_volume\": 80}",
+        "ICR": "1",
+        "IndicatorLight": "{\"enable\": 1, \"mode\": 1}",
+        "NightVision_Model": "{\"graphicType\": 0, \"luminance\": 100, \"duration\": 90}",
+        "OSD": "[{\"name\": \"\", \"channel\": \"0\"}, {\"name\": \"Fictional 09 Device\", \"channel\": \"1\"}, {\"name\": \"Fictional 10 Device\", \"channel\": \"2\"}]",
+        "OnlineStatus": "1",
+        "PresetEffect": "{\"channel\": 0, \"index\": \"\"}",
+        "ROI": "{\"xCoord\": \"0.00\", \"yCoord\": \"0.00\", \"width\": \"0.00\", \"height\": \"0.00\"}",
+        "RecordCoverStorage": "1",
+        "Record_Mode": "{\"mode\": 0}",
+        "StorageFirstRecordTime": "2024-01-01 00:00:00",
+        "cloudChannelList": "[{\"status\": 0, \"channel\": 0, \"recordType\": 0, \"streamType\": 0}, {\"status\": 0, \"channel\": 1, \"recordType\": 0, \"streamType\": 0}, {\"status\": 0, \"channel\": 2, \"recordType\": 0, \"streamType\": 0}]",
+        "daylightSavingTime": "0",
+        "device_ICR_DSS": "{\"mode\": 0, \"sensitivity\": 1, \"autoTimeBegin\": \"00:00\", \"autoTimeEnd\": \"00:00\"}",
+        "device_static_DNS": "-1",
+        "device_wifi_mode": "-1",
+        "diskCapacity": "60906,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "diskCid": "<redacted>",
+        "diskHealth": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "display_mode": "{\"mode\": 1}",
+        "gesture_remind_type": "1",
+        "image_para": "{\"brightness\": 50, \"contrast\": 50, \"saturation\": 50, \"sharpness\": 50}",
+        "inverse_mode": "{\"mode\": 0, \"enable\": 0, \"position\": 0}",
+        "kms_version": "100",
+        "language": "ENG",
+        "lastUpgradeTime": "1760813254628",
+        "latestUnbandTime": "1760812968138",
+        "latestUnbindTime": "1760812968138",
+        "preset": "0",
+        "pri_cover_area": "{\"cover_num\": 0, \"cover_data\": [{\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}]}",
+        "returnToPoint": "0",
+        "sound_detect_type": "{\"type\": 0, \"db\": 75}",
+        "superState": "0",
+        "talkMode": "{\"mode\": 1}",
+        "talk_speaker_volume": "9",
+        "timeFormat": "0",
+        "timeZone": "UTC+02:00",
+        "tzCode": "122",
+        "updateCode": "0",
+        "updateProcessExtend": "",
+        "video_para": "{\"channel\": 1, \"MainEncode\": 1, \"SubEncode\": 1}",
+        "voiceIndex": "0",
+        "wanIp": "192.0.2.4"
+      },
+      "pirStatus": 0,
+      "privacyStatus": 0,
+      "upgradeAvailable": 0,
+      "upgradeProcess": 0,
+      "upgradeStatus": 2
+    },
+    "EZFAKE010": {
+      "alarmSoundMode": 2,
+      "cloudType": 1,
+      "diskNum": 0,
+      "diskState": "----------------",
+      "diskStatus": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+      "encryptPwd": "<redacted>",
+      "globalStatus": 1,
+      "isEncrypt": 1,
+      "optionals": {
+        "4G_Info": "{\"status\": 0, \"sigal\": 0, \"type\": 0, \"network\": \"\", \"ICCID\": \"\", \"IMEI\": \"\"}",
+        "Alarm_AdvancedDetect": "{\"type\": -1}",
+        "Alarm_DetectHumanCar": "{\"type\": 3}",
+        "Alarm_Light": "{\"luminance\": 0}",
+        "AlgorithmInfo": "[{\"SubType\": \"0\", \"channel\": 1, \"Value\": \"5\"}]",
+        "Auto_night_vision": "0",
+        "Battery_WorkStatus": "{\"KeepAlive\": 0, \"WorkTime\": 0}",
+        "BodyDetectTimeInterval": "-1",
+        "ChimeMusic": "{\"doorbell\": 0, \"pir\": 0, \"volume\": 80}",
+        "CustomVoice": "[]",
+        "CustomVoice_Volume": "{\"volume\": 80, \"microphone_volume\": 80}",
+        "ICR": "1",
+        "IndicatorLight": "{\"enable\": 0, \"mode\": 0}",
+        "NightVision_Model": "{\"graphicType\": 0, \"luminance\": 0, \"duration\": 0}",
+        "OSD": "[{\"name\": \"\", \"channel\": \"0\"}]",
+        "OnlineStatus": "2",
+        "ROI": "{\"xCoord\": \"-1.00\", \"yCoord\": \"-1.00\", \"width\": \"-1.00\", \"height\": \"-1.00\"}",
+        "Record_Mode": "{\"mode\": 0}",
+        "Route_LinkageStatus": "0",
+        "cloudChannelList": "[{\"channel\": 0, \"status\": 0, \"type\": 0}, {\"channel\": 1, \"status\": 0, \"type\": 0}]",
+        "daylightSavingTime": "0",
+        "device_ICR_DSS": "{\"mode\": 0, \"sensitivity\": 2, \"autoTimeBegin\": \"00:00\", \"autoTimeEnd\": \"00:00\"}",
+        "diskCapacity": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "diskHealth": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "display_mode": "{\"mode\": 0}",
+        "hfullViewURL": "",
+        "image_para": "{\"brightness\": 50, \"contrast\": 50, \"saturation\": 50, \"sharpness\": 50}",
+        "inverse_mode": "{\"mode\": 0, \"enable\": 0, \"position\": 0}",
+        "kms_version": "100",
+        "language": "ENG",
+        "lastUpgradeTime": "1755353768061",
+        "latestUnbandTime": "1751973661099",
+        "latestUnbindTime": "1755353624103",
+        "lightcamera_delay_off": "{\"custom\": false, \"delay\": -1}",
+        "superState": "0",
+        "talkMode": "{\"mode\": 0}",
+        "timeFormat": "2",
+        "timeZone": "UTC+02:00",
+        "tzCode": "122",
+        "updateCode": "0",
+        "updateProcessExtend": "",
+        "video_para": "{\"channel\": 1, \"MainEncode\": 0, \"SubEncode\": 0}",
+        "voiceIndex": "0",
+        "wanIp": "192.0.2.5"
+      },
+      "pirStatus": 0,
+      "privacyStatus": 0,
+      "upgradeAvailable": 0,
+      "upgradeProcess": 0,
+      "upgradeStatus": 2
+    },
+    "EZFAKE021": {
+      "alarmSoundMode": 2,
+      "cloudType": 1,
+      "diskNum": 0,
+      "diskState": "----------------",
+      "diskStatus": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+      "encryptPwd": "<redacted>",
+      "globalStatus": 1,
+      "isEncrypt": 1,
+      "optionals": {
+        "4G_Info": "{\"status\": 0, \"sigal\": 0, \"type\": 0, \"network\": \"\", \"ICCID\": \"\", \"IMEI\": \"\"}",
+        "Alarm_AdvancedDetect": "{\"type\": -1}",
+        "Alarm_DetectHumanCar": "{\"type\": 3}",
+        "Alarm_Interval": "-1",
+        "Alarm_Light": "{\"luminance\": 100}",
+        "AlgorithmInfo": "[{\"SubType\": \"0\", \"channel\": 1, \"Value\": \"3\"}]",
+        "Auto_night_vision": "0",
+        "Battery_WorkStatus": "{\"KeepAlive\": 0, \"WorkTime\": 0, \"SpecialBusiness\": 0}",
+        "BodyDetectTimeInterval": "-1",
+        "ChimeMusic": "{\"doorbell\": 0, \"pir\": 0, \"volume\": 84}",
+        "CustomVoice": "[]",
+        "CustomVoice_Volume": "{\"volume\": 84, \"microphone_volume\": 0}",
+        "DB_Chime_ConnInfo": "{\"Conn\": \"-1\", \"Name\": \"\", \"Address\": \"\", \"Mask\": \"\", \"Gateway\": \"\", \"Signal\": \"0\", \"SSID\": \"\", \"Dbserial\": \"\"}",
+        "ICR": "1",
+        "IndicatorLight": "{\"enable\": 0, \"mode\": 0}",
+        "NightVision_Model": "{\"graphicType\": 0, \"luminance\": 0, \"duration\": 0}",
+        "OSD": "[{\"name\": \"\", \"channel\": \"0\"}]",
+        "OnlineStatus": "1",
+        "ROI": "{\"xCoord\": \"0.00\", \"yCoord\": \"0.00\", \"width\": \"0.00\", \"height\": \"0.00\"}",
+        "RecordCoverStorage": "0",
+        "Record_Mode": "{\"mode\": 0}",
+        "Remind_Way": "-1",
+        "Route_LinkageStatus": "0",
+        "Temperature_Threshold": "-1",
+        "batteryCameraWorkMode": "-1",
+        "cloudChannelList": "[{\"status\": 0, \"channel\": 0}, {\"status\": 0, \"channel\": 1}]",
+        "daylightSavingTime": "0",
+        "device_ICR_DSS": "{\"mode\": 0, \"sensitivity\": 2, \"autoTimeBegin\": \"00:00\", \"autoTimeEnd\": \"00:00\"}",
+        "device_bell": "{\"Type\": 0, \"CustomRingIndex\": 0, \"Volume\": 0}",
+        "device_static_DNS": "-1",
+        "device_wifi_mode": "-1",
+        "diskCapacity": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "diskHealth": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+        "display_mode": "{\"mode\": 1}",
+        "gesture_remind_type": "-1",
+        "inverse_mode": "{\"mode\": 1, \"enable\": 1, \"position\": 3}",
+        "kms_version": "100",
+        "language": "ENG",
+        "lastUpgradeTime": "1698942678326",
+        "latestUnbandTime": "1649270914405",
+        "latestUnbindTime": "1649270914405",
+        "pri_cover_area": "{\"cover_num\": -1, \"cover_data\": [{\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}, {\"ltop_x\": 0, \"ltop_y\": 0, \"rlow_x\": 0, \"rlow_y\": 0}]}",
+        "sound_detect_type": "{\"type\": -1, \"db\": -1}",
+        "superState": "0",
+        "talkMode": "{\"mode\": 1}",
+        "talk_speaker_volume": "9",
+        "timeFormat": "0",
+        "timeZone": "UTC+02:00",
+        "tzCode": "122",
+        "updateCode": "0",
+        "updateProcessExtend": "",
+        "video_para": "{\"channel\": 1, \"MainEncode\": 1, \"SubEncode\": 1}",
+        "voiceIndex": "0",
+        "wanIp": "192.0.2.4"
+      },
+      "pirStatus": 0,
+      "privacyStatus": 0,
+      "upgradeAvailable": 0,
+      "upgradeProcess": 0,
+      "upgradeStatus": 2
+    }
+  },
+  "SWITCH": {
+    "EZFAKE001": [
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 1
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 2
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 3
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 7
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 8
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": true,
+        "type": 10
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 15
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 21
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": true,
+        "type": 22
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 25
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 29
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 31
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 32
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 38
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 39
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 41
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 200
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 202
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 300
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 301
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 302
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 304
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": true,
+        "type": 305
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 306
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 451
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 602
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 603
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": true,
+        "type": 604
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 613
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 614
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 615
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 617
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 650
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 651
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 652
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": true,
+        "type": 700
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 701
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE001",
+        "enable": false,
+        "type": 702
+      }
+    ],
+    "EZFAKE004": [
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": true,
+        "type": 1
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 2
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": true,
+        "type": 3
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": true,
+        "type": 7
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 8
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": true,
+        "type": 10
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 15
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 21
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": true,
+        "type": 22
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 25
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 29
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": true,
+        "type": 31
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 32
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": true,
+        "type": 38
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 39
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 41
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 200
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 202
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 300
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 301
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 302
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 304
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 305
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 306
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 451
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 602
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 603
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 604
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 613
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 614
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 615
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 617
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 650
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 651
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": true,
+        "type": 700
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 701
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE004",
+        "enable": false,
+        "type": 702
+      }
+    ],
+    "EZFAKE006": [
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 1
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 2
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 3
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 7
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 8
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 10
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 15
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 21
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 22
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 25
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 29
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 31
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 32
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 38
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 39
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 41
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 42
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 200
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 202
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 300
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 301
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 302
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 1,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 2,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 304
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 305
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 306
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 451
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 602
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 603
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 604
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 611
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 613
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 614
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 615
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 617
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 650
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 651
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 652
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 700
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": false,
+        "type": 701
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 702
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE006",
+        "enable": true,
+        "type": 800
+      }
+    ],
+    "EZFAKE014": [
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 1
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 2
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": true,
+        "type": 3
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 7
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 8
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": true,
+        "type": 10
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 15
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 21
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": true,
+        "type": 22
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 25
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 29
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": true,
+        "type": 31
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 32
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 38
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 39
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 41
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 42
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 200
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 202
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 300
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 301
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": true,
+        "type": 302
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 1,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 2,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 304
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 305
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 306
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 451
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 602
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 603
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 604
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 611
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 613
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 614
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 615
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 617
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 650
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 651
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 652
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": true,
+        "type": 700
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 701
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 702
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE014",
+        "enable": false,
+        "type": 800
+      }
+    ],
+    "EZFAKE010": [
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": true,
+        "type": 1
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 2
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": true,
+        "type": 3
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 7
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 8
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": true,
+        "type": 10
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 15
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 21
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": true,
+        "type": 22
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 25
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 29
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 31
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 32
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 200
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 202
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 300
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 301
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 302
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 304
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 305
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 604
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 615
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 650
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 651
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 700
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": false,
+        "type": 701
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE010",
+        "enable": true,
+        "type": 702
+      }
+    ],
+    "EZFAKE021": [
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": true,
+        "type": 1
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 2
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": true,
+        "type": 3
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 7
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 8
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": true,
+        "type": 10
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 15
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 21
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": true,
+        "type": 22
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 25
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 29
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 31
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 32
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 38
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 39
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 41
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 200
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 202
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 300
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 301
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 302
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 303
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 304
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 305
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 306
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 451
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 602
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 603
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 604
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 613
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 614
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 615
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 617
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 650
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 651
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": true,
+        "type": 700
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 701
+      },
+      {
+        "channelNo": 0,
+        "deviceSerial": "EZFAKE021",
+        "enable": false,
+        "type": 702
+      }
+    ]
+  },
+  "WIFI": {
+    "EZFAKE001": {
+      "address": "192.0.2.22",
+      "gateway": "192.0.2.2",
+      "mask": "192.0.2.33",
+      "netName": "Fictional 11 Device",
+      "netType": "wireless",
+      "signal": 56,
+      "ssid": "FictionalSSID"
+    },
+    "EZFAKE004": {
+      "address": "192.0.2.23",
+      "gateway": "192.0.2.2",
+      "mask": "192.0.2.33",
+      "netName": "Fictional 50 Device",
+      "netType": "wire",
+      "signal": 100,
+      "ssid": "FictionalSSID"
+    },
+    "EZFAKE006": {
+      "address": "192.0.2.34",
+      "gateway": "192.0.2.2",
+      "mask": "192.0.2.33",
+      "netName": "Fictional 49 Device",
+      "netType": "wireless",
+      "signal": 88,
+      "ssid": "FictionalSSID"
+    },
+    "EZFAKE014": {
+      "address": "192.0.2.17",
+      "gateway": "192.0.2.2",
+      "mask": "192.0.2.33",
+      "netName": "Fictional 50 Device",
+      "netType": "wire",
+      "signal": 100,
+      "ssid": "FictionalSSID"
+    },
+    "EZFAKE010": {
+      "address": "192.0.2.18",
+      "gateway": "192.0.2.2",
+      "mask": "192.0.2.33",
+      "netName": "Fictional 11 Device",
+      "netType": "wireless",
+      "signal": 80,
+      "ssid": "FictionalSSID"
+    },
+    "EZFAKE021": {
+      "address": "192.0.2.20",
+      "gateway": "192.0.2.2",
+      "mask": "192.0.2.33",
+      "netName": "Fictional 11 Device",
+      "netType": "wireless",
+      "signal": 100,
+      "ssid": "FictionalSSID"
+    }
+  },
+  "CONNECTION": {
+    "EZFAKE001": {
+      "localCmdPort": 9010,
+      "localHttpPort": 0,
+      "localIp": "192.0.2.22",
+      "localRtspPort": 0,
+      "localStreamPort": 9020,
+      "netCmdPort": 0,
+      "netHttpPort": 0,
+      "netIp": "192.0.2.4",
+      "netRtspPort": 0,
+      "netStreamPort": 0,
+      "netType": 3,
+      "upnp": false,
+      "wanIp": "192.0.2.4"
+    },
+    "EZFAKE004": {
+      "localCmdPort": 9010,
+      "localHttpPort": 0,
+      "localIp": "192.0.2.23",
+      "localRtspPort": 0,
+      "localStreamPort": 9020,
+      "netCmdPort": 0,
+      "netHttpPort": 0,
+      "netIp": "192.0.2.4",
+      "netRtspPort": 0,
+      "netStreamPort": 0,
+      "netType": 3,
+      "upnp": false,
+      "wanIp": "192.0.2.4"
+    },
+    "EZFAKE006": {
+      "localCmdPort": 9010,
+      "localHttpPort": 0,
+      "localIp": "",
+      "localRtspPort": 0,
+      "localStreamPort": 9020,
+      "netCmdPort": 0,
+      "netHttpPort": 0,
+      "netIp": "192.0.2.16",
+      "netRtspPort": 0,
+      "netStreamPort": 0,
+      "netType": 3,
+      "upnp": false,
+      "wanIp": "192.0.2.16"
+    },
+    "EZFAKE014": {
+      "localCmdPort": 9010,
+      "localHttpPort": 0,
+      "localIp": "192.0.2.17",
+      "localRtspPort": 0,
+      "localStreamPort": 9020,
+      "netCmdPort": 0,
+      "netHttpPort": 0,
+      "netIp": "192.0.2.4",
+      "netRtspPort": 0,
+      "netStreamPort": 0,
+      "netType": 3,
+      "upnp": false,
+      "wanIp": "192.0.2.4"
+    },
+    "EZFAKE010": {
+      "localCmdPort": 9010,
+      "localHttpPort": 0,
+      "localIp": "192.0.2.18",
+      "localRtspPort": 0,
+      "localStreamPort": 9020,
+      "netCmdPort": 0,
+      "netHttpPort": 0,
+      "netIp": "192.0.2.19",
+      "netRtspPort": 0,
+      "netStreamPort": 0,
+      "netType": 7,
+      "upnp": false,
+      "wanIp": "192.0.2.19"
+    },
+    "EZFAKE021": {
+      "localCmdPort": 9010,
+      "localHttpPort": 0,
+      "localIp": "192.0.2.20",
+      "localRtspPort": 0,
+      "localStreamPort": 9020,
+      "netCmdPort": 0,
+      "netHttpPort": 0,
+      "netIp": "192.0.2.4",
+      "netRtspPort": 0,
+      "netStreamPort": 0,
+      "netType": 7,
+      "upnp": false,
+      "wanIp": "192.0.2.4"
+    }
+  },
+  "deviceInfos": [
+    {
+      "authCode": "2-2-V2.12.0",
+      "channelNumber": 1,
+      "classify": 1,
+      "customType": "CS-LC1C-A0-1F2WPFRL",
+      "deviceCategory": "IPC",
+      "devicePicPrefix": "https://example.ezviz.test/path",
+      "deviceSerial": "EZFAKE001",
+      "deviceSubCategory": "LC1C",
+      "deviceType": "CS-LC1C-A0-1F2WPFRL",
+      "extStatus": 1,
+      "ezDeviceCapability": "{\"262\": \"1\", \"175\": \"1\", \"263\": \"0\", \"264\": \"1\", \"232\": \"0\", \"265\": \"1\", \"551\": \"1\", \"233\": \"0\", \"266\": \"0\", \"234\": 1, \"267\": \"1\", \"289\": \"1\", \"30\": \"0\", \"31\": \"0\"}",
+      "fullSerial": "CS-LC1C-A0-1F2WPFRL0120210607CCRREZFAKE001",
+      "hik": false,
+      "instructionBook": "https://example.ezviz.test/path",
+      "mac": "02005e100001",
+      "name": "Garden floodlight",
+      "offlineNotify": 0,
+      "offlineTime": "2024-01-01 00:00:00",
+      "offlineTimestamp": 1777582299091,
+      "riskLevel": 0,
+      "status": 1,
+      "supportExt": "{\"44\": \"0\", \"88\": \"1\", \"46\": \"1\", \"26\": \"0\", \"48\": \"1\", \"28\": \"1\", \"152\": \"1\", \"297\": \"1\", \"232\": \"1\", \"298\": \"1\", \"233\": \"1\", \"113\": \"1\", \"234\": 1, \"333\": \"1\", \"236\": \"1\", \"237\": \"1\", \"93\": \"0\", \"51\": \"0\", \"30\": \"0\", \"96\": \"2\", \"519\": \"1,2,3\", \"31\": \"0\", \"10\": \"1\", \"11\": \"1\", \"12\": \"1\", \"13\": \"3\", \"14\": \"1\", \"15\": \"1\", \"37\": \"1\", \"16\": \"16-9\", \"141\": \"0\", \"384\": \"1\", \"1\": \"1\", \"2\": \"1\", \"3\": \"1\", \"4\": \"1\", \"301\": \"1\", \"367\": \"1\", \"5\": \"0\", \"6\": \"0\", \"7\": \"1\", \"106\": \"2\", \"8\": \"1\", \"9\": \"1\", \"769\": \"1,2,5\", \"61\": \"1\", \"62\": \"1\", \"63\": \"1\"}",
+      "tags": null,
+      "userDeviceCreateTime": "2024-01-01 00:00:00",
+      "version": "V5.3.4 build 240524"
+    },
+    {
+      "authCode": "2-2-V2.12.0",
+      "channelNumber": 1,
+      "classify": 1,
+      "customType": "CS-CV246-A0-1C2WFR",
+      "deviceCategory": "IPC",
+      "devicePicPrefix": "https://example.ezviz.test/path",
+      "deviceSerial": "EZFAKE004",
+      "deviceSubCategory": "C6CN",
+      "deviceType": "CS-CV246-A0-1C2WFR",
+      "extStatus": 1,
+      "ezDeviceCapability": "{\"262\": \"1\", \"175\": \"1\", \"263\": \"0\", \"264\": \"1\", \"232\": \"0\", \"265\": \"1\", \"551\": \"1\", \"233\": \"0\", \"266\": \"0\", \"234\": 1, \"267\": \"1\", \"289\": \"1\", \"30\": \"0\", \"31\": \"0\"}",
+      "fullSerial": "CS-CV246-A0-1C2WFR0120200819CCRREZFAKE004",
+      "hik": false,
+      "instructionBook": "https://example.ezviz.test/path",
+      "mac": "02005e100004",
+      "name": "Living room",
+      "offlineNotify": 0,
+      "offlineTime": "2024-01-01 00:00:00",
+      "offlineTimestamp": 1777582302852,
+      "riskLevel": 0,
+      "status": 1,
+      "supportExt": "{\"88\": \"1\", \"46\": \"1\", \"26\": \"0\", \"48\": \"1\", \"28\": \"1\", \"152\": \"1\", \"154\": \"1\", \"232\": \"1\", \"452\": \"1\", \"233\": \"1\", \"234\": 1, \"236\": \"1\", \"632\": \"1\", \"237\": \"1\", \"93\": \"0\", \"72\": \"1\", \"73\": \"1\", \"30\": \"1\", \"519\": \"1,2\", \"31\": \"1\", \"97\": \"1\", \"10\": \"1\", \"11\": \"1\", \"12\": \"1\", \"13\": \"3\", \"14\": \"1\", \"15\": \"1\", \"37\": \"1\", \"59\": \"1\", \"16\": \"16-9\", \"142\": \"1\", \"582\": \"1\", \"1\": \"1\", \"2\": \"1\", \"3\": \"1\", \"4\": \"1\", \"5\": \"1\", \"6\": \"0\", \"149\": \"1\", \"7\": \"1\", \"106\": \"2\", \"8\": \"1\", \"9\": \"1\", \"81\": \"1\", \"61\": \"1\", \"40\": \"1\", \"63\": \"1\"}",
+      "tags": null,
+      "userDeviceCreateTime": "2024-01-01 00:00:00",
+      "version": "V5.3.2 build 230722"
+    },
+    {
+      "authCode": "2-2-V2.1.6",
+      "channelNumber": 1,
+      "classify": 1,
+      "customType": "CS-EB3-R200-1K3WFL",
+      "deviceCategory": "BatteryCamera",
+      "devicePicPrefix": "https://example.ezviz.test/path",
+      "deviceSerial": "EZFAKE006",
+      "deviceSubCategory": "EB3",
+      "deviceType": "CS-EB3-R200-1K3WFL",
+      "extStatus": 2,
+      "ezDeviceCapability": "{\"262\": \"1\", \"175\": \"1\", \"263\": \"0\", \"264\": \"1\", \"232\": \"0\", \"265\": \"1\", \"233\": \"0\", \"266\": \"0\", \"234\": 1, \"267\": \"1\", \"289\": \"1\", \"30\": \"0\", \"31\": \"0\"}",
+      "fullSerial": "CS-EB3-R200-1K3WFL01        CCRREZFAKE006",
+      "hik": false,
+      "instructionBook": "https://example.ezviz.test/path",
+      "mac": "02005e100006",
+      "name": "Back door",
+      "offlineNotify": 0,
+      "offlineTime": "2024-01-01 00:00:00",
+      "offlineTimestamp": 1777822671993,
+      "riskLevel": 0,
+      "status": 2,
+      "supportExt": "{\"46\": \"1\", \"48\": \"1\", \"150\": \"1\", \"152\": \"1\", \"153\": \"1\", \"274\": \"7\", \"154\": \"0\", \"232\": \"1\", \"793\": \"1,2,4\", \"233\": \"1\", \"354\": \"1\", \"234\": 1, \"236\": \"1\", \"434\": \"1\", \"632\": \"1\", \"237\": \"1\", \"435\": \"1\", \"92\": \"1\", \"119\": \"1\", \"713\": \"1\", \"758\": \"20\", \"96\": \"2\", \"519\": \"3\", \"10\": \"1\", \"11\": \"1\", \"12\": \"1\", \"13\": \"3\", \"15\": \"1\", \"16\": \"16-9\", \"483\": \"1\", \"682\": \"1\", \"1\": \"1\", \"2\": \"1\", \"322\": \"1\", \"4\": \"1\", \"202\": \"2\", \"444\": \"3,6\", \"203\": \"1\", \"522\": \"1\", \"687\": \"1,3,10,9,8\", \"7\": \"3\", \"8\": \"0\", \"206\": \"1\", \"9\": \"1\", \"61\": \"3\", \"63\": \"1\", \"809\": \"1\", \"68\": \"1\", \"26\": \"0\", \"28\": \"1\", \"171\": \"16\", \"375\": \"1\", \"256\": \"2\", \"333\": \"1\", \"454\": \"1\", \"575\": \"4\", \"455\": \"1\", \"499\": \"1\", \"379\": \"1\", \"534\": \"3,6\", \"535\": \"1\", \"459\": \"2\", \"30\": \"0\", \"31\": \"0\", \"260\": \"1\", \"140\": \"0\", \"141\": \"0\", \"142\": \"1\", \"582\": \"1\", \"143\": \"1\", \"222\": \"1\", \"103\": \"600\", \"742\": \"1\", \"149\": \"1\", \"303\": \"1\", \"106\": \"2\", \"80\": \"1\", \"503\": \"1\", \"504\": \"3,6\", \"903\": \"1\", \"508\": \"2\"}",
+      "tags": null,
+      "userDeviceCreateTime": "2024-01-01 00:00:00",
+      "version": "V5.4.0 build 250522"
+    },
+    {
+      "authCode": "2-2-V2.16.5",
+      "channelNumber": 2,
+      "classify": 1,
+      "customType": "CS-H9c-R100-8G55WKFL",
+      "deviceCategory": "IPC",
+      "devicePicPrefix": "https://example.ezviz.test/path",
+      "deviceSerial": "EZFAKE014",
+      "deviceSubCategory": "H9c",
+      "deviceType": "CS-H9c-R100-8G55WKFL",
+      "extStatus": 1,
+      "ezDeviceCapability": "{\"262\": \"1\", \"175\": \"1\", \"263\": \"0\", \"264\": \"1\", \"232\": \"0\", \"265\": \"1\", \"551\": \"1\", \"233\": \"0\", \"266\": \"0\", \"234\": 1, \"267\": \"1\", \"289\": \"1\", \"268\": \"0\", \"30\": \"0\", \"31\": \"0\"}",
+      "fullSerial": "CS-H9c-R100-8G55WKFL0120250709CCRREZFAKE014",
+      "hik": false,
+      "instructionBook": "https://example.ezviz.test/path",
+      "mac": "02005e100014",
+      "name": "Driveway",
+      "offlineNotify": 0,
+      "offlineTime": "2024-01-01 00:00:00",
+      "offlineTimestamp": 1777582301291,
+      "riskLevel": 0,
+      "status": 1,
+      "supportExt": "{\"88\": \"1\", \"197\": \"1\", \"593\": \"1\", \"198\": \"1\", \"232\": \"1\", \"353\": \"1\", \"233\": \"1\", \"234\": 2, \"236\": \"1\", \"632\": \"1\", \"237\": \"1\", \"92\": \"1\", \"93\": \"0\", \"96\": \"2\", \"519\": \"3\", \"97\": \"1\", \"10\": \"1\", \"11\": \"1\", \"12\": \"1\", \"13\": \"3\", \"14\": \"1\", \"15\": \"1\", \"16\": \"16-9\", \"480\": \"2\", \"360\": \"1\", \"483\": \"1\", \"1\": \"1\", \"2\": \"3\", \"3\": \"1\", \"4\": \"1\", \"367\": \"1\", \"5\": \"1\", \"522\": \"1\", \"6\": \"0\", \"402\": \"1\", \"7\": \"3\", \"403\": \"1\", \"8\": \"1\", \"404\": \"1\", \"9\": \"1\", \"527\": \"1\", \"769\": \"1,2,3,4,5\", \"26\": \"0\", \"28\": \"1\", \"492\": \"1\", \"496\": \"1\", \"497\": \"1\", \"256\": \"2\", \"257\": \"1\", \"499\": \"1\", \"535\": \"1\", \"30\": \"1\", \"31\": \"1\", \"34\": \"1\", \"37\": \"1\", \"260\": \"1\", \"140\": \"0\", \"141\": \"1\", \"142\": \"1\", \"143\": \"1\", \"420\": \"1\", \"421\": \"1\", \"149\": \"1\", \"303\": \"1\", \"46\": \"1\", \"49\": \"1\", \"152\": \"1\", \"273\": \"2\", \"153\": \"1\", \"274\": \"1\", \"670\": \"1\", \"154\": \"1\", \"159\": \"1\", \"434\": \"1\", \"831\": \"1\", \"715\": \"1\", \"51\": \"1\", \"719\": \"1-2\", \"286\": \"2\", \"287\": \"1\", \"169\": \"1\", \"323\": \"2\", \"203\": \"1\", \"720\": \"2\", \"688\": \"1,2,4\", \"723\": \"2\", \"724\": \"1\", \"208\": \"1\", \"61\": \"1\", \"605\": \"1\", \"62\": \"1\", \"63\": \"1\", \"728\": \"1\", \"729\": \"1\", \"68\": \"1\", \"69\": \"1\", \"170\": \"1\", \"571\": \"1\", \"452\": \"1\", \"333\": \"1\", \"455\": \"1\", \"610\": \"8\", \"338\": \"1\", \"459\": \"3\", \"339\": \"1\", \"736\": \"1\", \"72\": \"1\", \"738\": \"1\", \"77\": \"1\", \"182\": \"1\", \"582\": \"1\", \"222\": \"1\", \"585\": \"1\", \"466\": \"0\", \"225\": \"1\", \"106\": \"2\", \"81\": \"1\", \"505\": \"1\", \"903\": \"1\", \"508\": \"2\"}",
+      "tags": null,
+      "userDeviceCreateTime": "2024-01-01 00:00:00",
+      "version": "V5.3.8 build 250715"
+    },
+    {
+      "authCode": "2-2-V2.1.3",
+      "channelNumber": 1,
+      "classify": 1,
+      "customType": "CS-CV310-A0-1B2WFR",
+      "deviceCategory": "IPC",
+      "devicePicPrefix": "https://example.ezviz.test/path",
+      "deviceSerial": "EZFAKE010",
+      "deviceSubCategory": "Husky Air",
+      "deviceType": "CS-CV310-A0-1B2WFR",
+      "extStatus": 2,
+      "ezDeviceCapability": "{\"262\": \"1\", \"175\": \"1\", \"263\": \"0\", \"264\": \"1\", \"232\": \"0\", \"265\": \"0\", \"233\": \"0\", \"266\": \"0\", \"234\": 1, \"267\": \"1\", \"268\": \"1\", \"30\": \"0\", \"31\": \"0\"}",
+      "fullSerial": "CS-CV310-A0-1B2WFR0120200927CCRREZFAKE010",
+      "hik": false,
+      "instructionBook": "https://example.ezviz.test/path",
+      "mac": "02005e100010",
+      "name": "Garage",
+      "offlineNotify": 0,
+      "offlineTime": "2024-01-01 00:00:00",
+      "offlineTimestamp": 1759680934507,
+      "riskLevel": 0,
+      "status": 2,
+      "supportExt": "{\"44\": \"0\", \"88\": \"1\", \"46\": \"1\", \"26\": \"0\", \"48\": \"1\", \"28\": \"1\", \"154\": \"0\", \"232\": \"1\", \"452\": \"1\", \"233\": \"1\", \"234\": 1, \"236\": \"1\", \"237\": \"1\", \"93\": \"0\", \"51\": \"0\", \"30\": \"0\", \"96\": \"2\", \"31\": \"0\", \"97\": \"1\", \"10\": \"1\", \"11\": \"1\", \"12\": \"1\", \"13\": \"3\", \"14\": \"1\", \"15\": \"1\", \"37\": \"1\", \"59\": \"1\", \"16\": \"16-9\", \"1\": \"1\", \"2\": \"3\", \"3\": \"1\", \"4\": \"1\", \"5\": \"0\", \"6\": \"0\", \"149\": \"1\", \"7\": \"1\", \"106\": \"2\", \"8\": \"1\", \"9\": \"1\", \"61\": \"1\", \"62\": \"1\", \"63\": \"1\"}",
+      "tags": null,
+      "userDeviceCreateTime": "2024-01-01 00:00:00",
+      "version": "V5.3.0 build 241111"
+    },
+    {
+      "authCode": "2-2-V2.12.0",
+      "channelNumber": 1,
+      "classify": 1,
+      "customType": "CS-DB1C-A0-1E2W2FR",
+      "deviceCategory": "BDoorBell",
+      "devicePicPrefix": "https://example.ezviz.test/path",
+      "deviceSerial": "EZFAKE021",
+      "deviceSubCategory": "DB1C",
+      "deviceType": "CS-DB1C-A0-1E2W2FR",
+      "extStatus": 1,
+      "ezDeviceCapability": "{\"262\": \"1\", \"175\": \"1\", \"263\": \"0\", \"264\": \"1\", \"232\": \"0\", \"265\": \"1\", \"551\": \"1\", \"233\": \"0\", \"266\": \"0\", \"234\": 1, \"267\": \"1\", \"289\": \"1\", \"30\": \"0\", \"31\": \"0\"}",
+      "fullSerial": "CS-DB1C-A0-1E2W2FR0120230101CCRREZFAKE021",
+      "hik": false,
+      "instructionBook": "https://example.ezviz.test/path",
+      "mac": "02005e100021",
+      "name": "Front door",
+      "offlineNotify": 0,
+      "offlineTime": "2024-01-01 00:00:00",
+      "offlineTimestamp": 1777582298907,
+      "riskLevel": 0,
+      "status": 1,
+      "supportExt": "{\"44\": \"0\", \"88\": \"1\", \"46\": \"1\", \"48\": \"1\", \"152\": \"1\", \"154\": \"0\", \"232\": \"1\", \"233\": \"1\", \"234\": 1, \"236\": \"1\", \"632\": \"1\", \"237\": \"1\", \"93\": \"0\", \"51\": \"1\", \"97\": \"1\", \"10\": \"1\", \"11\": \"1\", \"12\": \"1\", \"13\": \"3\", \"14\": \"1\", \"15\": \"1\", \"59\": \"1\", \"16\": \"16-9\", \"1\": \"1\", \"2\": \"1\", \"3\": \"1\", \"4\": \"1\", \"367\": \"1\", \"5\": \"0\", \"6\": \"0\", \"7\": \"1\", \"8\": \"1\", \"9\": \"1\", \"61\": \"1\", \"62\": \"1\", \"63\": \"1\", \"69\": \"1\", \"26\": \"0\", \"28\": \"1\", \"452\": \"1\", \"333\": \"1\", \"30\": \"0\", \"31\": \"0\", \"37\": \"1\", \"140\": \"0\", \"141\": \"0\", \"142\": \"1\", \"143\": \"1\", \"149\": \"1\", \"303\": \"1\", \"106\": \"2\"}",
+      "tags": null,
+      "userDeviceCreateTime": "2024-01-01 00:00:00",
+      "version": "V5.3.2 build 230616"
+    }
+  ],
+  "resourceInfos": [
+    {
+      "child": false,
+      "conceal": 0,
+      "customSetTag": 0,
+      "deviceSerial": "EZFAKE001",
+      "globalState": 2,
+      "groupId": -1,
+      "isShow": 1,
+      "localIndex": "1",
+      "permission": 2621567,
+      "resourceCategory": "Video",
+      "resourceCover": "https://example.ezviz.test/path",
+      "resourceId": "00000000000000000000000000000001",
+      "resourceIdentifier": "Video",
+      "resourceName": "Garden floodlight",
+      "resourceType": 50,
+      "shareType": 2,
+      "streamBizUrl": "https://example.ezviz.test/path",
+      "superDeviceSerial": "EZFAKE001",
+      "videoLevel": 2
+    },
+    {
+      "child": false,
+      "conceal": 0,
+      "customSetTag": 0,
+      "deviceSerial": "EZFAKE004",
+      "globalState": 2,
+      "groupId": -1,
+      "isShow": 1,
+      "localIndex": "1",
+      "permission": 11534719,
+      "resourceCover": "https://example.ezviz.test/path",
+      "resourceId": "00000000000000000000000000000004",
+      "resourceName": "Living room",
+      "resourceType": 50,
+      "shareType": 2,
+      "streamBizUrl": "https://example.ezviz.test/path",
+      "superDeviceSerial": "EZFAKE004",
+      "videoLevel": 3
+    },
+    {
+      "child": false,
+      "conceal": 0,
+      "customSetTag": 0,
+      "deviceSerial": "EZFAKE006",
+      "globalState": 2,
+      "groupId": -1,
+      "isShow": 1,
+      "localIndex": "1",
+      "permission": 10485887,
+      "resourceCategory": "Video",
+      "resourceCover": "",
+      "resourceId": "00000000000000000000000000000006",
+      "resourceIdentifier": "Video",
+      "resourceName": "Back door",
+      "resourceType": 50,
+      "shareType": 2,
+      "streamBizUrl": "https://example.ezviz.test/path",
+      "superDeviceSerial": "EZFAKE006",
+      "videoLevel": 2
+    },
+    {
+      "child": false,
+      "conceal": 1,
+      "customSetTag": 0,
+      "deviceSerial": "EZFAKE014",
+      "globalState": 1,
+      "groupId": -1,
+      "isShow": 1,
+      "localIndex": "0",
+      "permission": 11010431,
+      "resourceCategory": "global",
+      "resourceCover": "",
+      "resourceId": "0000000000000000000000000000002a",
+      "resourceIdentifier": "global",
+      "resourceName": "Driveway",
+      "resourceType": 0,
+      "shareType": 2,
+      "streamBizUrl": "https://example.ezviz.test/path",
+      "superDeviceSerial": "EZFAKE014",
+      "videoLevel": 4
+    },
+    {
+      "child": false,
+      "conceal": 0,
+      "customSetTag": 0,
+      "deviceSerial": "EZFAKE014",
+      "globalState": 2,
+      "groupId": -1,
+      "isShow": 1,
+      "localIndex": "1",
+      "permission": 11010431,
+      "resourceCategory": "Video",
+      "resourceCover": "",
+      "resourceId": "00000000000000000000000000000012",
+      "resourceIdentifier": "Video",
+      "resourceName": "Driveway",
+      "resourceType": 50,
+      "shareType": 2,
+      "streamBizUrl": "https://example.ezviz.test/path",
+      "superDeviceSerial": "EZFAKE014",
+      "videoLevel": 4
+    },
+    {
+      "child": false,
+      "conceal": 0,
+      "customSetTag": 0,
+      "deviceSerial": "EZFAKE014",
+      "globalState": 2,
+      "groupId": -1,
+      "isShow": 1,
+      "localIndex": "2",
+      "permission": 11010431,
+      "resourceCategory": "Video",
+      "resourceCover": "",
+      "resourceId": "0000000000000000000000000000000e",
+      "resourceIdentifier": "Video_1",
+      "resourceName": "Driveway",
+      "resourceType": 50,
+      "shareType": 2,
+      "streamBizUrl": "https://example.ezviz.test/path",
+      "superDeviceSerial": "EZFAKE014",
+      "videoLevel": 4
+    },
+    {
+      "child": false,
+      "conceal": 0,
+      "customSetTag": 0,
+      "deviceSerial": "EZFAKE010",
+      "globalState": 1,
+      "groupId": -1,
+      "isShow": 1,
+      "localIndex": "0",
+      "permission": -1,
+      "resourceCover": "",
+      "resourceId": "0000000000000000000000000000002b",
+      "resourceName": "Garage",
+      "resourceType": 0,
+      "shareType": 0,
+      "streamBizUrl": "https://example.ezviz.test/path",
+      "superDeviceSerial": "EZFAKE010",
+      "videoLevel": 0
+    },
+    {
+      "child": false,
+      "conceal": 0,
+      "customSetTag": 0,
+      "deviceSerial": "EZFAKE010",
+      "globalState": 2,
+      "groupId": -1,
+      "isShow": 1,
+      "localIndex": "1",
+      "permission": -1,
+      "resourceCover": "https://example.ezviz.test/path",
+      "resourceId": "0000000000000000000000000000000a",
+      "resourceName": "Garage",
+      "resourceType": 50,
+      "shareType": 0,
+      "streamBizUrl": "https://example.ezviz.test/path",
+      "superDeviceSerial": "EZFAKE010",
+      "videoLevel": 3
+    }
+  ]
+}

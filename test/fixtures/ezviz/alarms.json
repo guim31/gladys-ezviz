@@ -1,0 +1,35 @@
+{
+  "meta": { "code": 200, "message": "操作成功", "moreInfo": {} },
+  "hasNext": false,
+  "message": [
+    {
+      "msgId": "2026101412580001EZFAKE004",
+      "deviceSerial": "EZFAKE004",
+      "channel": 1,
+      "time": "1791975480000",
+      "timeStr": "2026-10-14 12:58:00",
+      "title": "Motion Detection Alarm",
+      "subType": "9904",
+      "pic": "https://pictures.ezviz.test/alarms/EZFAKE004-1.jpg",
+      "ext": {
+        "alarmType": "10002",
+        "pics": "https://pictures.ezviz.test/alarms/EZFAKE004-1.jpg",
+        "picCrypt": "1"
+      }
+    },
+    {
+      "msgId": "2026101412550001EZFAKE021",
+      "deviceSerial": "EZFAKE021",
+      "channel": 1,
+      "time": "1791975300000",
+      "timeStr": "2026-10-14 12:55:00",
+      "title": "Someone is calling",
+      "subType": "2701",
+      "pic": "https://pictures.ezviz.test/alarms/EZFAKE021-1.jpg",
+      "ext": {
+        "alarmType": "10016",
+        "pics": "https://pictures.ezviz.test/alarms/EZFAKE021-1.jpg"
+      }
+    }
+  ]
+}
