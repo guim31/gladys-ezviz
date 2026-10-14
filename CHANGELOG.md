@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-14
+
 ### Fixed
 
 - Two verification codes typed without their serial numbers ("CODE1,CODE2"):
@@ -60,5 +62,6 @@ the notes of the version's GitHub Release.
 - Documentation in English, French, German and Spanish.
   [Unreleased]: https://github.com/guim31/gladys-ezviz/commits/main
 
-[Unreleased]: https://github.com/guim31/gladys-ezviz/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/guim31/gladys-ezviz/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/guim31/gladys-ezviz/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/guim31/gladys-ezviz/releases/tag/v1.0.1
