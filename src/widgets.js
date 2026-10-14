@@ -9,6 +9,10 @@
 //     of every camera;
 //   - a status: one row per camera (its last event, or online / offline),
 //     then the arming mode;
+//   - when it shows one camera that can rest (sleep mode, else privacy mode):
+//     a button to put it to sleep or wake it — "I am home, stop filming". One
+//     button per camera would not fit with several cameras: the scene action
+//     set_camera_sleep covers them;
 //   - three buttons to set the arming mode (at home, away, sleep), the
 //     current one marked by its icon (the `primary` style does not show in
 //     dark mode, GladysAssistant/Gladys#3153). "At home" disarms: it asks
@@ -20,7 +24,7 @@
 // a setting key is permanent, and a saved box keeps its string value.
 //
 // Budget (8 components, ≤ 2 texts, one focal component, one status, ≤ 4
-// buttons): one caption, one image, one status, three buttons. Images: keys
+// buttons): one caption, one image, one status, four buttons. Images: keys
 // `alarm-<hash of the alarm id>`, immutable, served by onWidgetGetImage from
 // the pictures kept by the hub. Button action keys are distinct (the core
 // drops a button whose action key is already used).
@@ -28,7 +32,7 @@
 
 import { WIDGET_COLORS } from '@gladysassistant/integration-sdk';
 import { WIDGET_KEY } from './hub.js';
-import { ALARM_KINDS, ARM_MODES } from './ezviz/model.js';
+import { ALARM_KINDS, ARM_MODES, restSwitch } from './ezviz/model.js';
 import { ALARM_NAMES, ARM_MODE_NAMES, ERROR_TEXT, formatTime, pick } from './texts.js';
 
 export const TEXT = {
@@ -65,6 +69,10 @@ export const TEXT = {
   unknownMode: { en: 'Unknown', fr: 'Inconnu', de: 'Unbekannt', es: 'Desconocido' },
   isOnline: { en: 'Online', fr: 'En ligne', de: 'Online', es: 'En línea' },
   isOffline: { en: 'Offline', fr: 'Hors ligne', de: 'Offline', es: 'Sin conexión' },
+  asleep: { en: 'Asleep', fr: 'En veille', de: 'Im Ruhemodus', es: 'En reposo' },
+  sleepNow: { en: 'Sleep', fr: 'Mettre en veille', de: 'Ruhemodus', es: 'Poner en reposo' },
+  wakeUp: { en: 'Wake up', fr: 'Réveiller', de: 'Aufwecken', es: 'Despertar' },
+  wokenUp: { en: 'awake', fr: 'réveillée', de: 'aufgeweckt', es: 'despierta' },
   armed: {
     en: 'EZVIZ account mode (all cameras):',
     fr: 'Mode du compte EZVIZ (toutes les caméras) :',
@@ -109,10 +117,25 @@ function newestAlarm(view, cameras) {
   return newest;
 }
 
-/** One status row per camera: its last event, else whether it is online. */
+/** Whether a camera is asleep (its sleep mode, else its privacy mode, on). */
+function isAsleep(camera) {
+  const rest = restSwitch(camera);
+  return Boolean(rest) && camera[rest.field] === true;
+}
+
+/** One status row per camera: asleep, else its last event, else whether it is online. */
 function cameraRow(view, camera, language) {
   const alarm = view.lastAlarms.get(camera.serial);
   const kinds = ALARM_NAMES[language] ?? ALARM_NAMES.en;
+  // A sleeping camera may read offline in the device list: asleep wins.
+  if (isAsleep(camera)) {
+    return {
+      label: fit(view.nameOf(camera, language), 40),
+      icon: 'eye-off',
+      value: t(TEXT.asleep, language),
+      color: WIDGET_COLORS.NEUTRAL,
+    };
+  }
   if (alarm) {
     return {
       label: fit(view.nameOf(camera, language), 40),
@@ -189,6 +212,24 @@ async function get(hub, { settings, language = 'en' }) {
   });
   components.push({ type: 'status', items });
 
+  // One camera shown that can rest: a button to put it to sleep or wake it.
+  const [only] = shown;
+  const asleep = shown.length === 1 && isAsleep(only);
+  if (
+    shown.length === 1 &&
+    (only.online || asleep) &&
+    restSwitch(only) &&
+    view.reachable !== false
+  ) {
+    components.push({
+      type: 'button',
+      label: t(asleep ? TEXT.wakeUp : TEXT.sleepNow, language),
+      icon: asleep ? 'eye' : 'eye-off',
+      style: 'secondary',
+      action: { key: 'camera_sleep', params: { camera: view.cameraId(only), sleep: !asleep } },
+    });
+  }
+
   if (view.allowArming && view.reachable !== false) {
     for (const mode of Object.keys(ARM_MODES)) {
       const current = view.armMode === mode;
@@ -210,8 +251,19 @@ async function get(hub, { settings, language = 'en' }) {
   return { ttl_seconds: 120, components };
 }
 
-/** A tap on an arming button. */
+/** A tap on a button: the sleep of a camera, or the arming mode. */
 async function action(hub, { params }) {
+  if (typeof params?.camera === 'string') {
+    const asleep = params.sleep === true;
+    const camera = await hub.setCameraSleep(params.camera, asleep, 'Widget');
+    const view = hub.view();
+    const toast = {};
+    for (const language of ['en', 'fr', 'de', 'es']) {
+      const state = t(asleep ? TEXT.asleep : TEXT.wokenUp, language);
+      toast[language] = `${view.nameOf(camera, language)}: ${state.toLowerCase()}`;
+    }
+    return toast;
+  }
   const mode = String(params?.mode ?? '');
   await hub.setArmMode(mode, 'Widget');
   const toast = {};

@@ -296,3 +296,9 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
   (`dynamicOptions.js`) proposent **tous** les appareils créés de l’intégration, libellés avec leur nom
   Gladys, sans filtre (catégorie, modèle…). Le « Compte EZVIZ » apparaît donc dans les listes de caméras :
   le widget l’ignore, et les noms affichés sont ceux de Gladys (`hub.nameOf`, `gladys.devices`).
+- **Interrupteurs et capacités** : la liste `SWITCH` d’une caméra contient presque tous les types
+  (7, 21…) même quand la caméra ne les a pas. Comme Home Assistant, n’exposer un interrupteur que si
+  sa capacité est annoncée : confidentialité 7 avec `SupportPtzPrivacy` (40), veille 21 avec
+  `SupportSleep` (62). La C6CN réelle de la fixture annonce 40 et pas 62 : sa « veille » est la
+  confidentialité. Le bouton du widget et l’action `set_camera_sleep` prennent la veille, sinon la
+  confidentialité (`restSwitch`).

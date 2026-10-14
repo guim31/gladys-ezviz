@@ -89,6 +89,7 @@ async function account() {
           camera.online ? 'online' : 'offline/asleep',
           camera.ptz && 'ptz',
           camera.privacyCapable && 'privacy',
+          camera.sleepCapable && 'sleep',
           camera.lightCapable && 'light',
           camera.sirenCapable && 'siren',
           camera.doorbell && 'doorbell',

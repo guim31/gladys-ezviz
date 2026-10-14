@@ -770,6 +770,68 @@
           ]
         }
       ]
+    },
+    {
+      "key": "set_camera_sleep",
+      "label": {
+        "en": "Put an EZVIZ camera to sleep or wake it",
+        "fr": "Mettre une caméra EZVIZ en veille ou la réveiller",
+        "de": "EZVIZ-Kamera in den Ruhemodus versetzen oder aufwecken",
+        "es": "Poner una cámara EZVIZ en reposo o despertarla"
+      },
+      "description": {
+        "en": "Its sleep mode, or its privacy mode (lens hidden) on the models that have one: no video and no detection while asleep.",
+        "fr": "Son mode veille, ou son mode confidentialité (objectif masqué) sur les modèles qui en ont un : ni vidéo ni détection en veille.",
+        "de": "Der Ruhemodus der Kamera oder, bei Modellen mit Objektivabdeckung, der Privatsphäre-Modus: dann weder Video noch Erkennung.",
+        "es": "Su modo reposo, o su modo privacidad (objetivo oculto) en los modelos que lo tienen: sin vídeo ni detección en reposo."
+      },
+      "timeout_seconds": 20,
+      "fields": [
+        {
+          "key": "camera",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Camera",
+            "fr": "Caméra",
+            "de": "Kamera",
+            "es": "Cámara"
+          },
+          "required": true
+        },
+        {
+          "key": "state",
+          "type": "select",
+          "label": {
+            "en": "State",
+            "fr": "État",
+            "de": "Zustand",
+            "es": "Estado"
+          },
+          "required": true,
+          "default": "sleep",
+          "options": [
+            {
+              "value": "sleep",
+              "label": {
+                "en": "Asleep",
+                "fr": "En veille",
+                "de": "Im Ruhemodus",
+                "es": "En reposo"
+              }
+            },
+            {
+              "value": "wake",
+              "label": {
+                "en": "Awake",
+                "fr": "Réveillée",
+                "de": "Aufgeweckt",
+                "es": "Despierta"
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
   "widgets": [

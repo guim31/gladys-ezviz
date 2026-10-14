@@ -2,13 +2,12 @@
 
 Bringt die **EZVIZ-Kameras und -Türklingeln** deines EZVIZ-Kontos in Gladys,
 über die **EZVIZ-Cloud** (die, die auch die EZVIZ-App nutzt): das Bild jedes
-Alarms, Bewegungs- und Personenerkennungen, das Klingeln, den
-Scharfschaltmodus des Kontos (zuhause, abwesend, schlafen), den
-Privatsphäre-Modus, die Bewegungserkennung ein/aus, das Flutlicht, die Sirene,
-das Schwenken und Neigen motorisierter Kameras, Batterie, WLAN-Signal und
-SD-Karte. Keine Einstellung an den Kameras, kein offener Port: Viele
-EZVIZ-Kameras bieten ohne Bastelei weder ONVIF noch RTSP, die Cloud deckt sie
-alle ab.
+Alarms, Bewegungs- und Personenerkennungen, das Klingeln, den Scharfschaltmodus
+des Kontos (zuhause, abwesend, schlafen), den Privatsphäre-Modus, den Ruhemodus,
+die Bewegungserkennung ein/aus, das Flutlicht, die Sirene, das Schwenken und
+Neigen motorisierter Kameras, Batterie, WLAN-Signal und SD-Karte. Keine
+Einstellung an den Kameras, kein offener Port: Viele EZVIZ-Kameras bieten ohne
+Bastelei weder ONVIF noch RTSP, die Cloud deckt sie alle ab.
 
 > **Developed without the hardware: feedback welcome.** Diese Integration
 > wurde ohne EZVIZ-Kamera und ohne EZVIZ-Konto geschrieben, auf Grundlage der
@@ -124,6 +123,10 @@ Funktionen des Modells:
 - **Bewegungserkennung**: die Alarmbenachrichtigungen der Kamera an oder aus
   (die Glocke der EZVIZ-App).
 - **Privatsphäre-Modus**: die Objektivabdeckung der Modelle, die eine haben.
+- **Ruhemodus**: weder Video noch Erkennung, bei den Modellen, die ihn
+  melden (derselbe Schalter wie in der EZVIZ-App). Die motorisierten Modelle
+  (C6N, C6CN…) melden eventuell stattdessen den **Privatsphäre-Modus** oben:
+  das verdeckte Objektiv. Jede Kamera bekommt die Schalter, die sie meldet.
 - **Flutlicht**: das Licht der Flutlichtkameras.
 - **Sirene**: nur, wenn in der Konfiguration erlaubt; sie stoppt nach einer
   Minute von selbst.
@@ -160,6 +163,12 @@ EZVIZ-Namen, solange sie nicht hinzugefügt ist). Gladys bietet in der
 Kameraliste des Widgets alle Geräte der Integration an, auch „EZVIZ-Konto“:
 Das ist keine Kamera und wird ignoriert.
 
+Zeigt das Widget eine einzige Kamera, die ruhen kann, versetzt ein Knopf sie
+in den Ruhemodus oder weckt sie auf (ihr **Ruhemodus**, sonst ihr
+**Privatsphäre-Modus**), und ihre Zeile zeigt „Im Ruhemodus“. Bei mehreren
+Kameras ist kein Platz für je einen Knopf: Nutze die Szenenaktion
+**EZVIZ-Kamera in den Ruhemodus versetzen oder aufwecken**.
+
 ## Szenen
 
 ### Auslöser
@@ -185,6 +194,8 @@ die Art der Erkennung und das Bild des Alarms hinzu.
 - **EZVIZ-Kamera drehen**: ein Schritt nach links, rechts, oben oder unten.
 - **EZVIZ-Scharfschaltmodus ändern**: zuhause, abwesend oder schlafen (wenn
   in der Konfiguration erlaubt).
+- **EZVIZ-Kamera in den Ruhemodus versetzen oder aufwecken**: ihr
+  **Ruhemodus**, sonst ihr **Privatsphäre-Modus**, an oder aus.
 
 ### Szenenideen
 
@@ -196,9 +207,9 @@ die Art der Erkennung und das Bild des Alarms hinzu.
 - **Jemand nachts im Garten**: bei **Erkennung durch eine EZVIZ-Kamera**,
   gefiltert auf die Gartenkamera und „Person“, zwischen Sonnenuntergang und
   Sonnenaufgang, das Gartenlicht einschalten und das Bild senden.
-- **Privatsphäre zuhause**: Wenn jemand zuhause ist, den
-  **Privatsphäre-Modus** der Wohnzimmerkamera einschalten; aus, wenn das Haus
-  leer ist.
+- **Privatsphäre zuhause**: Wenn jemand heimkommt, **EZVIZ-Kamera in den
+  Ruhemodus versetzen oder aufwecken** für jede Innenkamera, Ruhemodus an;
+  aufwecken, wenn das Haus leer ist.
 
 ## Live-Video (RTSP)
 

@@ -72,7 +72,8 @@ test('several chosen cameras: their newest alarm, their rows only', async (t) =>
   assert.deepEqual(
     status.items.map((item) => [item.label, item.value.replace(/ · .*/, '')]),
     [
-      ['Living room', 'Motion'],
+      // Its privacy mode is on: asleep, whatever its last event.
+      ['Living room', 'Asleep'],
       ['Garage', 'Offline'],
       ['EZVIZ account mode', 'Away'],
     ],
@@ -176,4 +177,42 @@ test('the cameras are named as in Gladys once added, as in EZVIZ before', async 
     'Babyphone Victor',
   );
   assert.ok(w.fake.widgetRefreshes.length > refreshes);
+});
+
+test('one camera shown that can sleep: a button to put it to sleep or wake it', async (t) => {
+  const w = await world(t);
+  await createAll(w);
+  const floodlight = cameraIds(w.gladys, SERIALS.FLOODLIGHT).device;
+  const c = await content(w, { cameras: [floodlight] });
+  const buttons = ofType(c, 'button');
+  assert.equal(buttons.length, 4, 'the sleep button and the three arming buttons');
+  const [sleep] = buttons;
+  assert.deepEqual(sleep.action, {
+    key: 'camera_sleep',
+    params: { camera: floodlight, sleep: true },
+  });
+  assert.equal(sleep.label, 'Sleep');
+  assert.deepEqual(validateWidgetContent(c), []);
+
+  const ack = await w.fake.widgetAction(WIDGET_KEY, 'camera_sleep', sleep.action.params, {});
+  assert.equal(ack.success, true, ack.error);
+  assert.equal(ack.data.message.fr, 'Garden floodlight: en veille');
+  assert.equal(w.cloud.devices.SWITCH[SERIALS.FLOODLIGHT].find((s) => s.type === 21).enable, true);
+  const after = await content(w, { cameras: [floodlight] }, 'fr');
+  const [wake] = ofType(after, 'button');
+  assert.equal(wake.label, 'Réveiller');
+  assert.deepEqual(wake.action.params, { camera: floodlight, sleep: false });
+  assert.deepEqual(ofType(after, 'status')[0].items[0], {
+    label: 'Garden floodlight',
+    icon: 'eye-off',
+    value: 'En veille',
+    color: 'neutral',
+  });
+
+  // Several cameras: no room for one button each (the scene action covers them).
+  const several = await content(w, {});
+  assert.equal(ofType(several, 'button').length, 3);
+  // A camera with neither mode: no sleep button.
+  const battery = await content(w, { cameras: [cameraIds(w.gladys, SERIALS.BATTERY).device] });
+  assert.ok(ofType(battery, 'button').every((b) => b.action.key.startsWith('arm_')));
 });

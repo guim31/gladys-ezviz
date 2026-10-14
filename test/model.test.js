@@ -10,6 +10,7 @@ import {
   parseCamera,
   parseDeviceList,
   parseOffset,
+  restSwitch,
 } from '../src/ezviz/model.js';
 import { SERIALS } from './helpers/fakeCloud.js';
 
@@ -135,4 +136,40 @@ test('an alarm of the list, as a record', () => {
   const plain = parseAlarm({ msgId: 1, deviceSerial: 'X', pic: 'http://insecure/1.jpg' });
   assert.equal(plain.picture, null, 'https only');
   assert.equal(plain.kind, ALARM_KINDS.OTHER);
+});
+
+test('sleep mode: switch 21 and the SupportSleep capability, as Home Assistant reads them', () => {
+  // A C6N as pyEzvizApi reads it (no real C6N answer is published): SupportSleep
+  // (62) announced, switch 21 on.
+  const c6n = parseCamera(
+    {
+      deviceSerial: 'C6NFAKE',
+      deviceCategory: 'IPC',
+      deviceSubCategory: 'C6N',
+      status: 1,
+      supportExt: JSON.stringify({ 62: '1', 154: '1' }),
+    },
+    {
+      SWITCH: {
+        C6NFAKE: [
+          { type: 21, enable: 1 },
+          { type: 7, enable: 0 },
+        ],
+      },
+    },
+  );
+  assert.equal(c6n.sleepCapable, true);
+  assert.equal(c6n.sleep, true);
+  // Switch 7 is listed but SupportPtzPrivacy (40) is not: no privacy mode.
+  assert.equal(c6n.privacyCapable, false);
+  assert.deepEqual(restSwitch(c6n), { field: 'sleep', type: 21 });
+
+  // The real list: every camera lists switch 21, only some announce 62.
+  const bySerial = new Map(parseDeviceList(list).map((camera) => [camera.serial, camera]));
+  assert.equal(bySerial.get(SERIALS.FLOODLIGHT).sleepCapable, true);
+  assert.equal(bySerial.get(SERIALS.FLOODLIGHT).sleep, false);
+  assert.equal(bySerial.get(SERIALS.PTZ).sleepCapable, false, 'the C6CN does not announce 62');
+  assert.deepEqual(restSwitch(bySerial.get(SERIALS.PTZ)), { field: 'privacy', type: 7 });
+  assert.equal(bySerial.get(SERIALS.BATTERY).sleepCapable, false);
+  assert.equal(restSwitch(bySerial.get(SERIALS.BATTERY)), null);
 });

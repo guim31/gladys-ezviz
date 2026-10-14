@@ -433,17 +433,20 @@ test('several codes without a serial number are not applied: the cameras are lis
   assert.deepEqual(w.fake.connectionStatus, { connected: true });
 });
 
-test('the periodic captures skip the battery cameras, the offline ones and privacy mode', async (t) => {
+test('the periodic captures skip the battery cameras, the offline ones, privacy and sleep', async (t) => {
   const w = await world(t);
   await createAll(w);
+  w.cloud.setSwitch(SERIALS.DRIVEWAY, 21, true);
+  await w.hub.refresh();
   w.clock.advance(60 * 60_000);
   const before = captures(w).length;
   await w.hub.snapshotAll();
   const serials = captures(w)
     .slice(before)
     .map((r) => r.path.split('/')[4]);
-  // The C6CN has its privacy mode on, the EB3 runs on battery, the Husky is offline.
-  assert.deepEqual(serials.sort(), [SERIALS.FLOODLIGHT, SERIALS.DRIVEWAY, SERIALS.DOORBELL].sort());
+  // The C6CN has its privacy mode on, the H9c is asleep, the EB3 runs on
+  // battery, the Husky is offline.
+  assert.deepEqual(serials.sort(), [SERIALS.FLOODLIGHT, SERIALS.DOORBELL].sort());
 });
 
 test('commands: privacy, detection, floodlight, siren, pan/tilt', async (t) => {
@@ -591,4 +594,45 @@ test('a scan publishes the devices again; onPoll only reads the alarms', async (
   const ack = await w.fake.poll(discovered(w, SERIALS.PTZ));
   assert.equal(ack.success, true);
   assert.equal(w.cloud.calls('pagelist').length, lists + 1);
+});
+
+test('sleep mode: a switch on the cameras that announce it, and the scene action', async (t) => {
+  const w = await world(t);
+  await createAll(w);
+  const feature = (device, key) => device.features.find((f) => f.external_id.endsWith(`:${key}`));
+  const floodlight = discovered(w, SERIALS.FLOODLIGHT);
+  assert.ok(feature(floodlight, 'sleep'), 'the LC1C announces SupportSleep');
+  assert.equal(feature(discovered(w, SERIALS.PTZ), 'sleep'), undefined, 'the C6CN does not');
+  assert.equal(w.fake.lastState(feature(floodlight, 'sleep').external_id), 0);
+
+  assert.equal((await w.fake.setValue(floodlight, feature(floodlight, 'sleep'), 1)).success, true);
+  assert.equal(w.cloud.devices.SWITCH[SERIALS.FLOODLIGHT].find((s) => s.type === 21).enable, true);
+  assert.equal(w.fake.lastState(feature(floodlight, 'sleep').external_id), 1);
+
+  // The scene action: sleep mode, else privacy mode (the C6CN).
+  const wake = await w.fake.sceneAction('set_camera_sleep', {
+    camera: cameraIds(w.gladys, SERIALS.FLOODLIGHT).device,
+    state: 'wake',
+  });
+  assert.equal(wake.success, true, wake.error);
+  assert.equal(w.cloud.devices.SWITCH[SERIALS.FLOODLIGHT].find((s) => s.type === 21).enable, false);
+  assert.equal(w.fake.lastState(feature(floodlight, 'sleep').external_id), 0);
+  const ptz = discovered(w, SERIALS.PTZ);
+  const lens = await w.fake.sceneAction('set_camera_sleep', {
+    camera: ptz.external_id,
+    state: 'wake',
+  });
+  assert.equal(lens.success, true, lens.error);
+  assert.equal(w.cloud.devices.SWITCH[SERIALS.PTZ].find((s) => s.type === 7).enable, false);
+  assert.equal(w.fake.lastState(feature(ptz, 'privacy').external_id), 0);
+
+  // A camera with neither, an unknown state: a clear error for the scene log.
+  const none = await w.fake.sceneAction('set_camera_sleep', {
+    camera: cameraIds(w.gladys, SERIALS.BATTERY).device,
+    state: 'sleep',
+  });
+  assert.equal(none.success, false);
+  assert.match(none.error, /neither a sleep mode nor a privacy mode/);
+  const odd = await w.fake.sceneAction('set_camera_sleep', { camera: ptz.external_id, state: 'x' });
+  assert.equal(odd.success, false);
 });

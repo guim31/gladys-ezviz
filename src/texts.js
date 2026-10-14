@@ -192,6 +192,12 @@ export const ACTION_TEXT = {
     de: 'Kein Bild von der Kamera: Vielleicht schläft sie oder ist offline.',
     es: 'Sin imagen de la cámara: puede estar en reposo o sin conexión.',
   },
+  noSleep: {
+    en: 'This camera has neither a sleep mode nor a privacy mode.',
+    fr: 'Cette caméra n’a ni mode veille ni mode confidentialité.',
+    de: 'Diese Kamera hat weder Ruhemodus noch Privatsphäre-Modus.',
+    es: 'Esta cámara no tiene modo reposo ni modo privacidad.',
+  },
   notPtz: {
     en: 'This camera cannot pan or tilt.',
     fr: 'Cette caméra ne peut pas pivoter.',

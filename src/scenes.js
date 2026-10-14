@@ -8,7 +8,9 @@
 //     never a move left running);
 //   - set_arm_mode: the arming mode of the account (at home, away, sleep), as
 //     the EZVIZ app sets it — only when arming is allowed in the
-//     configuration.
+//     configuration;
+//   - set_camera_sleep: put a camera to sleep or wake it (its sleep mode,
+//     else its privacy mode), for "I am home: indoor cameras asleep".
 // Gladys applies the field defaults to scene actions; a failure throws, the
 // scene logs it and carries on.
 // -----------------------------------------------------------------------------
@@ -19,6 +21,7 @@ import { ARM_MODES } from './ezviz/model.js';
 // Options of the `direction` and `mode` fields: permanent once published.
 export const DIRECTIONS = Object.values(MOVES);
 export const MODES = Object.keys(ARM_MODES);
+export const SLEEP_STATES = ['sleep', 'wake'];
 
 export const SCENE_ACTIONS = {
   async refresh_snapshot(hub, { fields = {} }) {
@@ -31,5 +34,13 @@ export const SCENE_ACTIONS = {
 
   async set_arm_mode(hub, { fields = {} }) {
     await hub.setArmMode(String(fields.mode ?? ''), 'Scene action');
+  },
+
+  async set_camera_sleep(hub, { fields = {} }) {
+    const state = String(fields.state ?? '');
+    if (!SLEEP_STATES.includes(state)) {
+      throw new Error(`Unknown state ${state}`);
+    }
+    await hub.setCameraSleep(fields.camera, state === 'sleep', 'Scene action');
   },
 };

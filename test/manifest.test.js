@@ -10,7 +10,7 @@ import { readFile } from 'node:fs/promises';
 import { ALARM_INTERVALS, DEFAULT_CONFIG, LANGUAGES, SNAPSHOT_INTERVALS } from '../src/config.js';
 import { TRIGGERS, WIDGET_KEY } from '../src/hub.js';
 import { ALARM_KINDS } from '../src/ezviz/model.js';
-import { DIRECTIONS, MODES, SCENE_ACTIONS } from '../src/scenes.js';
+import { DIRECTIONS, MODES, SCENE_ACTIONS, SLEEP_STATES } from '../src/scenes.js';
 import { WIDGETS } from '../src/widgets.js';
 import { SERIALS, cameraIds, createAll, createWorld } from './helpers/world.js';
 
@@ -117,6 +117,10 @@ test('every scene_actions key has a handler', async (t) => {
     refresh_snapshot: { camera: cameraIds(world.gladys, SERIALS.FLOODLIGHT).device },
     move_camera: { camera: cameraIds(world.gladys, SERIALS.PTZ).device, direction: 'right' },
     set_arm_mode: { mode: 'sleep' },
+    set_camera_sleep: {
+      camera: cameraIds(world.gladys, SERIALS.FLOODLIGHT).device,
+      state: 'sleep',
+    },
   };
   for (const action of manifest.scene_actions) {
     const ack = await world.fake.sceneAction(action.key, fields[action.key]);
@@ -143,6 +147,7 @@ test('the select options of the scene actions match the code', () => {
     manifest.scene_actions.find((a) => a.key === action).fields.find((f) => f.key === key);
   assert.deepEqual(options(field('move_camera', 'direction')), DIRECTIONS);
   assert.deepEqual(options(field('set_arm_mode', 'mode')), MODES);
+  assert.deepEqual(options(field('set_camera_sleep', 'state')), SLEEP_STATES);
   // Required fields carry a default: adding one later would break the scenes.
   for (const action of manifest.scene_actions) {
     for (const f of action.fields ?? []) {

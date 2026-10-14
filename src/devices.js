@@ -18,6 +18,7 @@
 //   detection    switch/binary         motion detection on/off (the "alarm
 //                                      notification" of the EZVIZ app)
 //   privacy      switch/binary         lens cover (privacy mode)
+//   sleep        switch/binary         sleep mode (no video, no detection)
 //   light        light/binary          floodlight
 //   siren        siren/binary          only when allowed in the configuration
 //   battery      battery/integer       battery models
@@ -54,6 +55,7 @@ export const FEATURE_KEYS = Object.freeze({
   ONLINE: 'online',
   DETECTION: 'detection',
   PRIVACY: 'privacy',
+  SLEEP: 'sleep',
   LIGHT: 'light',
   SIREN: 'siren',
   BATTERY: 'battery',
@@ -79,6 +81,7 @@ export const NAMES = {
     online: 'Online',
     detection: 'Motion detection',
     privacy: 'Privacy mode',
+    sleep: 'Sleep mode',
     light: 'Floodlight',
     siren: 'Siren',
     battery: 'Battery',
@@ -96,6 +99,7 @@ export const NAMES = {
     online: 'En ligne',
     detection: 'Détection de mouvement',
     privacy: 'Mode confidentialité',
+    sleep: 'Mode veille',
     light: 'Projecteur',
     siren: 'Sirène',
     battery: 'Batterie',
@@ -113,6 +117,7 @@ export const NAMES = {
     online: 'Online',
     detection: 'Bewegungserkennung',
     privacy: 'Privatsphäre-Modus',
+    sleep: 'Ruhemodus',
     light: 'Flutlicht',
     siren: 'Sirene',
     battery: 'Batterie',
@@ -130,6 +135,7 @@ export const NAMES = {
     online: 'En línea',
     detection: 'Detección de movimiento',
     privacy: 'Modo privacidad',
+    sleep: 'Modo reposo',
     light: 'Foco',
     siren: 'Sirena',
     battery: 'Batería',
@@ -223,6 +229,10 @@ const DEFINITIONS = {
     DEVICE_FEATURE_CATEGORIES.SWITCH,
     DEVICE_FEATURE_TYPES.SWITCH.BINARY,
   ),
+  [FEATURE_KEYS.SLEEP]: command(
+    DEVICE_FEATURE_CATEGORIES.SWITCH,
+    DEVICE_FEATURE_TYPES.SWITCH.BINARY,
+  ),
   [FEATURE_KEYS.LIGHT]: command(DEVICE_FEATURE_CATEGORIES.LIGHT, DEVICE_FEATURE_TYPES.LIGHT.BINARY),
   [FEATURE_KEYS.SIREN]: command(DEVICE_FEATURE_CATEGORIES.SIREN, DEVICE_FEATURE_TYPES.SIREN.BINARY),
   [FEATURE_KEYS.BATTERY]: sensor(
@@ -274,6 +284,7 @@ export function featureKeys(camera, { doorbell = false, allowSiren = false } = {
     FEATURE_KEYS.ONLINE,
     camera.detection !== null && FEATURE_KEYS.DETECTION,
     camera.privacyCapable && FEATURE_KEYS.PRIVACY,
+    camera.sleepCapable && FEATURE_KEYS.SLEEP,
     camera.lightCapable && FEATURE_KEYS.LIGHT,
     camera.sirenCapable && allowSiren && FEATURE_KEYS.SIREN,
     camera.battery !== null && FEATURE_KEYS.BATTERY,
@@ -377,6 +388,7 @@ export function featureValues(camera, live = {}, language = 'en') {
     [FEATURE_KEYS.ONLINE]: flag(camera.online),
     [FEATURE_KEYS.DETECTION]: camera.detection === null ? null : flag(camera.detection),
     [FEATURE_KEYS.PRIVACY]: camera.privacy === null ? null : flag(camera.privacy),
+    [FEATURE_KEYS.SLEEP]: camera.sleep === null ? null : flag(camera.sleep),
     [FEATURE_KEYS.LIGHT]: flag(camera.light),
     [FEATURE_KEYS.SIREN]: flag(live.siren),
     [FEATURE_KEYS.BATTERY]: camera.battery,

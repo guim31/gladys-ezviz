@@ -3,11 +3,11 @@
 Intègre à Gladys les **caméras et sonnettes EZVIZ** de votre compte EZVIZ, via
 le **cloud EZVIZ** (celui qu’utilise l’app EZVIZ) : l’image de chaque alarme,
 les détections de mouvement et de personne, les coups de sonnette, le mode
-d’armement du compte (présent, absent, sommeil), le mode confidentialité, la
-détection de mouvement marche/arrêt, le projecteur, la sirène, l’orientation
-des caméras motorisées, la batterie, le signal Wi-Fi et la carte SD. Rien à
-régler sur les caméras, aucun port à ouvrir : beaucoup de caméras EZVIZ
-n’offrent ni ONVIF ni RTSP sans manipulation, le cloud les couvre toutes.
+d’armement du compte (présent, absent, sommeil), le mode confidentialité, le
+mode veille, la détection de mouvement marche/arrêt, le projecteur, la sirène,
+l’orientation des caméras motorisées, la batterie, le signal Wi-Fi et la carte
+SD. Rien à régler sur les caméras, aucun port à ouvrir : beaucoup de caméras
+EZVIZ n’offrent ni ONVIF ni RTSP sans manipulation, le cloud les couvre toutes.
 
 > **Développée sans le matériel : vos retours sont les bienvenus.** Cette
 > intégration a été écrite à partir du travail de l’intégration `ezviz` de
@@ -127,6 +127,10 @@ fonctionnalités du modèle :
 - **Détection de mouvement** : les notifications d’alarme de la caméra
   activées ou non (la cloche de l’app EZVIZ).
 - **Mode confidentialité** : le cache-objectif des modèles qui en ont un.
+- **Mode veille** : ni vidéo ni détection, sur les modèles qui l’annoncent (le
+  même interrupteur que dans l’app EZVIZ). Les modèles motorisés (C6N, C6CN…)
+  peuvent annoncer à la place le **Mode confidentialité** ci-dessus : l’objectif
+  masqué. Chaque caméra reçoit les interrupteurs qu’elle annonce.
 - **Projecteur** : la lumière des caméras à projecteur.
 - **Sirène** : seulement si elle est autorisée dans la configuration ; elle
   s’arrête d’elle-même au bout d’une minute.
@@ -162,6 +166,12 @@ EZVIZ tant qu’elle n’est pas ajoutée). Gladys propose tous les appareils de
 l’intégration dans la liste des caméras du widget, « Compte EZVIZ » compris :
 celui-là n’est pas une caméra et il est ignoré.
 
+Quand le widget montre une seule caméra qui peut se mettre en veille, un
+bouton la met en veille ou la réveille (son **Mode veille**, sinon son **Mode
+confidentialité**), et sa ligne indique « En veille ». Avec plusieurs caméras,
+il n’y a pas de place pour un bouton chacune : utilisez l’action de scène
+**Mettre une caméra EZVIZ en veille ou la réveiller**.
+
 ## Scènes
 
 ### Déclencheurs
@@ -189,6 +199,8 @@ l’alarme.
   bas.
 - **Changer le mode d’armement EZVIZ** : présent, absent ou sommeil (si
   l’armement est autorisé dans la configuration).
+- **Mettre une caméra EZVIZ en veille ou la réveiller** : son **Mode
+  veille**, sinon son **Mode confidentialité**, en veille ou réveillée.
 
 ### Idées de scènes
 
@@ -201,9 +213,9 @@ l’alarme.
 - **Quelqu’un dans le jardin la nuit** : sur **Détection par une caméra
   EZVIZ**, filtrée sur la caméra du jardin et « personne », entre le coucher
   et le lever du soleil, allumer les lumières du jardin et envoyer l’image.
-- **Intimité à la maison** : quand quelqu’un est à la maison, activer le
-  **Mode confidentialité** de la caméra du salon ; le couper quand la maison
-  est vide.
+- **Intimité à la maison** : quand quelqu’un rentre, **Mettre une caméra
+  EZVIZ en veille ou la réveiller** pour chaque caméra intérieure, en veille ;
+  réveillée quand la maison est vide.
 
 ## Vidéo en direct (RTSP)
 
