@@ -157,6 +157,11 @@ du widget, ou aucune pour toutes. Les boutons changent le mode de tout le
 compte, donc de toutes les caméras, quelles que soient les caméras affichées.
 Pas de bouton quand l’armement n’est pas autorisé.
 
+Le widget nomme chaque caméra comme vous l’avez nommée dans Gladys (le nom
+EZVIZ tant qu’elle n’est pas ajoutée). Gladys propose tous les appareils de
+l’intégration dans la liste des caméras du widget, « Compte EZVIZ » compris :
+celui-là n’est pas une caméra et il est ignoré.
+
 ## Scènes
 
 ### Déclencheurs

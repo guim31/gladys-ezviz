@@ -10,6 +10,14 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Fixed
+
+- The widget showed the EZVIZ names of the cameras ("C6N(…)"): it now shows
+  the names they have in Gladys.
+- "EZVIZ account", offered by Gladys in the camera list of the widget, is
+  ignored (it is not a camera); chosen alone, the widget shows every camera.
+  The setting says so: Gladys 5.2.1 cannot leave it out of the list.
+
 ## [1.1.0] - 2026-10-14
 
 ### Fixed

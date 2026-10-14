@@ -2,7 +2,15 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateWidgetContent, validateWidgetImage } from '@gladysassistant/integration-sdk';
 import { WIDGET_KEY } from '../src/hub.js';
-import { BASE_CONFIG, SERIALS, cameraIds, createAll, createWorld } from './helpers/world.js';
+import {
+  BASE_CONFIG,
+  SERIALS,
+  cameraIds,
+  createAll,
+  createWorld,
+  discovered,
+  settle,
+} from './helpers/world.js';
 
 async function world(t, options) {
   const w = await createWorld(options);
@@ -133,4 +141,39 @@ test('the cloud unreachable: said in a caption, no button', async (t) => {
   assert.match(ofType(c, 'text')[0].text, /does not answer/);
   assert.deepEqual(ofType(c, 'button'), []);
   assert.deepEqual(validateWidgetContent(c), []);
+});
+
+test('"EZVIZ account" chosen in the camera list is ignored: alone, it means all cameras', async (t) => {
+  const w = await world(t);
+  await createAll(w);
+  const account = discovered(w, 'account').external_id;
+  const alone = await content(w, { cameras: [account] });
+  // Six cameras and the account mode, as with no choice at all.
+  assert.equal(ofType(alone, 'status')[0].items.length, 7);
+  const ptz = cameraIds(w.gladys, SERIALS.PTZ).device;
+  const withOne = await content(w, { cameras: [account, ptz] });
+  assert.deepEqual(
+    ofType(withOne, 'status')[0].items.map((item) => item.label),
+    ['Living room', 'EZVIZ account mode'],
+  );
+});
+
+test('the cameras are named as in Gladys once added, as in EZVIZ before', async (t) => {
+  const w = await world(t);
+  const ptz = discovered(w, SERIALS.PTZ);
+  const before = await content(w, { cameras: [ptz.external_id] });
+  assert.equal(ofType(before, 'status')[0].items[0].label, 'Living room');
+  await w.fake.deviceCreated({ ...ptz, name: 'Babyphone Léa' });
+  await settle();
+  const after = await content(w, { cameras: [ptz.external_id] });
+  assert.equal(ofType(after, 'status')[0].items[0].label, 'Babyphone Léa');
+  // Renamed again later: the widget follows (and is asked to refresh).
+  const refreshes = w.fake.widgetRefreshes.length;
+  await w.fake.deviceUpdated({ ...ptz, name: 'Babyphone Victor' });
+  await settle();
+  assert.equal(
+    ofType(await content(w, { cameras: [ptz.external_id] }), 'status')[0].items[0].label,
+    'Babyphone Victor',
+  );
+  assert.ok(w.fake.widgetRefreshes.length > refreshes);
 });

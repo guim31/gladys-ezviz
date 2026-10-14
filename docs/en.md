@@ -144,6 +144,11 @@ or several cameras in the widget settings, or none for all of them. The
 buttons change the mode of the whole account, so of every camera, whatever the
 cameras shown. No button when arming is not allowed.
 
+The widget names each camera as you named it in Gladys (the EZVIZ name until
+it is added). Gladys offers every device of the integration in the camera list
+of the widget, "EZVIZ account" included: that one is not a camera and is
+ignored.
+
 ## Scenes
 
 ### Triggers

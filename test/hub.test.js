@@ -201,6 +201,16 @@ test('a new detection: motion pulse, picture, then the scene event', async (t) =
   assert.equal(w.fake.lastState(ptz.feature('motion')), 0);
 });
 
+test('scene variables name the camera as in Gladys', async (t) => {
+  const w = await world(t);
+  await createAll(w);
+  const ptz = discovered(w, SERIALS.PTZ);
+  await w.fake.deviceUpdated({ ...ptz, name: 'Babyphone Léa' });
+  w.cloud.addAlarm(SERIALS.PTZ, { at: w.clock.now() });
+  await w.hub.checkAlarms();
+  assert.equal(w.fake.sceneEvents.at(-1).data.camera_name, 'Babyphone Léa');
+});
+
 test('the doorbell: ring pulse and its own scene event', async (t) => {
   const w = await world(t);
   await createAll(w);
