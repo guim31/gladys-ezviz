@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-14
+
 ### Added
 
 - EZVIZ cameras and doorbells in Gladys, through the EZVIZ cloud: one device
@@ -30,3 +32,6 @@ the notes of the version's GitHub Release.
 - "Test the connection" and "Show the RTSP address" configuration actions.
 - Documentation in English, French, German and Spanish.
   [Unreleased]: https://github.com/guim31/gladys-ezviz/commits/main
+
+[Unreleased]: https://github.com/guim31/gladys-ezviz/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/guim31/gladys-ezviz/releases/tag/v1.0.1
