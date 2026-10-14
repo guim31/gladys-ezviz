@@ -1,0 +1,254 @@
+# EZVIZ
+
+Integra en Gladys las **cámaras y timbres EZVIZ** de su cuenta EZVIZ, a través
+de la **nube EZVIZ** (la que usa la app EZVIZ): la imagen de cada alarma, las
+detecciones de movimiento y de persona, las llamadas al timbre, el modo de
+armado de la cuenta (en casa, ausente, noche), el modo privacidad, la
+detección de movimiento activada o no, el foco, la sirena, la orientación de
+las cámaras motorizadas, la batería, la señal wifi y la tarjeta SD. Nada que
+ajustar en las cámaras, ningún puerto que abrir: muchas cámaras EZVIZ no
+ofrecen ONVIF ni RTSP sin manipulaciones, la nube las cubre todas.
+
+> **Developed without the hardware: feedback welcome.** Esta integración se
+> escribió sin cámara ni cuenta EZVIZ a mano, a partir del trabajo de la
+> integración `ezviz` de Home Assistant y de la biblioteca pyEzviz. Si algo no
+> funciona como se describe, abra una incidencia en
+> [github.com/guim31/gladys-ezviz/issues](https://github.com/guim31/gladys-ezviz/issues)
+> con los registros de la integración (`LOG_LEVEL=debug`).
+>
+> Esta integración no está afiliada a EZVIZ ni a Hikvision. EZVIZ es una marca
+> de Hangzhou EZVIZ Network Co., Ltd.
+
+## Lo que necesita
+
+- Una **cuenta EZVIZ** (el correo o número de teléfono y la contraseña de la
+  app EZVIZ) con sus cámaras. Una segunda cuenta solo con las cámaras que
+  desee en Gladys, compartida desde la app, es buena idea.
+- Gladys **5.1 o posterior**, con acceso a Internet.
+- Opcional: el **código de verificación** de cada cámara (6 letras mayúsculas
+  en la etiqueta bajo la cámara, o en su caja), para leer las imágenes
+  cifradas y obtener la dirección RTSP.
+
+## Puesta en marcha
+
+Abra **Integraciones → EZVIZ → Configuración**, rellene los ajustes, guarde y
+haga clic en **Probar la conexión**. Abra la pestaña **Descubrimiento** y
+añada las cámaras y el dispositivo «Cuenta EZVIZ».
+
+### Ajustes
+
+- **Correo o número de teléfono** y **Contraseña**: el usuario de la app
+  EZVIZ. La contraseña solo se envía a la nube EZVIZ, en forma de huella, como
+  hace la app; nunca se escribe en los registros ni en el disco.
+- **Servidor de API**: deje el servidor europeo `apiieu.ezvizlife.com`: si su
+  cuenta está en otra región, EZVIZ lo indica al iniciar sesión y la
+  integración lo sigue. Si no, escriba el servidor de su región
+  (`apiius.ezvizlife.com` para América, `apirus.ezvizru.com` para Rusia) o su
+  código corto (`us`).
+- **Códigos de verificación de las cámaras** (opcional): pares
+  `SERIE:CÓDIGO` separados por comas, por ejemplo
+  `BD1234567:ABCDEF, C78901234:GHIJKL`, o un solo código para todas las
+  cámaras. El número de serie está en la misma etiqueta. Necesario cuando una
+  cámara **cifra sus imágenes** (el «cifrado de imagen» de la app EZVIZ,
+  activo por defecto en muchos modelos) y para la dirección RTSP.
+- **Consulta de alarmas**: frecuencia de lectura de la lista de alarmas (cada
+  15, 30, 60 o 120 segundos; 30 por defecto). Una sola petición lee las
+  alarmas de todas las cámaras.
+- **Imágenes de las cámaras**: frecuencia de una imagen nueva de cada cámara
+  **con corriente** (cada 5, 15 o 60 minutos, o solo al alarmar). Las cámaras
+  con batería nunca se despiertan con este temporizador: su imagen es la de su
+  última alarma.
+- **Permitir el armado desde Gladys** (activado por defecto): el modo de
+  armado se cambia desde el panel, las escenas y el widget. Desmárquelo para
+  solo mostrarlo.
+- **Permitir la sirena** (desactivado por defecto): añade un interruptor de
+  sirena a las cámaras que la tienen. Una sirena suena un minuto y despierta a
+  los vecinos: márquelo solo si lo necesita.
+- **Idioma de los nombres**: idioma de los nombres de funciones y de los
+  textos enviados a las escenas. Los nombres se fijan al añadir un
+  dispositivo.
+
+### Verificación en dos pasos
+
+Cuando la cuenta tiene verificación en dos pasos, EZVIZ envía un código por
+correo o SMS en el primer inicio de sesión, y el estado de la integración lo
+indica. Abra **Introducir el código de verificación**, escriba el código y
+ejecute la acción: Gladys queda conectado. Ejecútela con el código vacío para
+recibir otro. La sesión se guarda en el almacenamiento de la integración: no
+hay código nuevo en el próximo reinicio. Solo se vuelve a pedir un código si
+EZVIZ cierra la sesión (contraseña cambiada, Gladys retirado de los
+dispositivos de confianza de la cuenta).
+
+### Acciones de la configuración
+
+- **Probar la conexión**: inicia sesión, lee la cuenta e indica cuántas
+  cámaras se encontraron y cuántas cifran sus imágenes sin código de
+  verificación en la configuración. Tras una contraseña rechazada o una cuenta
+  bloqueada, también es así como se pide a la integración que lo reintente.
+- **Introducir el código de verificación**: véase arriba.
+- **Mostrar la dirección RTSP**: la dirección de vídeo local de una cámara
+  (véase Vídeo en directo).
+
+## Los dispositivos
+
+### Cámaras y timbres
+
+Un dispositivo por cámara o timbre, con el nombre de la app EZVIZ, con las
+funciones del modelo:
+
+- **Imagen**: la imagen de la última alarma, las imágenes nuevas del
+  temporizador, y una captura nueva cuando abre la cámara en el panel (una
+  cámara en reposo o sin conexión muestra su última imagen).
+- **Orientación** (cámaras motorizadas): las flechas de la cámara en el panel;
+  cada pulsación la gira un paso.
+- **Movimiento**: 1 durante un minuto tras una alarma de detección
+  (movimiento, persona u otra alarma de la cámara), luego 0.
+- **Timbre** (timbres): «Timbrazo» unos segundos en cada pulsación. Una cámara
+  que EZVIZ no clasifica como timbre recibe esta función en su primera
+  llamada.
+- **Último evento**: qué y cuándo, por ejemplo «Persona · 18:32».
+- **En línea**: si la cámara responde a la nube EZVIZ. Una cámara con batería
+  aparece «apagada» mientras duerme: es normal.
+- **Detección de movimiento**: las notificaciones de alarma de la cámara
+  activadas o no (la campana de la app EZVIZ).
+- **Modo privacidad**: la tapa del objetivo de los modelos que la tienen.
+- **Foco**: la luz de las cámaras con foco.
+- **Sirena**: solo si está permitida en la configuración; se detiene sola al
+  cabo de un minuto.
+- **Batería**: modelos con batería, en %.
+- **Señal wifi**: de 0 a 100.
+- **Tarjeta SD**: Normal, Sin tarjeta, Error, Sin formatear o Formateando.
+- **Tamaño de la tarjeta SD**: en GB (EZVIZ no indica el espacio libre).
+
+### La cuenta
+
+El dispositivo **Cuenta EZVIZ** lleva el **Modo de armado** de la cuenta, como
+en la página de inicio de la app EZVIZ: **En casa**, **Ausente** o **Noche**.
+Lo que hace cada modo (qué cámara detecta, suena o notifica) se ajusta en la
+app EZVIZ. Solo lectura cuando el armado no está permitido en la
+configuración.
+
+## Panel
+
+Añada las cámaras a una habitación para ver su imagen, sus flechas y sus
+interruptores, y el widget **EZVIZ** para un vistazo: la imagen de la última
+alarma (de una cámara, elegida en los ajustes del widget, o de todas), el
+último evento, el modo de armado, y tres botones para cambiar de modo (el
+actual lleva una marca; «En casa» pide confirmación, porque desactiva las
+detecciones). Sin botones cuando el armado no está permitido.
+
+## Escenas
+
+### Desencadenantes
+
+- **Detección por una cámara EZVIZ**: una nueva alarma de una cámara.
+  Filtros: la cámara y lo detectado — movimiento, persona (cuando la cámara
+  los distingue) u otra alarma. Información pasada a las acciones: el nombre
+  de la cámara, la detección (código y nombre), el texto de la alarma escrito
+  por EZVIZ y su tipo EZVIZ. La imagen de la cámara ya es la de la alarma
+  cuando empieza la escena: «enviar la imagen de la cámara» la envía.
+- **Alguien llama a un timbre EZVIZ**: se ha pulsado un timbre. Filtro: el
+  timbre. La imagen de la cámara es la del visitante.
+
+La llegada de una nueva alarma ya actualiza las funciones **Movimiento** y
+**Timbre**: un desencadenante sobre esas funciones también funciona. Los
+desencadenantes de arriba añaden el tipo de detección y la imagen de la
+alarma.
+
+### Acciones
+
+- **Tomar una imagen EZVIZ nueva**: pide una imagen nueva a una cámara y la
+  envía a Gladys, para un «enviar la imagen de la cámara» justo después.
+  Despierta a una cámara con batería: úsela con moderación en ellas.
+- **Girar una cámara EZVIZ**: un paso a la izquierda, a la derecha, arriba o
+  abajo.
+- **Cambiar el modo de armado EZVIZ**: en casa, ausente o noche (si el armado
+  está permitido en la configuración).
+
+### Ideas de escenas
+
+- **Todos se han ido**: cuando la última persona sale de casa, **Cambiar el
+  modo de armado EZVIZ** a ausente; cuando la primera vuelve, a en casa.
+- **Una visita en la puerta**: con **Alguien llama a un timbre EZVIZ**, enviar
+  la imagen del timbre por Telegram con «Hay alguien en la puerta».
+- **Alguien en el jardín de noche**: con **Detección por una cámara EZVIZ**,
+  filtrada en la cámara del jardín y «persona», entre la puesta y la salida
+  del sol, encender las luces del jardín y enviar la imagen.
+- **Intimidad en casa**: cuando hay alguien en casa, activar el **Modo
+  privacidad** de la cámara del salón; desactivarlo cuando la casa está vacía.
+
+## Vídeo en directo (RTSP)
+
+La integración da imágenes a Gladys, no un vídeo continuo. Para un flujo en
+directo, muchas cámaras EZVIZ sirven RTSP en la red local: actívelo en la app
+EZVIZ cuando el modelo lo ofrezca (ajustes de la cámara, «Vista en LAN» o
+«RTSP»), ponga el código de verificación de la cámara en la configuración y
+ejecute **Mostrar la dirección RTSP**: copie la dirección en la integración
+«Cámara RTSP» de Gladys. La dirección es
+`rtsp://admin:<código>@<IP local>:554/Streaming/Channels/101` (`102` para el
+flujo secundario, más ligero). Contiene el código de la cámara: no la
+comparta. Las cámaras con batería y los timbres no suelen tener RTSP.
+
+## Actualización y límites de la nube
+
+EZVIZ no tiene API pública para sus cuentas de consumo: la integración usa la
+API privada de las apps EZVIZ, la que usa desde hace años la integración
+`ezviz` de Home Assistant. EZVIZ no publica ninguna cuota para ella; la
+integración se mantiene al ritmo de Home Assistant o más lenta:
+
+- las **alarmas** de todas las cámaras: una petición cada 30 segundos por
+  defecto;
+- los **dispositivos** y el modo de armado: cada 5 minutos, y justo después
+  de una orden;
+- las **capturas** de las cámaras con corriente: cada 15 minutos por defecto;
+- unas 3.500 peticiones al día con los ajustes por defecto.
+
+**Retraso esperado** para una detección o una llamada al timbre: el tiempo
+que tarda la cámara en enviar su alarma a la nube EZVIZ (unos segundos, más
+para una cámara con batería que se despierta), más como máximo el intervalo
+de consulta de alarmas — normalmente **de 5 a 40 segundos** con los 30
+segundos por defecto. Una alarma que la nube lista con más de 10 minutos de
+retraso aparece como último evento pero no inicia ninguna escena. Gladys
+nunca tiene que consultar los dispositivos: la integración los actualiza con
+sus propios temporizadores.
+
+## Solución de problemas
+
+- **«EZVIZ ha rechazado el correo o la contraseña»**: compruébelos en la app
+  EZVIZ, corríjalos en la configuración y guarde. La integración no reintenta
+  sola una contraseña rechazada (EZVIZ bloquea una cuenta tras varios fallos):
+  guardar o **Probar la conexión** lo reintenta.
+- **«EZVIZ ha bloqueado la cuenta»**: espere, o desbloquéela en la app EZVIZ
+  (restableciendo la contraseña si hace falta), y luego **Probar la
+  conexión**.
+- **«EZVIZ ha enviado un código de verificación»**: véase Verificación en dos
+  pasos.
+- **Sin imagen, «la imagen está cifrada»**: añada el código de verificación
+  de la cámara a la configuración (o desactive el cifrado de imagen en la app
+  EZVIZ). **Probar la conexión** indica cuántas cámaras están afectadas.
+- **La imagen de una cámara con batería nunca cambia**: normal entre dos
+  alarmas, la integración no la despierta con el temporizador.
+- **Una detección no inicia mi escena**: compruebe el filtro «lo detectado».
+  Algunas cámaras indican una persona como una simple alarma de movimiento.
+  Con `LOG_LEVEL=debug`, cada alarma se registra con su tipo y su texto EZVIZ:
+  indíquelos en una incidencia para mejorar la clasificación.
+- **La nube no responde**: compruebe el acceso a Internet de Gladys. La
+  integración lo reintenta sola y lo indica una vez en los registros.
+
+## Límites
+
+- Solo nube: sin control local, y nada funciona cuando la nube EZVIZ o el
+  acceso a Internet están caídos (el vídeo RTSP, servido por la cámara, sigue
+  funcionando).
+- Una API no oficial: EZVIZ puede cambiarla sin aviso.
+- Sin vídeo continuo en la integración (véase Vídeo en directo), sin audio
+  bidireccional, sin grabaciones.
+- Los enchufes, bombillas, cerraduras, centrales de alarma y grabadores EZVIZ
+  no se gestionan; solo cámaras y timbres.
+- Un solo modo de armado para toda la cuenta (el «grupo por defecto» de
+  EZVIZ).
+- El tipo de una alarma (movimiento, persona, timbre) se lee de los códigos de
+  tipo EZVIZ conocidos hasta ahora y de su texto en inglés: un modelo inusual
+  puede indicar «otra alarma».
+- La nube no indica el espacio libre de la tarjeta SD.
+- Una cuenta EZVIZ por Gladys.

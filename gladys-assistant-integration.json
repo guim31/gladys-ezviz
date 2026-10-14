@@ -1,177 +1,759 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "EZVIZ",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "EZVIZ cameras and doorbells over the EZVIZ cloud: alarms, images, arming, privacy, siren.",
+    "fr": "Caméras et sonnettes EZVIZ via le cloud EZVIZ : alarmes, images, armement, confidentialité.",
+    "de": "EZVIZ-Kameras und -Türklingeln über die EZVIZ-Cloud: Alarme, Bilder, Scharfschalten, Sirene.",
+    "es": "Cámaras y timbres EZVIZ por la nube EZVIZ: alarmas, imágenes, armado, privacidad, sirena."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
+  "docker_image": "ghcr.io/guim31/gladys-ezviz:1.0.0",
   "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-ezviz/main/cover.png",
+  "categories": ["security"],
+  "transports": ["cloud"],
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "Your EZVIZ account",
+        "fr": "Votre compte EZVIZ",
+        "de": "Dein EZVIZ-Konto",
+        "es": "Su cuenta EZVIZ"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "The account of the EZVIZ app. Gladys reads it through the EZVIZ cloud: the cameras need no setting. A shared account with only the cameras you want is a good idea.",
+        "fr": "Le compte de l’app EZVIZ. Gladys le lit via le cloud EZVIZ : rien à régler sur les caméras. Un compte partagé limité aux caméras voulues est une bonne idée.",
+        "de": "Das Konto der EZVIZ-App. Gladys liest es über die EZVIZ-Cloud: An den Kameras ist nichts einzustellen. Ein geteiltes Konto nur mit den gewünschten Kameras ist eine gute Idee.",
+        "es": "La cuenta de la app EZVIZ. Gladys la lee a través de la nube EZVIZ: nada que ajustar en las cámaras. Una cuenta compartida solo con las cámaras deseadas es buena idea."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://www.ezviz.com/",
+          "label": {
+            "en": "EZVIZ website",
+            "fr": "Site d’EZVIZ",
+            "de": "EZVIZ-Website",
+            "es": "Sitio web de EZVIZ"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
+      "key": "username",
+      "type": "string",
+      "label": {
+        "en": "E-mail or phone number",
+        "fr": "E-mail ou numéro de téléphone",
+        "de": "E-Mail oder Telefonnummer",
+        "es": "Correo o número de teléfono"
       },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
+      "description": {
+        "en": "The login of the EZVIZ app.",
+        "fr": "L’identifiant de l’app EZVIZ.",
+        "de": "Die Anmeldung der EZVIZ-App.",
+        "es": "El usuario de la app EZVIZ."
+      },
+      "placeholder": {
+        "en": "e.g. name@example.com",
+        "fr": "ex. nom@exemple.fr",
+        "de": "z. B. name@beispiel.de",
+        "es": "p. ej. nombre@ejemplo.es"
+      },
       "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
+      "default": ""
     },
     {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
-      "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
+      "key": "password",
+      "type": "secret",
+      "label": {
+        "en": "Password",
+        "fr": "Mot de passe",
+        "de": "Passwort",
+        "es": "Contraseña"
       },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
+      "description": {
+        "en": "Sent to the EZVIZ cloud only, as the EZVIZ app does. Never written to the logs.",
+        "fr": "Envoyé seulement au cloud EZVIZ, comme le fait l’app EZVIZ. Jamais écrit dans les logs.",
+        "de": "Wird nur an die EZVIZ-Cloud gesendet, wie es die EZVIZ-App tut. Nie in den Protokollen.",
+        "es": "Solo se envía a la nube EZVIZ, como hace la app EZVIZ. Nunca se escribe en los registros."
+      },
+      "required": true
     },
     {
-      "key": "unit",
-      "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
+      "key": "api_server",
+      "type": "string",
+      "label": {
+        "en": "API server",
+        "fr": "Serveur d’API",
+        "de": "API-Server",
+        "es": "Servidor de API"
+      },
+      "description": {
+        "en": "Leave the European server: EZVIZ moves the login to the region of the account. Otherwise e.g. apiius.ezvizlife.com (America) or apirus.ezvizru.com (Russia).",
+        "fr": "Laissez le serveur européen : EZVIZ redirige la connexion vers la région du compte. Sinon ex. apiius.ezvizlife.com (Amérique) ou apirus.ezvizru.com (Russie).",
+        "de": "Lass den europäischen Server: EZVIZ leitet die Anmeldung in die Region des Kontos um. Sonst z. B. apiius.ezvizlife.com (Amerika) oder apirus.ezvizru.com (Russland).",
+        "es": "Deje el servidor europeo: EZVIZ redirige el inicio de sesión a la región de la cuenta. Si no, p. ej. apiius.ezvizlife.com (América) o apirus.ezvizru.com (Rusia)."
+      },
+      "placeholder": {
+        "en": "apiieu.ezvizlife.com",
+        "fr": "apiieu.ezvizlife.com",
+        "de": "apiieu.ezvizlife.com",
+        "es": "apiieu.ezvizlife.com"
+      },
       "required": false,
-      "default": "celsius",
+      "default": "apiieu.ezvizlife.com"
+    },
+    {
+      "key": "verification_codes",
+      "type": "secret",
+      "label": {
+        "en": "Camera verification codes",
+        "fr": "Codes de vérification des caméras",
+        "de": "Bestätigungscodes der Kameras",
+        "es": "Códigos de verificación de las cámaras"
+      },
+      "description": {
+        "en": "Optional: the 6 letters on the label of each camera, as SERIAL:CODE separated by commas, or one code for all. Needed for encrypted pictures and the RTSP address.",
+        "fr": "Facultatif : les 6 lettres de l’étiquette de chaque caméra, en SÉRIE:CODE séparés par des virgules, ou un code pour toutes. Pour les images chiffrées et l’adresse RTSP.",
+        "de": "Optional: die 6 Buchstaben auf dem Etikett jeder Kamera, als SERIE:CODE mit Kommas getrennt, oder ein Code für alle. Für verschlüsselte Bilder und die RTSP-Adresse.",
+        "es": "Opcional: las 6 letras de la etiqueta de cada cámara, como SERIE:CÓDIGO separados por comas, o un código para todas. Para imágenes cifradas y la dirección RTSP."
+      },
+      "required": false
+    },
+    {
+      "key": "alarm_interval",
+      "type": "select",
+      "label": {
+        "en": "Alarm check",
+        "fr": "Relève des alarmes",
+        "de": "Alarmabfrage",
+        "es": "Consulta de alarmas"
+      },
+      "description": {
+        "en": "How often the alarm list of the EZVIZ cloud is read (one request for all cameras). Faster means more requests to EZVIZ.",
+        "fr": "Fréquence de lecture de la liste des alarmes du cloud EZVIZ (une requête pour toutes les caméras). Plus vite, c’est plus de requêtes.",
+        "de": "Wie oft die Alarmliste der EZVIZ-Cloud gelesen wird (eine Anfrage für alle Kameras). Schneller heißt mehr Anfragen an EZVIZ.",
+        "es": "Frecuencia de lectura de la lista de alarmas de la nube EZVIZ (una petición para todas las cámaras). Más rápido son más peticiones."
+      },
+      "required": false,
+      "default": "30",
       "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
+        {
+          "value": "15",
+          "label": {
+            "en": "Every 15 seconds",
+            "fr": "Toutes les 15 secondes",
+            "de": "Alle 15 Sekunden",
+            "es": "Cada 15 segundos"
+          }
+        },
+        {
+          "value": "30",
+          "label": {
+            "en": "Every 30 seconds",
+            "fr": "Toutes les 30 secondes",
+            "de": "Alle 30 Sekunden",
+            "es": "Cada 30 segundos"
+          }
+        },
+        {
+          "value": "60",
+          "label": {
+            "en": "Every minute",
+            "fr": "Chaque minute",
+            "de": "Jede Minute",
+            "es": "Cada minuto"
+          }
+        },
+        {
+          "value": "120",
+          "label": {
+            "en": "Every 2 minutes",
+            "fr": "Toutes les 2 minutes",
+            "de": "Alle 2 Minuten",
+            "es": "Cada 2 minutos"
+          }
+        }
       ]
     },
     {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "key": "snapshot_interval",
+      "type": "select",
+      "label": {
+        "en": "Camera images",
+        "fr": "Images des caméras",
+        "de": "Kamerabilder",
+        "es": "Imágenes de las cámaras"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "How often a fresh picture of the mains-powered cameras is taken. Alarms always send their picture; battery cameras only on alarm.",
+        "fr": "Fréquence d’une capture neuve des caméras sur secteur. Les alarmes envoient toujours leur image ; caméras sur batterie : seulement à l’alarme.",
+        "de": "Wie oft ein neues Bild der Kameras mit Netzteil aufgenommen wird. Alarme senden immer ihr Bild; Akkukameras nur bei Alarm.",
+        "es": "Frecuencia de una captura nueva de las cámaras con corriente. Las alarmas siempre envían su imagen; cámaras con batería: solo al alarmar."
       },
       "required": false,
-      "default": 300,
-      "min": 60,
-      "max": 3600
+      "default": "15",
+      "options": [
+        {
+          "value": "0",
+          "label": {
+            "en": "Only on alarm",
+            "fr": "Seulement à l’alarme",
+            "de": "Nur bei Alarm",
+            "es": "Solo al alarmar"
+          }
+        },
+        {
+          "value": "5",
+          "label": {
+            "en": "Every 5 minutes",
+            "fr": "Toutes les 5 minutes",
+            "de": "Alle 5 Minuten",
+            "es": "Cada 5 minutos"
+          }
+        },
+        {
+          "value": "15",
+          "label": {
+            "en": "Every 15 minutes",
+            "fr": "Toutes les 15 minutes",
+            "de": "Alle 15 Minuten",
+            "es": "Cada 15 minutos"
+          }
+        },
+        {
+          "value": "60",
+          "label": {
+            "en": "Every hour",
+            "fr": "Toutes les heures",
+            "de": "Jede Stunde",
+            "es": "Cada hora"
+          }
+        }
+      ]
+    },
+    {
+      "key": "allow_arming",
+      "type": "boolean",
+      "label": {
+        "en": "Allow arming from Gladys",
+        "fr": "Autoriser l’armement depuis Gladys",
+        "de": "Scharfschalten über Gladys erlauben",
+        "es": "Permitir el armado desde Gladys"
+      },
+      "description": {
+        "en": "The arming mode (at home, away, sleep) can be changed from the dashboard, scenes and the widget. Untick to only show it.",
+        "fr": "Le mode d’armement (présent, absent, sommeil) se change depuis le tableau de bord, les scènes et le widget. Décochez pour seulement l’afficher.",
+        "de": "Der Scharfschaltmodus (zuhause, abwesend, schlafen) lässt sich über Dashboard, Szenen und Widget ändern. Deaktiviere es, um ihn nur anzuzeigen.",
+        "es": "El modo de armado (en casa, ausente, noche) se cambia desde el panel, las escenas y el widget. Desmarque para solo mostrarlo."
+      },
+      "required": false,
+      "default": true
+    },
+    {
+      "key": "allow_siren",
+      "type": "boolean",
+      "label": {
+        "en": "Allow the siren",
+        "fr": "Autoriser la sirène",
+        "de": "Sirene erlauben",
+        "es": "Permitir la sirena"
+      },
+      "description": {
+        "en": "Adds a siren switch to the cameras that have one (it sounds for a minute). Off by default: a scene error would wake the neighbours.",
+        "fr": "Ajoute un interrupteur de sirène aux caméras qui en ont une (elle sonne une minute). Désactivé par défaut : une erreur de scène réveillerait les voisins.",
+        "de": "Fügt Kameras mit Sirene einen Schalter dafür hinzu (sie ertönt eine Minute). Standardmäßig aus: Ein Szenenfehler würde die Nachbarn wecken.",
+        "es": "Añade un interruptor de sirena a las cámaras que la tienen (suena un minuto). Desactivado por defecto: un error de escena despertaría a los vecinos."
+      },
+      "required": false,
+      "default": false
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "label": {
+        "en": "Language of the names",
+        "fr": "Langue des noms",
+        "de": "Sprache der Namen",
+        "es": "Idioma de los nombres"
+      },
+      "description": {
+        "en": "Language of the feature names and of the texts sent to scenes. Names are set when a device is added.",
+        "fr": "Langue des noms de fonctionnalités et des textes envoyés aux scènes. Les noms sont fixés à l’ajout d’un appareil.",
+        "de": "Sprache der Funktionsnamen und der Texte für Szenen. Die Namen werden beim Hinzufügen festgelegt.",
+        "es": "Idioma de los nombres de funciones y de los textos enviados a las escenas. Se fijan al añadir un dispositivo."
+      },
+      "required": false,
+      "default": "fr",
+      "options": [
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "English",
+            "de": "English",
+            "es": "English"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "Français",
+            "fr": "Français",
+            "de": "Français",
+            "es": "Français"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "Deutsch",
+            "fr": "Deutsch",
+            "de": "Deutsch",
+            "es": "Deutsch"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Español",
+            "fr": "Español",
+            "de": "Español",
+            "es": "Español"
+          }
+        }
+      ]
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
-      "timeout_seconds": 30
+      "key": "test_connection",
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
+      },
+      "timeout_seconds": 60
     },
     {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
+      "key": "verify_code",
+      "label": {
+        "en": "Enter the verification code",
+        "fr": "Saisir le code de vérification",
+        "de": "Bestätigungscode eingeben",
+        "es": "Introducir el código de verificación"
+      },
+      "timeout_seconds": 60,
       "fields": [
         {
-          "key": "device",
+          "key": "code",
+          "type": "string",
+          "label": {
+            "en": "Code received by e-mail or SMS",
+            "fr": "Code reçu par e-mail ou SMS",
+            "de": "Per E-Mail oder SMS erhaltener Code",
+            "es": "Código recibido por correo o SMS"
+          },
+          "description": {
+            "en": "Leave empty to receive a new code.",
+            "fr": "Laissez vide pour recevoir un nouveau code.",
+            "de": "Leer lassen, um einen neuen Code zu erhalten.",
+            "es": "Déjelo vacío para recibir un código nuevo."
+          }
+        }
+      ]
+    },
+    {
+      "key": "stream_url",
+      "label": {
+        "en": "Show the RTSP address",
+        "fr": "Afficher l’adresse RTSP",
+        "de": "RTSP-Adresse anzeigen",
+        "es": "Mostrar la dirección RTSP"
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "camera",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
+          "label": {
+            "en": "Camera",
+            "fr": "Caméra",
+            "de": "Kamera",
+            "es": "Cámara"
+          }
         }
       ]
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "camera_detection",
+      "label": {
+        "en": "Detection by an EZVIZ camera",
+        "fr": "Détection par une caméra EZVIZ",
+        "de": "Erkennung durch eine EZVIZ-Kamera",
+        "es": "Detección por una cámara EZVIZ"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "A new alarm of the EZVIZ cloud: motion, or a person when the camera tells them apart. The camera image is the picture of the alarm.",
+        "fr": "Une nouvelle alarme du cloud EZVIZ : mouvement, ou personne quand la caméra les distingue. L’image de la caméra est celle de l’alarme.",
+        "de": "Ein neuer Alarm der EZVIZ-Cloud: Bewegung, oder Person, wenn die Kamera sie unterscheidet. Das Kamerabild ist das Bild des Alarms.",
+        "es": "Una nueva alarma de la nube EZVIZ: movimiento, o persona cuando la cámara los distingue. La imagen de la cámara es la de la alarma."
       },
       "fields": [
         {
-          "key": "device",
+          "key": "camera",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
+          "label": {
+            "en": "Camera",
+            "fr": "Caméra",
+            "de": "Kamera",
+            "es": "Cámara"
+          }
         },
         {
-          "key": "target",
+          "key": "kind",
           "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
+          "label": {
+            "en": "What was detected",
+            "fr": "Ce qui est détecté",
+            "de": "Was erkannt wurde",
+            "es": "Lo detectado"
+          },
           "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
+            {
+              "value": "motion",
+              "label": {
+                "en": "Motion",
+                "fr": "Mouvement",
+                "de": "Bewegung",
+                "es": "Movimiento"
+              }
+            },
+            {
+              "value": "person",
+              "label": {
+                "en": "Person",
+                "fr": "Personne",
+                "de": "Person",
+                "es": "Persona"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other alarm",
+                "fr": "Autre alarme",
+                "de": "Anderer Alarm",
+                "es": "Otra alarma"
+              }
+            }
           ]
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "camera_name",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
+          "label": {
+            "en": "Camera name",
+            "fr": "Nom de la caméra",
+            "de": "Name der Kamera",
+            "es": "Nombre de la cámara"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Detection (code)",
+            "fr": "Détection (code)",
+            "de": "Erkennung (Code)",
+            "es": "Detección (código)"
+          }
+        },
+        {
+          "key": "kind_name",
+          "type": "string",
+          "label": {
+            "en": "Detection (name)",
+            "fr": "Détection (nom)",
+            "de": "Erkennung (Name)",
+            "es": "Detección (nombre)"
+          }
+        },
+        {
+          "key": "alarm_name",
+          "type": "string",
+          "label": {
+            "en": "Alarm text from EZVIZ",
+            "fr": "Texte de l’alarme EZVIZ",
+            "de": "Alarmtext von EZVIZ",
+            "es": "Texto de la alarma de EZVIZ"
+          }
+        },
+        {
+          "key": "alarm_code",
+          "type": "string",
+          "label": {
+            "en": "EZVIZ alarm type",
+            "fr": "Type d’alarme EZVIZ",
+            "de": "EZVIZ-Alarmtyp",
+            "es": "Tipo de alarma EZVIZ"
+          }
+        }
+      ]
+    },
+    {
+      "key": "doorbell_pressed",
+      "label": {
+        "en": "Someone rang an EZVIZ doorbell",
+        "fr": "Quelqu’un sonne à une sonnette EZVIZ",
+        "de": "Jemand klingelt an einer EZVIZ-Türklingel",
+        "es": "Alguien llama a un timbre EZVIZ"
+      },
+      "description": {
+        "en": "The button of an EZVIZ doorbell was pressed. The camera image is the picture of the visitor.",
+        "fr": "Le bouton d’une sonnette EZVIZ a été pressé. L’image de la caméra est celle du visiteur.",
+        "de": "Der Knopf einer EZVIZ-Türklingel wurde gedrückt. Das Kamerabild zeigt den Besucher.",
+        "es": "Se ha pulsado el botón de un timbre EZVIZ. La imagen de la cámara es la del visitante."
+      },
+      "fields": [
+        {
+          "key": "doorbell",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Doorbell",
+            "fr": "Sonnette",
+            "de": "Türklingel",
+            "es": "Timbre"
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "doorbell_name",
+          "type": "string",
+          "label": {
+            "en": "Doorbell name",
+            "fr": "Nom de la sonnette",
+            "de": "Name der Türklingel",
+            "es": "Nombre del timbre"
+          }
         }
       ]
     }
   ],
   "scene_actions": [
     {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
+      "key": "refresh_snapshot",
+      "label": {
+        "en": "Take a fresh EZVIZ picture",
+        "fr": "Prendre une image EZVIZ neuve",
+        "de": "Neues EZVIZ-Bild aufnehmen",
+        "es": "Tomar una imagen EZVIZ nueva"
       },
-      "timeout_seconds": 15,
+      "description": {
+        "en": "Asks the camera for a fresh picture and sends it to Gladys, to send it in a message right after.",
+        "fr": "Demande une image neuve à la caméra et l’envoie à Gladys, pour l’envoyer ensuite dans un message.",
+        "de": "Fordert ein neues Bild von der Kamera an und sendet es an Gladys, um es danach in einer Nachricht zu senden.",
+        "es": "Pide una imagen nueva a la cámara y la envía a Gladys, para enviarla después en un mensaje."
+      },
+      "timeout_seconds": 30,
       "fields": [
         {
-          "key": "device",
+          "key": "camera",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
+          "label": {
+            "en": "Camera",
+            "fr": "Caméra",
+            "de": "Kamera",
+            "es": "Cámara"
+          },
           "required": true
         }
-      ],
-      "outputs": [
+      ]
+    },
+    {
+      "key": "move_camera",
+      "label": {
+        "en": "Turn an EZVIZ camera",
+        "fr": "Orienter une caméra EZVIZ",
+        "de": "EZVIZ-Kamera drehen",
+        "es": "Girar una cámara EZVIZ"
+      },
+      "description": {
+        "en": "One step of a motorized camera, left, right, up or down.",
+        "fr": "Un pas d’une caméra motorisée, à gauche, à droite, en haut ou en bas.",
+        "de": "Ein Schritt einer motorisierten Kamera, nach links, rechts, oben oder unten.",
+        "es": "Un paso de una cámara motorizada, a la izquierda, derecha, arriba o abajo."
+      },
+      "timeout_seconds": 20,
+      "fields": [
         {
-          "key": "signalled",
-          "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "key": "camera",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Camera",
+            "fr": "Caméra",
+            "de": "Kamera",
+            "es": "Cámara"
+          },
+          "required": true
+        },
+        {
+          "key": "direction",
+          "type": "select",
+          "label": {
+            "en": "Direction",
+            "fr": "Direction",
+            "de": "Richtung",
+            "es": "Dirección"
+          },
+          "required": true,
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": {
+                "en": "Left",
+                "fr": "Gauche",
+                "de": "Links",
+                "es": "Izquierda"
+              }
+            },
+            {
+              "value": "right",
+              "label": {
+                "en": "Right",
+                "fr": "Droite",
+                "de": "Rechts",
+                "es": "Derecha"
+              }
+            },
+            {
+              "value": "up",
+              "label": {
+                "en": "Up",
+                "fr": "Haut",
+                "de": "Hoch",
+                "es": "Arriba"
+              }
+            },
+            {
+              "value": "down",
+              "label": {
+                "en": "Down",
+                "fr": "Bas",
+                "de": "Runter",
+                "es": "Abajo"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "set_arm_mode",
+      "label": {
+        "en": "Set the EZVIZ arming mode",
+        "fr": "Changer le mode d’armement EZVIZ",
+        "de": "EZVIZ-Scharfschaltmodus ändern",
+        "es": "Cambiar el modo de armado EZVIZ"
+      },
+      "description": {
+        "en": "At home, away or sleep, as in the EZVIZ app. Requires the arming to be allowed in the configuration.",
+        "fr": "Présent, absent ou sommeil, comme dans l’app EZVIZ. L’armement doit être autorisé dans la configuration.",
+        "de": "Zuhause, abwesend oder schlafen, wie in der EZVIZ-App. Das Scharfschalten muss in der Konfiguration erlaubt sein.",
+        "es": "En casa, ausente o noche, como en la app EZVIZ. El armado debe estar permitido en la configuración."
+      },
+      "timeout_seconds": 20,
+      "fields": [
+        {
+          "key": "mode",
+          "type": "select",
+          "label": {
+            "en": "Mode",
+            "fr": "Mode",
+            "de": "Modus",
+            "es": "Modo"
+          },
+          "required": true,
+          "default": "away",
+          "options": [
+            {
+              "value": "home",
+              "label": {
+                "en": "At home",
+                "fr": "Présent",
+                "de": "Zuhause",
+                "es": "En casa"
+              }
+            },
+            {
+              "value": "away",
+              "label": {
+                "en": "Away",
+                "fr": "Absent",
+                "de": "Abwesend",
+                "es": "Ausente"
+              }
+            },
+            {
+              "value": "sleep",
+              "label": {
+                "en": "Sleep",
+                "fr": "Sommeil",
+                "de": "Schlafen",
+                "es": "Noche"
+              }
+            }
+          ]
         }
       ]
     }
   ],
   "widgets": [
     {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
+      "key": "ezviz",
+      "label": {
+        "en": "EZVIZ",
+        "fr": "EZVIZ",
+        "de": "EZVIZ",
+        "es": "EZVIZ"
       },
-      "icon": "activity",
-      "action_timeout_seconds": 15
+      "description": {
+        "en": "Picture of the last alarm, last event and arming buttons.",
+        "fr": "Image de la dernière alarme, dernier événement et boutons d’armement.",
+        "de": "Bild des letzten Alarms, letztes Ereignis und Scharfschalt-Knöpfe.",
+        "es": "Imagen de la última alarma, último evento y botones de armado."
+      },
+      "icon": "video",
+      "action_timeout_seconds": 20,
+      "settings": [
+        {
+          "key": "camera",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Camera (empty: all)",
+            "fr": "Caméra (vide : toutes)",
+            "de": "Kamera (leer: alle)",
+            "es": "Cámara (vacío: todas)"
+          }
+        }
+      ]
     }
   ]
 }

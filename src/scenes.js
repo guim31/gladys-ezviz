@@ -1,41 +1,35 @@
 // -----------------------------------------------------------------------------
-// Scene actions (SDK v0.14+, Gladys 5.1+).
+// Scene action handlers (manifest `scene_actions`, Gladys 5.1+).
 //
-// A scene action is an OPERATION a scene author places in a scene, with
-// parameters and a result: "identify this device", "take a snapshot", "clean
-// these rooms". Each one is declared in the manifest `scene_actions` field
-// (key, label, `fields` in the config_schema grammar, scalar `outputs`) and
-// handled here, keyed by that same `key`; index.js registers every entry with
-// `gladys.onSceneAction(key, ...)`.
-//
-// Scene TRIGGERS are the other direction ("this happened"): they are fired by
-// the device that observes the event, see src/devices/motionSensor.js.
-//
-// The rules that matter:
-//   - `fields` arrive RESOLVED: scene variables substituted, defaults applied,
-//     validated by the core; a `"source": "devices"` field is the chosen
-//     device external_id;
-//   - resolve an object of the declared `outputs` (scalars only), readable by
-//     the following actions of the scene, or `undefined` for none. Keys not
-//     declared in the manifest are dropped by the core;
-//   - throwing fails THIS action only: the scene logs it and continues. A
-//     scene action is never a condition: return an output and let the scene
-//     author gate on it;
-//   - never fire a scene event as a consequence of a received action: a scene
-//     bound to that event would loop through the integration.
+//   - refresh_snapshot: a fresh picture of a camera, sent to Gladys, so the
+//     next action ("send the camera image" in a message) sends what the
+//     camera sees now;
+//   - move_camera: one pan/tilt step of a motorized camera (START then STOP:
+//     never a move left running);
+//   - set_arm_mode: the arming mode of the account (at home, away, sleep), as
+//     the EZVIZ app sets it — only when arming is allowed in the
+//     configuration.
+// Gladys applies the field defaults to scene actions; a failure throws, the
+// scene logs it and carries on.
 // -----------------------------------------------------------------------------
 
-import { createLogger } from '@gladysassistant/integration-sdk';
-import { signalDevice } from './devices/index.js';
+import { MOVES } from './devices.js';
+import { ARM_MODES } from './ezviz/model.js';
 
-const logger = createLogger({ name: 'scenes' });
+// Options of the `direction` and `mode` fields: permanent once published.
+export const DIRECTIONS = Object.values(MOVES);
+export const MODES = Object.keys(ARM_MODES);
 
 export const SCENE_ACTIONS = {
-  // The ack is awaited under the action's `timeout_seconds` (15 s in the
-  // manifest), counted from the moment the scene reaches the action.
-  async identify_device(gladys, { fields, config }) {
-    logger.info(`Scene action identify_device <- ${fields.device}`);
-    const signalled = await signalDevice(gladys, fields.device, config);
-    return { signalled };
+  async refresh_snapshot(hub, { fields = {} }) {
+    await hub.refreshSnapshot(fields.camera);
+  },
+
+  async move_camera(hub, { fields = {} }) {
+    await hub.moveCamera(fields.camera, String(fields.direction ?? ''));
+  },
+
+  async set_arm_mode(hub, { fields = {} }) {
+    await hub.setArmMode(String(fields.mode ?? ''), 'Scene action');
   },
 };

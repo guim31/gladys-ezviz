@@ -8,20 +8,26 @@ contributors.
 A Gladys Assistant **external integration**: a Node.js service (Node 22+, ESM,
 no build step) that runs in its own sandboxed Docker container and talks to
 Gladys through
-[`@gladysassistant/integration-sdk`](https://github.com/GladysAssistant/integration-sdk-js),
-its only runtime dependency. It started from the official JavaScript template.
+[`@gladysassistant/integration-sdk`](https://github.com/GladysAssistant/integration-sdk-js).
+It started from the official JavaScript template. Runtime dependencies: the SDK
+and `jpeg-js` (pure JavaScript, to shrink camera pictures).
+
+It brings the cameras and doorbells of an EZVIZ account into Gladys, through
+the EZVIZ cloud (the private API of the EZVIZ apps, as pyEzviz / pyEzvizApi
+and the Home Assistant `ezviz` integration use it).
 
 ## Commands
 
 ```bash
 npm install
 npm test                                  # node --test, the built-in runner
-node --test test/devices.test.js          # one file
-node --test --test-name-pattern "plug"    # tests whose name matches
+node --test test/hub.test.js              # one file
+node --test --test-name-pattern "doorbell"   # tests whose name matches
 npm run lint                              # ESLint
 npm run format:check                      # Prettier, as the CI runs it
 npm run format                            # Prettier, fix in place
 npx github:GladysAssistant/integration-store .   # store admission checks
+node scripts/probe.mjs                    # real EZVIZ cloud, read-only (see the file)
 ```
 
 The CI (`.github/workflows/ci.yml`) runs `format:check`, `lint` and `test` on
@@ -31,16 +37,27 @@ pushing.
 ## Architecture
 
 ```
-index.js                          SDK wiring only: handlers registered before connect()
-src/devices/index.js              registry of the device blueprints + dispatch helpers
-src/devices/<type>.js             one device type per file (buildDevice, onPoll, onSetValue...)
+index.js                          SDK wiring only: src/app.js registers the handlers before connect()
+src/app.js                        every SDK handler -> the hub (also used by the tests)
+src/hub.js                        the account: session, timers, alarms, pictures, states, commands, logs
+src/devices.js                    Gladys devices (camera, account), feature names (4 languages), values
+src/ezviz/client.js               EZVIZ cloud client: login, verification code, session, reads, commands
+src/ezviz/http.js                 the HTTP seam (fetch), replaced by the fake cloud in the tests
+src/ezviz/model.js                device list and alarm parsing, capabilities, alarm kinds
+src/ezviz/crypto.js               password digest, encrypted pictures (hikencodepicture, AES-128-CBC)
+src/image.js                      picture -> camera image <= 150 KB (worker, one at a time)
+src/image-worker.js               the conversion: scaled decode, shrink, jpeg-js encode
+src/jpeg-scaled.js                baseline JPEG decoder straight to 1/2, 1/4, 1/8 (memory)
 src/scenes.js                     scene action handlers (manifest `scene_actions`)
-src/widgets.js                    dashboard widget handlers (manifest `widgets`)
+src/widgets.js                    dashboard widget `ezviz` (manifest `widgets`)
+src/texts.js                      status, error, report, action and value texts (4 languages)
 src/config.js                     DEFAULT_CONFIG (mirrors the manifest defaults) + normalization
-src/weather.js                    example driver (Open-Meteo)
+src/store.js                      /data/ezviz-state.json (session, terminal id, doorbells seen)
+scripts/probe.mjs                 probe of the real cloud (not in the image)
 gladys-assistant-integration.json manifest: name, config_schema, actions, image...
-docs/en.md, docs/fr.md            user documentation, re-hosted by Gladys (mandatory)
+docs/{en,fr,de,es}.md             user documentation, re-hosted by Gladys (en and fr mandatory)
 test/                             node --test, against the SDK's fake Gladys (integration-sdk/testing)
+                                  and helpers/fakeCloud.js (built from test/fixtures/ezviz)
 .github/scripts/release.mjs       release helpers (manifest bump, changelog), tested in test/
 ```
 
@@ -70,8 +87,10 @@ test/                             node --test, against the SDK's fake Gladys (in
   `type: "provider"`: 5.1.0). `test/manifest.test.js` ties the manifest to the
   code (defaults, action, scene and widget handlers): change both sides
   together.
-- **User-facing text** is bilingual (English and French): action messages,
-  manifest texts, and `docs/en.md` / `docs/fr.md`, kept in sync.
+- **User-facing text** exists in English, French, German and Spanish: action
+  messages, widget content, feature names, manifest texts, and
+  `docs/en.md`, `docs/fr.md`, `docs/de.md`, `docs/es.md`, kept in sync
+  (`test/i18n.test.js` checks the languages and the doc sections).
 - **Style.** Prettier formats, ESLint catches mistakes. Comments explain why,
   in English. Tests never touch the network.
 
@@ -233,3 +252,30 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Docs `en`, `fr`, `de`, `es` avec les mêmes sections.
 - Chauffe, ouverture, sécurité : ne rien rendre pilotable « comme un thermostat » ou par un assistant
   vocal quand une erreur serait dangereuse (leçon d'OctoPrint).
+
+## Pièges propres à EZVIZ
+
+- **API privée** des apps EZVIZ (celle de pyEzvizApi et de Home Assistant), sans quota publié : rester
+  au rythme de Home Assistant ou plus lent (alarmes toutes les 30 s par défaut, liste des appareils
+  toutes les 5 min, captures des caméras sur secteur toutes les 15 min). Le filtre de la liste des
+  appareils (`PAGELIST_FILTER`) est celui de pyezvizapi, recopié tel quel : ne pas le « nettoyer ».
+- **Connexion** : `meta.code` 1100 = mauvaise région (`loginArea.apiDomain` donne la bonne), 6002 =
+  code de vérification envoyé, 1012 code faux, 1013/1014 identifiants refusés, 1015 compte bloqué.
+  **Ne jamais réessayer seul un mot de passe refusé** : EZVIZ bloque le compte. Le hub bloque les
+  connexions automatiques (`hub.blocked`) jusqu'à un changement de configuration ou une action de
+  l'utilisateur.
+- Le **`featureCode`** (identifiant de terminal) est tiré une fois et gardé dans `/data` : EZVIZ y lie
+  la connexion (`TERMINAL_BIND`) ; un nouveau à chaque démarrage redemanderait un code à chaque fois.
+- `deviceInfos.status` 2 veut dire hors ligne **ou en veille** : une caméra sur batterie y passe sans
+  cesse, d'où un log debug et jamais de capture sur minuteur (chaque capture la réveille).
+- **Images chiffrées** (`hikencodepicture`, AES-128-CBC, clé = code de vérification) : code de la
+  configuration, sinon clé du cloud (`/api/device/query/encryptkey`, 20002 = il faut un code MFA).
+- **Type d'alarme** : codes 10000 (PIR), 10002 (mouvement), 10016 (sonnette) de la plateforme ouverte,
+  sinon le titre anglais (les en-têtes demandent `lang: en` : ne pas les changer). Aucune réponse réelle
+  de `unifiedmsg/list` n'est publiée : `test/fixtures/ezviz/alarms.json` est écrit d'après le code.
+- Sirène : `sendAlarm` 2 = marche, 1 = arrêt ; le firmware la coupe seul après 60 s. Pan/tilt :
+  toujours START puis STOP (un pas), jamais un mouvement laissé en cours.
+- `camera/move` est rendu par le front 5.2.1 (`CameraPtzControls`) ; 0 = arrêt, jamais listé en option.
+- Le proxy des sessions de code refuse `*.ezvizlife.com` (403) : `scripts/probe.mjs` se lance ailleurs.
+- Faux Gladys du SDK : le message d'une action est dans `ack.data.message`, `fake.lastState()` d'un
+  état texte rend la chaîne, `fake.cameraImages[].device_external_id`.
