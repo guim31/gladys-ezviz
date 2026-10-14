@@ -1,61 +1,237 @@
-# Demo Devices Template
+# EZVIZ
 
-This is the user documentation of the integration. Gladys re-hosts this file
-and shows a permanent **Documentation** link to it in the Configuration screen
-(in the user's language, with English as the fallback) — it is when
-configuring that the user needs it most. Keep the short onboarding hints in
-the `section` blocks of the manifest `config_schema`; put the long
-step-by-step (screenshots, troubleshooting…) here.
+Brings the **EZVIZ cameras and doorbells** of your EZVIZ account into Gladys,
+through the **EZVIZ cloud** (the one the EZVIZ app uses): the picture of each
+alarm, motion and person detections, doorbell rings, the arming mode of the
+account (at home, away, sleep), privacy mode, motion detection on/off,
+floodlight, siren, pan and tilt of motorized cameras, battery, Wi-Fi signal and
+SD card. No setting on the cameras, no open port: many EZVIZ cameras offer no
+ONVIF or RTSP without fiddling, the cloud covers them all.
 
-## What you get
+> **Developed without the hardware: feedback welcome.** This integration was
+> written from the work of the Home Assistant `ezviz` integration and of the
+> pyEzviz library, without an EZVIZ camera or account at hand. If something
+> does not work as described, please open an issue on
+> [github.com/guim31/gladys-ezviz/issues](https://github.com/guim31/gladys-ezviz/issues)
+> with the integration logs (`LOG_LEVEL=debug`).
+>
+> This integration is not affiliated with EZVIZ or Hikvision. EZVIZ is a
+> trademark of Hangzhou EZVIZ Network Co., Ltd.
 
-Six demo devices show up after installation: a weather station (real data
-from Open-Meteo), a switch, a dimmable light, a smart plug with power
-metering, a motion sensor and a camera.
+## What you need
 
-## Configuration
+- An **EZVIZ account** (the e-mail or phone number and the password of the
+  EZVIZ app) with your cameras in it. A second account with only the cameras
+  you want in Gladys, shared from the app, is a good idea.
+- Gladys **5.1 or later**, with Internet access.
+- Optional: the **verification code** of each camera (6 capital letters on
+  the label under the camera, or on its box), to read the encrypted pictures
+  and to get the RTSP address.
 
-1. Open the **Configuration** tab of the integration.
-2. Set the **latitude** and **longitude** the demo weather station should
-   observe (they default to Paris), and pick your temperature unit.
-   The **refresh interval** sets how often the weather station and the
-   plug's power are read: every 5 minutes by default, every minute at most.
-3. Save: the devices appear in the **Discovery** tab, ready to be added.
+## Set up
 
-The **Prefer the local connection** toggle drives the demo plug: it reports
-the channel it actually uses as a badge (local or cloud), with an orange dot
-when it runs degraded (local refused, cloud fallback).
+Open **Integrations → EZVIZ → Configuration**, fill in the settings, save,
+then click **Test the connection**. Open the **Discover** tab and add the
+cameras and the "EZVIZ account" device.
 
-## Actions
+### Settings
 
-- **Test the weather provider** — performs a live request to Open-Meteo and
-  shows the current temperature and humidity under the button.
-- **Identify a device** — pick one of your devices in the list and it will
-  signal itself (the demo light "blinks" in the logs).
+- **E-mail or phone number** and **Password**: the login of the EZVIZ app.
+  The password is sent only to the EZVIZ cloud, as a digest, as the app does;
+  it is never written to the logs nor to the disk.
+- **API server**: leave the European server `apiieu.ezvizlife.com`: when your
+  account lives in another region, EZVIZ says so at login and the integration
+  follows it. Otherwise type the server of your region (`apiius.ezvizlife.com`
+  for America, `apirus.ezvizru.com` for Russia) or its short code (`us`).
+- **Camera verification codes** (optional): `SERIAL:CODE` pairs separated by
+  commas, for example `BD1234567:ABCDEF, C78901234:GHIJKL`, or one single code
+  used for every camera. The serial number is on the same label. Needed when
+  a camera **encrypts its pictures** (the "image encryption" of the EZVIZ app,
+  on by default on many models) and for the RTSP address.
+- **Alarm check**: how often the list of alarms is read (every 15, 30, 60 or
+  120 seconds; 30 by default). One request reads the alarms of every camera.
+- **Camera images**: how often a fresh picture of each camera **on mains
+  power** is taken (every 5, 15 or 60 minutes, or only on alarm). Battery
+  cameras are never woken up by this timer: their image is the picture of
+  their last alarm.
+- **Allow arming from Gladys** (on by default): the arming mode can be changed
+  from the dashboard, the scenes and the widget. Untick to only show it.
+- **Allow the siren** (off by default): adds a siren switch to the cameras
+  that have one. A siren sounds for a minute and wakes the neighbours: tick it
+  only if you need it.
+- **Language of the names**: language of the feature names and of the texts
+  sent to the scenes. Names are set when a device is added.
 
-## Scenes
+### Two-step verification
 
-The integration adds its own cards to the scene editor (Gladys 5.1 or
-later), under the **Integrations** category:
+When the account has two-step verification, EZVIZ sends a code by e-mail or
+SMS at the first login, and the status of the integration says so. Open
+**Enter the verification code**, type the code and run the action: Gladys is
+connected. Run it with an empty code to receive a new one. The session is kept
+in the integration's own storage: no new code at the next restart. A code is
+asked again only if EZVIZ ends the session (password changed, Gladys removed
+from the trusted devices of the account).
 
-- **Motion detected** (trigger) — starts the scene when a demo motion sensor
-  sees something move. Optionally pick the sensor and what moved (person,
-  animal); left empty, any detection matches. The following actions can
-  read what moved with `{{triggerEvent.data.target}}`.
-- **Identify a device** (action) — makes the chosen device signal itself.
-  It returns whether the device could signal itself, so the following
-  actions can depend on it.
+### Configuration actions
+
+- **Test the connection**: logs in, reads the account and says how many
+  cameras were found, and how many encrypt their pictures without a
+  verification code in the configuration. After a refused password or a
+  locked account, this is also how you ask the integration to try again.
+- **Enter the verification code**: see above.
+- **Show the RTSP address**: the local video address of a camera (see Live
+  video).
+
+## The devices
+
+### Cameras and doorbells
+
+One device per camera or doorbell, named as in the EZVIZ app, with the
+features the model has:
+
+- **Image**: the picture of the last alarm, the fresh pictures of the timer,
+  and a fresh capture when you open the camera on the dashboard (an asleep or
+  offline camera shows its last picture).
+- **Pan and tilt** (motorized cameras): the arrows of the camera on the
+  dashboard; each tap moves the camera one step.
+- **Motion**: 1 for a minute after a detection alarm (motion, person or
+  another alarm of the camera), then 0.
+- **Doorbell ring** (doorbells): "Ringing" for a few seconds at each press. A
+  camera EZVIZ does not class as a doorbell gets this feature at its first
+  ring.
+- **Last event**: what and when, for example "Person · 18:32".
+- **Online**: whether the camera answers the EZVIZ cloud. A battery camera
+  reads "off" while it sleeps: this is normal.
+- **Motion detection**: the alarm notifications of the camera on or off (the
+  bell of the EZVIZ app).
+- **Privacy mode**: the lens cover of the models that have one.
+- **Floodlight**: the light of the floodlight cameras.
+- **Siren**: only when allowed in the configuration; it stops by itself after
+  a minute.
+- **Battery**: battery models, in %.
+- **Wi-Fi signal**: from 0 to 100.
+- **SD card**: Normal, No card, Error, Not formatted or Formatting.
+- **SD card size**: in GB (EZVIZ does not report the free space).
+
+### The account
+
+The **EZVIZ account** device carries the **Arming mode** of the account, as on
+the home page of the EZVIZ app: **At home**, **Away** or **Sleep**. What each
+mode does (which camera detects, sounds or notifies) is set in the EZVIZ app.
+Read-only when arming is not allowed in the configuration.
 
 ## Dashboard
 
-Add the **Demo status** widget to a dashboard: it shows the live
-temperature of the weather station and the power of the office plug, the
-connection the plug currently uses (orange when degraded) and the observed
-location. Its **Identify the light** button makes the demo light signal
-itself.
+Add the camera devices to a room to see their image, arrows and switches, and
+the **EZVIZ** widget for a glance: the picture of the last alarm (of one
+camera, chosen in the widget settings, or of all), the last event, the arming
+mode, and three buttons to switch the arming mode (the current one shows a
+tick; "At home" asks for confirmation since it switches the detections off).
+No button when arming is not allowed.
+
+## Scenes
+
+### Triggers
+
+- **Detection by an EZVIZ camera**: a new alarm of a camera. Filters: the
+  camera, and what was detected — motion, person (when the camera tells them
+  apart) or other alarm. Information passed to the actions: the camera name,
+  the detection (code and name), the alarm text written by EZVIZ and its EZVIZ
+  type. The camera image is already the picture of the alarm when the scene
+  starts: "send the camera image" sends it.
+- **Someone rang an EZVIZ doorbell**: a doorbell was pressed. Filter: the
+  doorbell. The camera image is the picture of the visitor.
+
+The arrival of a new alarm already sets the **Motion** and **Doorbell ring**
+features: a trigger on these features works too. The triggers above add the
+kind of detection and the alarm picture.
+
+### Actions
+
+- **Take a fresh EZVIZ picture**: asks a camera for a fresh picture and sends
+  it to Gladys, for a "send the camera image" right after. It wakes a battery
+  camera up: use it sparingly on those.
+- **Turn an EZVIZ camera**: one step left, right, up or down.
+- **Set the EZVIZ arming mode**: at home, away or sleep (when allowed in the
+  configuration).
+
+### Scene ideas
+
+- **Everybody left**: when the last person leaves the house, **Set the EZVIZ
+  arming mode** to away; when the first one comes back, to at home.
+- **Visitor at the door**: on **Someone rang an EZVIZ doorbell**, send the
+  doorbell image on Telegram with "Someone is at the door".
+- **Someone in the garden at night**: on **Detection by an EZVIZ camera**,
+  filtered on the garden camera and "person", between sunset and sunrise,
+  turn the garden lights on and send the image.
+- **Privacy at home**: when someone is home, turn the **Privacy mode** of the
+  living room camera on; off when the house is empty.
+
+## Live video (RTSP)
+
+The integration gives Gladys pictures, not a continuous video. For a live
+stream, many EZVIZ cameras serve RTSP on the local network: enable it in the
+EZVIZ app when the model offers it (camera settings, "LAN live view" or
+"RTSP"), put the verification code of the camera in the configuration, then
+run **Show the RTSP address**: copy the address into the "RTSP camera"
+integration of Gladys. The address is
+`rtsp://admin:<code>@<local IP>:554/Streaming/Channels/101` (`102` for the
+lighter sub-stream). It contains the code of the camera: keep it private.
+Battery cameras and doorbells usually have no RTSP.
+
+## Refresh and limits of the cloud
+
+EZVIZ has no public API for its consumer accounts: the integration uses the
+private API of the EZVIZ apps, the one the Home Assistant `ezviz` integration
+has used for years. EZVIZ publishes no quota for it; the integration stays at
+the pace of Home Assistant or slower:
+
+- the **alarms** of every camera: one request every 30 seconds by default;
+- the **devices** and the arming mode: every 5 minutes, and right after a
+  command;
+- the **captures** of the mains-powered cameras: every 15 minutes by default;
+- about 3,500 requests a day with the default settings.
+
+**Expected delay** for a detection or a ring: the time the camera takes to
+send its alarm to the EZVIZ cloud (a few seconds, more for a battery camera
+that wakes up), plus at most the alarm check interval — usually **5 to 40
+seconds** with the default 30 seconds. An alarm the cloud lists more than 10
+minutes late is shown as the last event but starts no scene. Gladys is never
+asked to poll the devices: the integration refreshes them on its own timers.
 
 ## Troubleshooting
 
-The integration logs everything it does: check the integration logs from the
-Gladys UI (or `docker logs` on the host) with `LOG_LEVEL=debug` for the full
-detail.
+- **"EZVIZ refused the e-mail or the password"**: check them in the EZVIZ
+  app, correct them in the configuration and save. The integration does not
+  retry a refused password by itself (EZVIZ locks an account after several
+  failures): saving or **Test the connection** tries again.
+- **"EZVIZ locked the account"**: wait, or unlock it in the EZVIZ app (reset
+  the password if needed), then **Test the connection**.
+- **"EZVIZ sent a verification code"**: see Two-step verification.
+- **No image, "the picture is encrypted"**: add the verification code of the
+  camera to the configuration (or turn image encryption off in the EZVIZ
+  app). **Test the connection** says how many cameras are concerned.
+- **The image of a battery camera never changes**: normal between alarms, the
+  integration does not wake it up on a timer.
+- **A detection does not start my scene**: check the filter "what was
+  detected". Some cameras report a person as a plain motion alarm. With
+  `LOG_LEVEL=debug`, each alarm is logged with its EZVIZ type and text: please
+  report them in an issue so the classification can improve.
+- **The cloud does not answer**: check the Internet access of Gladys. The
+  integration retries by itself and says so once in the logs.
+
+## Limits
+
+- Cloud only: no local control, and nothing works when the EZVIZ cloud or the
+  Internet access is down (the RTSP video, served by the camera, still works).
+- An unofficial API: EZVIZ may change it without notice.
+- No continuous video inside the integration (see Live video), no two-way
+  audio, no recordings.
+- EZVIZ smart plugs, bulbs, locks, alarm hubs and NVR base stations are not
+  handled; only cameras and doorbells.
+- One arming mode for the whole account (the EZVIZ "default group").
+- The kind of an alarm (motion, person, doorbell) is read from the EZVIZ type
+  codes known so far and from its English text: an unusual model may report
+  "other alarm".
+- The free space of the SD card is not reported by the cloud.
+- One EZVIZ account per Gladys.

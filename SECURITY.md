@@ -28,8 +28,27 @@ Gladys before reporting a problem.
 
 ## Scope
 
-In scope: the code of this repository and the Docker image it publishes.
+In scope: the code of this repository and the Docker image it publishes. In
+particular:
+
+- **Secrets**: the password of the EZVIZ account and the verification codes of
+  the cameras live in the Gladys configuration of the integration (`secret`
+  fields). The password is sent only to the EZVIZ cloud (hosts under
+  `ezvizlife.com`, `ezvizru.com` or `ezviz.com`, HTTPS), as the MD5 digest the
+  EZVIZ apps send; the codes are never sent anywhere (they decrypt pictures
+  locally and build the RTSP address shown on request). None of them is
+  written to the logs or to `/data`.
+- **`/data`**: one file, `ezviz-state.json`, mode 0600: the session of the
+  account (session and refresh ids, API domain, EZVIZ user id) keyed by a hash
+  of the account and server, a random terminal id, and the serials of the
+  cameras seen ringing. Whoever reads this file can use the EZVIZ session
+  until it expires or the password changes.
+- **Network**: the integration talks only to the EZVIZ cloud over HTTPS (API
+  and picture downloads, `https://` addresses only), never to the cameras.
+- **Camera images** stay in memory (the last ones, for the widget) and go to
+  Gladys only. RTSP addresses contain the verification code of a camera: they
+  are shown to the user on request and never logged.
 
 Out of scope: Gladys Assistant itself (see its
 [security policy](https://github.com/GladysAssistant/Gladys/security/policy)),
-and the third-party services and devices the integration talks to.
+the EZVIZ cloud, apps, firmware and devices (report those to EZVIZ).
