@@ -15,9 +15,13 @@ export const LANGUAGES = ['en', 'fr', 'de', 'es'];
 export const ALARM_INTERVALS = ['15', '30', '60', '120'];
 
 // Minutes between two fresh captures of every mains-powered camera added to
-// Gladys (`0`: only on an alarm, a scene action or the live view). Battery
-// cameras are never woken up by the timer.
-export const SNAPSHOT_INTERVALS = ['0', '5', '15', '60'];
+// Gladys (`0`: only on an alarm or a scene action). Battery cameras are never
+// woken up by the timer. This is how fresh the camera box of the dashboard
+// is: in Gladys 5.2.1 it shows the last image the integration published and
+// never asks for a new one (only the "send camera image" and AI scene actions
+// do), so 5 minutes by default, 1 minute for whoever accepts the extra
+// captures (one cloud request per camera and per minute).
+export const SNAPSHOT_INTERVALS = ['0', '1', '5', '15', '60'];
 
 // The European server; the login moves to the right region by itself when
 // EZVIZ answers that the account lives elsewhere (code 1100).
@@ -32,7 +36,7 @@ export const DEFAULT_CONFIG = {
   api_server: DEFAULT_SERVER,
   verification_codes: '',
   alarm_interval: '30',
-  snapshot_interval: '15',
+  snapshot_interval: '5',
   allow_arming: true,
   allow_siren: false,
   language: 'fr',
@@ -61,25 +65,38 @@ export function parseServer(raw) {
   return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(host) && SERVER_DOMAINS.test(host) ? host : null;
 }
 
+/** A verification code as typed: letters and digits, 4 to 32 of them. */
+export const isCode = (value) => typeof value === 'string' && /^[A-Za-z0-9]{4,32}$/.test(value);
+
 /**
  * The verification codes (the 6 letters on the sticker of each camera), as
  * typed: `SERIAL:CODE` pairs separated by commas, spaces or new lines, or one
  * bare code used for every camera without its own.
- * @returns {{ fallback: string|null, bySerial: Map<string, string>, invalid: number }}
+ *
+ * Several bare codes ("CODE1,CODE2", first field report) cannot be matched to
+ * the cameras: none of them is used (`ambiguous`), and the hub says which
+ * serials to write in front of them, rather than trying one code on every
+ * camera in silence.
+ * @returns {{ fallback: string|null, bySerial: Map<string, string>, bare: number,
+ *   ambiguous: boolean, invalid: number }}
  */
 export function parseCodes(raw) {
-  const result = { fallback: null, bySerial: new Map(), invalid: 0 };
+  const result = { fallback: null, bySerial: new Map(), bare: 0, ambiguous: false, invalid: 0 };
   const text = typeof raw === 'string' ? raw : '';
+  const bare = [];
   for (const entry of text.split(/[\s,;]+/).filter(Boolean)) {
     const match = entry.match(/^([A-Za-z0-9]{5,20})[:=]([A-Za-z0-9]{4,32})$/);
     if (match) {
       result.bySerial.set(match[1].toUpperCase(), match[2]);
-    } else if (/^[A-Za-z0-9]{4,32}$/.test(entry) && result.fallback === null) {
-      result.fallback = entry;
+    } else if (isCode(entry)) {
+      bare.push(entry);
     } else {
       result.invalid += 1;
     }
   }
+  result.bare = bare.length;
+  result.ambiguous = bare.length > 1;
+  result.fallback = bare.length === 1 ? bare[0] : null;
   return result;
 }
 
@@ -123,9 +140,20 @@ export function normalizeConfig(raw = {}) {
   };
 }
 
-/** The verification code of a camera, from the configuration. */
-export function codeFor(config, serial) {
+/**
+ * The verification code of a camera: the one saved by the "camera code"
+ * action (`saved`, by serial, kept in /data), else its `SERIAL:CODE` pair of
+ * the configuration, else the single bare code of the configuration.
+ * @param {object} config a normalized configuration
+ * @param {string} serial
+ * @param {Record<string, string>} [saved]
+ */
+export function codeFor(config, serial, saved = {}) {
+  const key = String(serial).toUpperCase();
   return (
-    config?.codes?.bySerial.get(String(serial).toUpperCase()) ?? config?.codes?.fallback ?? null
+    (isCode(saved?.[key]) ? saved[key] : null) ??
+    config?.codes?.bySerial.get(key) ??
+    config?.codes?.fallback ??
+    null
   );
 }

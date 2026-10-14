@@ -45,19 +45,26 @@ añada las cámaras y el dispositivo «Cuenta EZVIZ».
   integración lo sigue. Si no, escriba el servidor de su región
   (`apiius.ezvizlife.com` para América, `apirus.ezvizru.com` para Rusia) o su
   código corto (`us`).
-- **Códigos de verificación de las cámaras** (opcional): pares
-  `SERIE:CÓDIGO` separados por comas, por ejemplo
+- **Códigos de verificación de las cámaras** (opcional, la forma anterior):
+  pares `SERIE:CÓDIGO` separados por comas, por ejemplo
   `BD1234567:ABCDEF, C78901234:GHIJKL`, o un solo código para todas las
-  cámaras. El número de serie está en la misma etiqueta. Necesario cuando una
-  cámara **cifra sus imágenes** (el «cifrado de imagen» de la app EZVIZ,
-  activo por defecto en muchos modelos) y para la dirección RTSP.
+  cámaras. Lo más sencillo es la acción **Código de verificación de una
+  cámara**, más abajo. Varios códigos sin número de serie, como
+  `ABCDEF,GHIJKL`, no pueden atribuirse a las cámaras: se ignoran, y el estado
+  de la integración lista sus cámaras con su número de serie. Hace falta un
+  código cuando una cámara **cifra sus imágenes** (el «cifrado de imagen» de
+  la app EZVIZ, activo por defecto en muchos modelos) y para la dirección
+  RTSP.
 - **Consulta de alarmas**: frecuencia de lectura de la lista de alarmas (cada
   15, 30, 60 o 120 segundos; 30 por defecto). Una sola petición lee las
   alarmas de todas las cámaras.
 - **Imágenes de las cámaras**: frecuencia de una imagen nueva de cada cámara
-  **con corriente** (cada 5, 15 o 60 minutos, o solo al alarmar). Las cámaras
-  con batería nunca se despiertan con este temporizador: su imagen es la de su
-  última alarma.
+  **con corriente** (cada minuto, cada 5, 15 o 60 minutos, o solo al alarmar;
+  5 minutos por defecto). Es la frescura de la cámara en el panel: Gladys
+  muestra la última imagen enviada por la integración y no pide otra al
+  abrirla. Cada minuto cuesta una petición a la nube por cámara y por minuto.
+  Las cámaras con batería nunca se despiertan con este temporizador: su imagen
+  es la de su última alarma.
 - **Permitir el armado desde Gladys** (activado por defecto): el modo de
   armado se cambia desde el panel, las escenas y el widget. Desmárquelo para
   solo mostrarlo.
@@ -86,6 +93,10 @@ dispositivos de confianza de la cuenta).
   verificación en la configuración. Tras una contraseña rechazada o una cuenta
   bloqueada, también es así como se pide a la integración que lo reintente.
 - **Introducir el código de verificación**: véase arriba.
+- **Código de verificación de una cámara**: elija una cámara (añádala antes a
+  Gladys) y escriba las 6 letras mayúsculas de su etiqueta. La integración
+  guarda el código (un código vacío lo elimina) y lo comprueba con la última
+  imagen de la cámara cuando está cifrada. Una vez por cámara.
 - **Mostrar la dirección RTSP**: la dirección de vídeo local de una cámara
   (véase Vídeo en directo).
 
@@ -96,9 +107,10 @@ dispositivos de confianza de la cuenta).
 Un dispositivo por cámara o timbre, con el nombre de la app EZVIZ, con las
 funciones del modelo:
 
-- **Imagen**: la imagen de la última alarma, las imágenes nuevas del
-  temporizador, y una captura nueva cuando abre la cámara en el panel (una
-  cámara en reposo o sin conexión muestra su última imagen).
+- **Imagen**: la imagen de la última alarma, y luego las capturas del
+  temporizador (véase Imágenes de las cámaras): la cámara del panel muestra la
+  más reciente, y Gladys oculta una imagen de más de una hora. Para el vídeo
+  en directo, véase Vídeo en directo (RTSP).
 - **Orientación** (cámaras motorizadas): las flechas de la cámara en el panel;
   cada pulsación la gira un paso.
 - **Movimiento**: 1 durante un minuto tras una alarma de detección
@@ -126,16 +138,20 @@ El dispositivo **Cuenta EZVIZ** lleva el **Modo de armado** de la cuenta, como
 en la página de inicio de la app EZVIZ: **En casa**, **Ausente** o **Noche**.
 Lo que hace cada modo (qué cámara detecta, suena o notifica) se ajusta en la
 app EZVIZ. Solo lectura cuando el armado no está permitido en la
-configuración.
+configuración. Es un solo modo para toda la cuenta, es decir, para todas las
+cámaras: la app EZVIZ no tiene modo por cámara.
 
 ## Panel
 
 Añada las cámaras a una habitación para ver su imagen, sus flechas y sus
-interruptores, y el widget **EZVIZ** para un vistazo: la imagen de la última
-alarma (de una cámara, elegida en los ajustes del widget, o de todas), el
-último evento, el modo de armado, y tres botones para cambiar de modo (el
-actual lleva una marca; «En casa» pide confirmación, porque desactiva las
-detecciones). Sin botones cuando el armado no está permitido.
+interruptores, y el widget **EZVIZ** para un vistazo: la imagen de la alarma
+más reciente, una línea por cámara (su último evento, o si está en línea), el
+**Modo de la cuenta EZVIZ**, y tres botones para cambiarlo (el actual lleva
+una marca; «En casa» pide confirmación, porque desactiva las detecciones).
+Elija una o varias cámaras en los ajustes del widget, o ninguna para todas.
+Los botones cambian el modo de toda la cuenta, es decir, de todas las cámaras,
+sean cuales sean las cámaras mostradas. Sin botones cuando el armado no está
+permitido.
 
 ## Escenas
 
@@ -179,12 +195,13 @@ alarma.
 
 ## Vídeo en directo (RTSP)
 
-La integración da imágenes a Gladys, no un vídeo continuo. Para un flujo en
-directo, muchas cámaras EZVIZ sirven RTSP en la red local: actívelo en la app
-EZVIZ cuando el modelo lo ofrezca (ajustes de la cámara, «Vista en LAN» o
-«RTSP»), ponga el código de verificación de la cámara en la configuración y
-ejecute **Mostrar la dirección RTSP**: copie la dirección en la integración
-«Cámara RTSP» de Gladys. La dirección es
+La integración da imágenes a Gladys, no un vídeo continuo: llevan hasta el
+intervalo de captura de retraso respecto a la cámara (5 minutos por defecto).
+Para el directo, muchas cámaras EZVIZ sirven RTSP en la red local: actívelo en
+la app EZVIZ cuando el modelo lo ofrezca (ajustes de la cámara, «Vista en LAN»
+o «RTSP»), guarde el código de verificación de la cámara con **Código de
+verificación de una cámara** y ejecute **Mostrar la dirección RTSP**: copie la
+dirección en la integración «Cámara RTSP» de Gladys. La dirección es
 `rtsp://admin:<código>@<IP local>:554/Streaming/Channels/101` (`102` para el
 flujo secundario, más ligero). Contiene el código de la cámara: no la
 comparta. Las cámaras con batería y los timbres no suelen tener RTSP.
@@ -200,8 +217,10 @@ integración se mantiene al ritmo de Home Assistant o más lenta:
   defecto;
 - los **dispositivos** y el modo de armado: cada 5 minutos, y justo después
   de una orden;
-- las **capturas** de las cámaras con corriente: cada 15 minutos por defecto;
-- unas 3.500 peticiones al día con los ajustes por defecto.
+- las **capturas** de las cámaras con corriente: cada 5 minutos por defecto,
+  una petición por cámara;
+- unas 3.500 peticiones al día, más 288 por cámara con corriente, con los
+  ajustes por defecto.
 
 **Retraso esperado** para una detección o una llamada al timbre: el tiempo
 que tarda la cámara en enviar su alarma a la nube EZVIZ (unos segundos, más
@@ -223,9 +242,17 @@ sus propios temporizadores.
   conexión**.
 - **«EZVIZ ha enviado un código de verificación»**: véase Verificación en dos
   pasos.
-- **Sin imagen, «la imagen está cifrada»**: añada el código de verificación
-  de la cámara a la configuración (o desactive el cifrado de imagen en la app
-  EZVIZ). **Probar la conexión** indica cuántas cámaras están afectadas.
+- **Sin imagen, «la imagen está cifrada»**: guarde el código de verificación
+  de la cámara con **Código de verificación de una cámara** (o desactive el
+  cifrado de imagen en la app EZVIZ). **Probar la conexión** indica cuántas
+  cámaras están afectadas.
+- **La imagen del panel tiene varios minutos**: es la última captura, y Gladys
+  no pide otra al abrir el panel. Reduzca **Imágenes de las cámaras** (cada
+  minuto como máximo), o use la dirección RTSP para el directo.
+- **La dirección RTSP muestra el mismo código para dos cámaras**, o el estado
+  dice que se ignoran códigos: los códigos se escribieron sin su número de
+  serie. Guarde cada uno con **Código de verificación de una cámara** y vacíe
+  después el campo **Códigos de verificación de las cámaras**.
 - **La imagen de una cámara con batería nunca cambia**: normal entre dos
   alarmas, la integración no la despierta con el temporizador.
 - **Una detección no inicia mi escena**: compruebe el filtro «lo detectado».

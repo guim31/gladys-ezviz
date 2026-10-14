@@ -91,6 +91,11 @@ export function registerHandlers(gladys, options = {}) {
   );
 
   gladys.onAction(
+    'camera_code',
+    whenReady((fields = {}) => hub.setCameraCode(fields.camera, fields.code)),
+  );
+
+  gladys.onAction(
     'stream_url',
     whenReady((fields = {}) => hub.streamUrl(fields.camera)),
   );

@@ -279,3 +279,16 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Le proxy des sessions de code refuse `*.ezvizlife.com` (403) : `scripts/probe.mjs` se lance ailleurs.
 - Faux Gladys du SDK : le message d'une action est dans `ack.data.message`, `fake.lastState()` d'un
   état texte rend la chaîne, `fake.cameraImages[].device_external_id`.
+- **Image de caméra dans le cœur 5.2.1** : la boîte caméra du tableau de bord lit l’image stockée
+  (`GET /api/v1/camera/:selector/image`, rafraîchie par websocket à chaque `publishCameraImage`) et
+  **ne demande jamais d’image à l’intégration**. Seuls les actions de scène « envoyer l’image de la
+  caméra » et « demander à l’IA » appellent `camera.getLiveImage` → `onGetImage`. Une image de plus
+  d’une heure est masquée par le cœur. La fraîcheur du tableau de bord est donc celle du minuteur de
+  captures (5 min par défaut) ; `onGetImage` renvoie l’image d’alarme de moins de 30 s (la scène qui
+  suit l’alarme).
+- **Codes de vérification** : plusieurs codes sans numéro de série (« CODE1,CODE2 », premier retour
+  réel) ne sont jamais appliqués ; l’état de l’intégration liste les caméras avec leur série.
+  L’action `camera_code` les range dans `/data` (`codes`), prioritaires sur la configuration.
+- **Réglages de widget** : `multi_select` + `source: "devices"` est accepté par le cœur 5.2.1 (serveur
+  et `ConfigSchemaForm`). Changer le type d’un réglage existant casserait les boîtes enregistrées
+  (une chaîne n’est pas un tableau → 422) : nouveau réglage `cameras`, l’ancien `camera` reste.

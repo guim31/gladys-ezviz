@@ -43,17 +43,24 @@ cameras and the "EZVIZ account" device.
   account lives in another region, EZVIZ says so at login and the integration
   follows it. Otherwise type the server of your region (`apiius.ezvizlife.com`
   for America, `apirus.ezvizru.com` for Russia) or its short code (`us`).
-- **Camera verification codes** (optional): `SERIAL:CODE` pairs separated by
-  commas, for example `BD1234567:ABCDEF, C78901234:GHIJKL`, or one single code
-  used for every camera. The serial number is on the same label. Needed when
-  a camera **encrypts its pictures** (the "image encryption" of the EZVIZ app,
-  on by default on many models) and for the RTSP address.
+- **Camera verification codes** (optional, the former way): `SERIAL:CODE`
+  pairs separated by commas, for example `BD1234567:ABCDEF, C78901234:GHIJKL`,
+  or one single code used for every camera. The simplest is the **Set a camera
+  verification code** action, below. Several codes without a serial number,
+  such as `ABCDEF,GHIJKL`, cannot be matched to the cameras: they are ignored,
+  and the status of the integration lists your cameras with their serial
+  numbers. A code is needed when a camera **encrypts its pictures** (the
+  "image encryption" of the EZVIZ app, on by default on many models) and for
+  the RTSP address.
 - **Alarm check**: how often the list of alarms is read (every 15, 30, 60 or
   120 seconds; 30 by default). One request reads the alarms of every camera.
 - **Camera images**: how often a fresh picture of each camera **on mains
-  power** is taken (every 5, 15 or 60 minutes, or only on alarm). Battery
-  cameras are never woken up by this timer: their image is the picture of
-  their last alarm.
+  power** is taken (every minute, every 5, 15 or 60 minutes, or only on alarm;
+  5 minutes by default). This is how fresh the camera on the dashboard is:
+  Gladys shows the last picture the integration sent, and does not ask for a
+  new one when you open it. Every minute costs one cloud request per camera
+  and per minute. Battery cameras are never woken up by this timer: their
+  image is the picture of their last alarm.
 - **Allow arming from Gladys** (on by default): the arming mode can be changed
   from the dashboard, the scenes and the widget. Untick to only show it.
 - **Allow the siren** (off by default): adds a siren switch to the cameras
@@ -79,6 +86,10 @@ from the trusted devices of the account).
   verification code in the configuration. After a refused password or a
   locked account, this is also how you ask the integration to try again.
 - **Enter the verification code**: see above.
+- **Set a camera verification code**: choose a camera (add it to Gladys first)
+  and type the 6 capital letters of its label. The integration keeps the code
+  (an empty code removes it) and checks it on the last picture of the camera
+  when that one is encrypted. Once per camera.
 - **Show the RTSP address**: the local video address of a camera (see Live
   video).
 
@@ -89,9 +100,10 @@ from the trusted devices of the account).
 One device per camera or doorbell, named as in the EZVIZ app, with the
 features the model has:
 
-- **Image**: the picture of the last alarm, the fresh pictures of the timer,
-  and a fresh capture when you open the camera on the dashboard (an asleep or
-  offline camera shows its last picture).
+- **Image**: the picture of the last alarm, then the captures of the timer
+  (see Camera images): the camera on the dashboard shows the last of them, and
+  Gladys hides a picture older than one hour. For live video, see Live video
+  (RTSP).
 - **Pan and tilt** (motorized cameras): the arrows of the camera on the
   dashboard; each tap moves the camera one step.
 - **Motion**: 1 for a minute after a detection alarm (motion, person or
@@ -118,16 +130,19 @@ features the model has:
 The **EZVIZ account** device carries the **Arming mode** of the account, as on
 the home page of the EZVIZ app: **At home**, **Away** or **Sleep**. What each
 mode does (which camera detects, sounds or notifies) is set in the EZVIZ app.
-Read-only when arming is not allowed in the configuration.
+Read-only when arming is not allowed in the configuration. It is one mode for
+the whole account, so for every camera: the EZVIZ app has no mode per camera.
 
 ## Dashboard
 
 Add the camera devices to a room to see their image, arrows and switches, and
-the **EZVIZ** widget for a glance: the picture of the last alarm (of one
-camera, chosen in the widget settings, or of all), the last event, the arming
-mode, and three buttons to switch the arming mode (the current one shows a
-tick; "At home" asks for confirmation since it switches the detections off).
-No button when arming is not allowed.
+the **EZVIZ** widget for a glance: the picture of the newest alarm, one line
+per camera (its last event, or whether it is online), the **EZVIZ account
+mode**, and three buttons to switch it (the current one shows a tick; "At
+home" asks for confirmation since it switches the detections off). Choose one
+or several cameras in the widget settings, or none for all of them. The
+buttons change the mode of the whole account, so of every camera, whatever the
+cameras shown. No button when arming is not allowed.
 
 ## Scenes
 
@@ -169,12 +184,13 @@ kind of detection and the alarm picture.
 
 ## Live video (RTSP)
 
-The integration gives Gladys pictures, not a continuous video. For a live
-stream, many EZVIZ cameras serve RTSP on the local network: enable it in the
+The integration gives Gladys pictures, not a continuous video: they lag behind
+the camera by up to the capture interval (5 minutes by default). For live
+video, many EZVIZ cameras serve RTSP on the local network: enable it in the
 EZVIZ app when the model offers it (camera settings, "LAN live view" or
-"RTSP"), put the verification code of the camera in the configuration, then
-run **Show the RTSP address**: copy the address into the "RTSP camera"
-integration of Gladys. The address is
+"RTSP"), save the verification code of the camera with **Set a camera
+verification code**, then run **Show the RTSP address**: copy the address into
+the "RTSP camera" integration of Gladys. The address is
 `rtsp://admin:<code>@<local IP>:554/Streaming/Channels/101` (`102` for the
 lighter sub-stream). It contains the code of the camera: keep it private.
 Battery cameras and doorbells usually have no RTSP.
@@ -189,8 +205,10 @@ the pace of Home Assistant or slower:
 - the **alarms** of every camera: one request every 30 seconds by default;
 - the **devices** and the arming mode: every 5 minutes, and right after a
   command;
-- the **captures** of the mains-powered cameras: every 15 minutes by default;
-- about 3,500 requests a day with the default settings.
+- the **captures** of the mains-powered cameras: every 5 minutes by default,
+  one request per camera;
+- about 3,500 requests a day, plus 288 per mains-powered camera, with the
+  default settings.
 
 **Expected delay** for a detection or a ring: the time the camera takes to
 send its alarm to the EZVIZ cloud (a few seconds, more for a battery camera
@@ -208,9 +226,18 @@ asked to poll the devices: the integration refreshes them on its own timers.
 - **"EZVIZ locked the account"**: wait, or unlock it in the EZVIZ app (reset
   the password if needed), then **Test the connection**.
 - **"EZVIZ sent a verification code"**: see Two-step verification.
-- **No image, "the picture is encrypted"**: add the verification code of the
-  camera to the configuration (or turn image encryption off in the EZVIZ
-  app). **Test the connection** says how many cameras are concerned.
+- **No image, "the picture is encrypted"**: save the verification code of the
+  camera with **Set a camera verification code** (or turn image encryption off
+  in the EZVIZ app). **Test the connection** says how many cameras are
+  concerned.
+- **The image on the dashboard is several minutes old**: it is the last
+  capture, and Gladys does not ask for a new one when the dashboard opens.
+  Lower **Camera images** (every minute at most), or use the RTSP address for
+  live video.
+- **The RTSP address shows the same code for two cameras**, or the status says
+  that codes are ignored: the codes were typed without their serial numbers.
+  Save each one with **Set a camera verification code**, then empty the
+  **Camera verification codes** field.
 - **The image of a battery camera never changes**: normal between alarms, the
   integration does not wake it up on a timer.
 - **A detection does not start my scene**: check the filter "what was

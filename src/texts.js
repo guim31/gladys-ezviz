@@ -116,6 +116,56 @@ export const REPORT_TEXT = {
   },
 };
 
+// The verification codes of the cameras: the "camera code" action, and the
+// codes of the configuration that cannot be matched to a camera. `list` is
+// "Name (SERIAL), Name (SERIAL)".
+export const CODE_TEXT = {
+  en: {
+    saved: (name) => `Verification code saved for ${name}.`,
+    checked: (name) => `Verification code saved for ${name}: it opens its last picture.`,
+    wrong: (name) =>
+      `Code saved for ${name}, but it does not open its last picture: check the label of this camera.`,
+    removed: (name) => `Verification code removed for ${name}.`,
+    invalid: () =>
+      'A verification code is made of letters and digits (6 capital letters on most cameras).',
+    ambiguous: (list) =>
+      `Several verification codes without a serial number are ignored. Use the "Set a camera verification code" action, or write SERIAL:CODE. Your cameras: ${list}.`,
+  },
+  fr: {
+    saved: (name) => `Code de vérification enregistré pour ${name}.`,
+    checked: (name) => `Code de vérification enregistré pour ${name} : il ouvre sa dernière image.`,
+    wrong: (name) =>
+      `Code enregistré pour ${name}, mais il n’ouvre pas sa dernière image : vérifiez l’étiquette de cette caméra.`,
+    removed: (name) => `Code de vérification retiré pour ${name}.`,
+    invalid: () =>
+      'Un code de vérification est fait de lettres et de chiffres (6 majuscules sur la plupart des caméras).',
+    ambiguous: (list) =>
+      `Plusieurs codes de vérification sans numéro de série sont ignorés. Utilisez l’action « Code de vérification d’une caméra », ou écrivez SÉRIE:CODE. Vos caméras : ${list}.`,
+  },
+  de: {
+    saved: (name) => `Bestätigungscode für ${name} gespeichert.`,
+    checked: (name) => `Bestätigungscode für ${name} gespeichert: Er öffnet ihr letztes Bild.`,
+    wrong: (name) =>
+      `Code für ${name} gespeichert, aber er öffnet ihr letztes Bild nicht: Prüfe das Etikett dieser Kamera.`,
+    removed: (name) => `Bestätigungscode für ${name} entfernt.`,
+    invalid: () =>
+      'Ein Bestätigungscode besteht aus Buchstaben und Ziffern (6 Großbuchstaben bei den meisten Kameras).',
+    ambiguous: (list) =>
+      `Mehrere Bestätigungscodes ohne Seriennummer werden ignoriert. Nutze die Aktion „Bestätigungscode einer Kamera“ oder schreibe SERIE:CODE. Deine Kameras: ${list}.`,
+  },
+  es: {
+    saved: (name) => `Código de verificación guardado para ${name}.`,
+    checked: (name) => `Código de verificación guardado para ${name}: abre su última imagen.`,
+    wrong: (name) =>
+      `Código guardado para ${name}, pero no abre su última imagen: compruebe la etiqueta de esta cámara.`,
+    removed: (name) => `Código de verificación eliminado para ${name}.`,
+    invalid: () =>
+      'Un código de verificación se compone de letras y cifras (6 mayúsculas en la mayoría de las cámaras).',
+    ambiguous: (list) =>
+      `Se ignoran varios códigos de verificación sin número de serie. Use la acción «Código de verificación de una cámara», o escriba SERIE:CÓDIGO. Sus cámaras: ${list}.`,
+  },
+};
+
 export const ACTION_TEXT = {
   notConfigured: CONNECTION_TEXT.noAccount,
   notConnected: {
@@ -185,10 +235,10 @@ export const ACTION_TEXT = {
     es: 'Dirección RTSP (active antes RTSP en la app EZVIZ):',
   },
   streamNoCode: {
-    en: 'Add the verification code of this camera to the configuration to get its RTSP address.',
-    fr: 'Ajoutez le code de vérification de cette caméra à la configuration pour obtenir son adresse RTSP.',
-    de: 'Füge den Bestätigungscode dieser Kamera der Konfiguration hinzu, um ihre RTSP-Adresse zu erhalten.',
-    es: 'Añada el código de verificación de esta cámara a la configuración para obtener su dirección RTSP.',
+    en: 'Save the verification code of this camera first, with the "Set a camera verification code" action.',
+    fr: 'Enregistrez d’abord le code de vérification de cette caméra, avec l’action « Code de vérification d’une caméra ».',
+    de: 'Speichere zuerst den Bestätigungscode dieser Kamera, mit der Aktion „Bestätigungscode einer Kamera“.',
+    es: 'Guarde primero el código de verificación de esta cámara, con la acción «Código de verificación de una cámara».',
   },
 };
 

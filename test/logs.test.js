@@ -206,6 +206,13 @@ test('a user command is one line; the stream address is never logged', async (t)
   logs.clear();
   await w.fake.action('stream_url', { camera: cameraIds(w.gladys).device });
   assert.equal(logs.texts().length, 1);
+  logs.clear();
+  await w.fake.action('camera_code', {
+    camera: cameraIds(w.gladys).device,
+    code: VERIFICATION_CODE,
+  });
+  assert.equal(logs.texts().length, 1);
+  assert.match(logs.texts()[0], /verification code of Living room saved/);
   assertNoSecret(w, logs);
 });
 

@@ -10,6 +10,33 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Fixed
+
+- Two verification codes typed without their serial numbers ("CODE1,CODE2"):
+  the first one was used for every camera. They are now ignored, and the
+  status of the integration lists the cameras with their serial numbers.
+- The documentation promised a fresh image when the dashboard opens: in
+  Gladys 5.2.1 the camera box shows the last image the integration sent, so
+  its freshness is the capture interval. Documented, with the RTSP address
+  for live video.
+- "Send the camera image" right after an alarm now sends the alarm picture
+  (an image of the last 30 seconds), not a capture taken a few seconds later.
+
+### Added
+
+- "Set a camera verification code" configuration action: pick a camera, type
+  its code; kept by the integration and checked on its last picture.
+- The widget can show several cameras (new "Cameras" setting; the former
+  "Camera" setting keeps working).
+- "Every minute" option for the camera images.
+
+### Changed
+
+- The widget and the documentation say that the arming mode is the mode of
+  the whole EZVIZ account: its buttons act on every camera.
+- Camera images every 5 minutes by default (15 before), for a fresher
+  dashboard.
+
 ## [1.0.1] - 2026-10-14
 
 ### Added

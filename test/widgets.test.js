@@ -28,7 +28,7 @@ test('the widget fits the vocabulary and the budget of the core, in every langua
   }
 });
 
-test('the picture of the newest alarm, its event and the arming mode', async (t) => {
+test('the picture of the newest alarm, one row per camera, then the account mode', async (t) => {
   const w = await world(t);
   await createAll(w);
   w.cloud.addAlarm(SERIALS.DRIVEWAY, { at: w.clock.now(), title: 'Person detected', type: '' });
@@ -39,9 +39,11 @@ test('the picture of the newest alarm, its event and the arming mode', async (t)
   const [status] = ofType(c, 'status');
   assert.equal(status.items[0].label, 'Driveway');
   assert.match(status.items[0].value, /^Personne · /);
+  // Six cameras, then the mode of the account (not of a camera).
+  assert.equal(status.items.length, 7);
   assert.deepEqual(
-    { label: status.items[1].label, value: status.items[1].value },
-    { label: 'Mode d’armement', value: 'Absent' },
+    { label: status.items.at(-1).label, value: status.items.at(-1).value },
+    { label: 'Mode du compte EZVIZ', value: 'Absent' },
   );
   // The image is served, within the bounds of the core.
   const ack = await w.fake.widgetGetImage(image.key);
@@ -51,16 +53,39 @@ test('the picture of the newest alarm, its event and the arming mode', async (t)
   assert.equal(unknown.success, false);
 });
 
-test('a chosen camera: its own last alarm and its online state', async (t) => {
+test('several chosen cameras: their newest alarm, their rows only', async (t) => {
+  const w = await world(t);
+  await createAll(w);
+  w.cloud.addAlarm(SERIALS.DRIVEWAY, { at: w.clock.now(), title: 'Person detected', type: '' });
+  await w.hub.checkAlarms();
+  const cameras = [SERIALS.PTZ, SERIALS.GARAGE].map((serial) => cameraIds(w.gladys, serial).device);
+  const c = await content(w, { cameras });
+  const [status] = ofType(c, 'status');
+  assert.deepEqual(
+    status.items.map((item) => [item.label, item.value.replace(/ · .*/, '')]),
+    [
+      ['Living room', 'Motion'],
+      ['Garage', 'Offline'],
+      ['EZVIZ account mode', 'Away'],
+    ],
+  );
+  // The picture is the one of the Living room alarm, not of the Driveway.
+  const [image] = ofType(c, 'image');
+  assert.equal(image.key, w.hub.alarms.last.get(SERIALS.PTZ).imageKey);
+  assert.deepEqual(validateWidgetContent(c), []);
+});
+
+test('a chosen camera with the former setting still works', async (t) => {
   const w = await world(t);
   await createAll(w);
   const c = await content(w, { camera: cameraIds(w.gladys, SERIALS.DOORBELL).device });
   const [status] = ofType(c, 'status');
   assert.equal(status.items[0].label, 'Front door');
   assert.match(status.items[0].value, /^Doorbell · /);
-  assert.deepEqual(status.items.at(-1).value, 'Online');
-  const none = await content(w, { camera: cameraIds(w.gladys, SERIALS.GARAGE).device });
+  assert.equal(status.items.length, 2);
+  const none = await content(w, { cameras: [cameraIds(w.gladys, SERIALS.GARAGE).device] });
   assert.match(ofType(none, 'text')[0].text, /No alarm/);
+  assert.equal(ofType(none, 'status')[0].items[0].value, 'Offline');
   const gone = await content(w, { camera: 'ext:test-integration:camera:GONE' });
   assert.match(gone.components[0].text, /no longer in the EZVIZ account/);
 });
@@ -82,7 +107,8 @@ test('the arming buttons: the current one marked by its icon, "at home" confirme
   );
   const ack = await w.fake.widgetAction(WIDGET_KEY, 'arm_sleep', { mode: 'sleep' }, {});
   assert.equal(ack.success, true, ack.error);
-  assert.equal(ack.data.message.fr, 'Mode d’armement : Sommeil');
+  // The toast says the mode is the account's, for every camera.
+  assert.equal(ack.data.message.fr, 'Mode du compte EZVIZ (toutes les caméras) : Sommeil');
   assert.equal(w.cloud.mode, 3);
   const after = ofType(await content(w), 'button');
   assert.equal(after.find((b) => b.action.key === 'arm_sleep').icon, 'check-circle');

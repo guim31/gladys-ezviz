@@ -71,8 +71,16 @@ test('every manifest action has a handler', async (t) => {
   const world = await createWorld();
   t.after(() => world.app.stop());
   await createAll(world);
-  assert.deepEqual(keysOf(manifest.actions), ['test_connection', 'verify_code', 'stream_url']);
-  const fields = { stream_url: { camera: cameraIds(world.gladys).device } };
+  assert.deepEqual(keysOf(manifest.actions), [
+    'test_connection',
+    'verify_code',
+    'camera_code',
+    'stream_url',
+  ]);
+  const fields = {
+    stream_url: { camera: cameraIds(world.gladys).device },
+    camera_code: { camera: cameraIds(world.gladys).device, code: 'ABCDEF' },
+  };
   for (const action of manifest.actions) {
     const ack = await world.fake.action(action.key, fields[action.key] ?? {});
     assert.equal(ack.success, true, `${action.key}: ${ack.error}`);
