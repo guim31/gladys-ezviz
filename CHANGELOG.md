@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-14
+
 ### Added
 
 - **Sleep mode** switch on the cameras that announce it (EZVIZ switch 21 with
@@ -82,7 +84,8 @@ the notes of the version's GitHub Release.
 - Documentation in English, French, German and Spanish.
   [Unreleased]: https://github.com/guim31/gladys-ezviz/commits/main
 
-[Unreleased]: https://github.com/guim31/gladys-ezviz/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/guim31/gladys-ezviz/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/guim31/gladys-ezviz/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/guim31/gladys-ezviz/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/guim31/gladys-ezviz/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/guim31/gladys-ezviz/releases/tag/v1.0.1
