@@ -8,13 +8,16 @@
 //   STATUS[serial]    globalStatus (motion detection on), isEncrypt (pictures
 //                     encrypted), diskNum, diskState, optionals { powerRemaining,
 //                     diskCapacity, timeZone, ... }
-//   SWITCH[serial]    [{ type, enable }] — privacy 7, floodlight 303, ...
+//   SWITCH[serial]    [{ type, enable }] — privacy 7, sleep 21, floodlight
+//                     303, ... (every camera lists most types: the switch
+//                     list says nothing of what the camera supports)
 //   WIFI[serial]      { signal (0-100), address }
 //   CONNECTION[serial]{ localIp, localRtspPort }
 // Capabilities (pyezvizapi SupportExt, read as Home Assistant reads them):
 //   154 SupportPtz == "1", 113 SupportAlarmLight == "1", 96
 //   SupportActiveDefense (siren) != "0", 40 SupportPtzPrivacy present,
-//   4 SupportDisk == "1".
+//   62 SupportSleep present, 4 SupportDisk == "1". A switch is exposed, as
+//   Home Assistant does, only when its capability is announced too.
 //
 // An alarm (unified message list) gives msgId, deviceSerial, time (epoch ms),
 // timeStr (camera clock), title / detail / sampleName, subType, ext {
@@ -28,12 +31,13 @@ export const DOORBELL_CATEGORIES = new Set(['BDoorBell', 'CatEye']);
 export const BATTERY_CATEGORY = 'BatteryCamera';
 
 // EZVIZ switch type numbers (pyezvizapi DeviceSwitchType).
-export const SWITCHES = Object.freeze({ PRIVACY: 7, ALARM_LIGHT: 303 });
+export const SWITCHES = Object.freeze({ PRIVACY: 7, SLEEP: 21, ALARM_LIGHT: 303 });
 
 // EZVIZ capability numbers (pyezvizapi SupportExt).
 export const SUPPORT = Object.freeze({
   DISK: '4',
   PTZ_PRIVACY: '40',
+  SLEEP: '62',
   ACTIVE_DEFENSE: '96',
   ALARM_LIGHT: '113',
   PTZ: '154',
@@ -173,6 +177,8 @@ export function parseCamera(info, sections = {}) {
     ptz: has(SUPPORT.PTZ) === '1',
     privacyCapable: support[SUPPORT.PTZ_PRIVACY] !== undefined && switches.has(SWITCHES.PRIVACY),
     privacy: switches.get(SWITCHES.PRIVACY) ?? null,
+    sleepCapable: support[SUPPORT.SLEEP] !== undefined && switches.has(SWITCHES.SLEEP),
+    sleep: switches.get(SWITCHES.SLEEP) ?? null,
     lightCapable: has(SUPPORT.ALARM_LIGHT) === '1',
     light: switches.get(SWITCHES.ALARM_LIGHT) ?? false,
     sirenCapable: has(SUPPORT.ACTIVE_DEFENSE) !== '0',
@@ -181,6 +187,22 @@ export function parseCamera(info, sections = {}) {
     rtspPort: rtspPort && rtspPort > 0 ? rtspPort : 554,
     timeZone: optional(optionals, 'timeZone') ?? null,
   };
+}
+
+/**
+ * The switch that puts a camera to rest, for the widget button and the scene
+ * action: sleep mode, else privacy mode (the lens hidden, on the pan/tilt
+ * models that announce it instead), else none.
+ * @returns {{ field: 'sleep' | 'privacy', type: number } | null}
+ */
+export function restSwitch(camera) {
+  if (camera.sleepCapable) {
+    return { field: 'sleep', type: SWITCHES.SLEEP };
+  }
+  if (camera.privacyCapable) {
+    return { field: 'privacy', type: SWITCHES.PRIVACY };
+  }
+  return null;
 }
 
 /** Every camera of a device list, in the order of the account. */

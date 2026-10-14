@@ -3,11 +3,11 @@
 Integra en Gladys las **cámaras y timbres EZVIZ** de su cuenta EZVIZ, a través
 de la **nube EZVIZ** (la que usa la app EZVIZ): la imagen de cada alarma, las
 detecciones de movimiento y de persona, las llamadas al timbre, el modo de
-armado de la cuenta (en casa, ausente, noche), el modo privacidad, la
-detección de movimiento activada o no, el foco, la sirena, la orientación de
-las cámaras motorizadas, la batería, la señal wifi y la tarjeta SD. Nada que
-ajustar en las cámaras, ningún puerto que abrir: muchas cámaras EZVIZ no
-ofrecen ONVIF ni RTSP sin manipulaciones, la nube las cubre todas.
+armado de la cuenta (en casa, ausente, noche), el modo privacidad, el modo
+reposo, la detección de movimiento activada o no, el foco, la sirena, la
+orientación de las cámaras motorizadas, la batería, la señal wifi y la tarjeta
+SD. Nada que ajustar en las cámaras, ningún puerto que abrir: muchas cámaras
+EZVIZ no ofrecen ONVIF ni RTSP sin manipulaciones, la nube las cubre todas.
 
 > **Developed without the hardware: feedback welcome.** Esta integración se
 > escribió sin cámara ni cuenta EZVIZ a mano, a partir del trabajo de la
@@ -124,6 +124,10 @@ funciones del modelo:
 - **Detección de movimiento**: las notificaciones de alarma de la cámara
   activadas o no (la campana de la app EZVIZ).
 - **Modo privacidad**: la tapa del objetivo de los modelos que la tienen.
+- **Modo reposo**: sin vídeo ni detección, en los modelos que lo anuncian (el
+  mismo interruptor que en la app EZVIZ). Los modelos motorizados (C6N,
+  C6CN…) pueden anunciar en su lugar el **Modo privacidad** de arriba: el
+  objetivo oculto. Cada cámara recibe los interruptores que anuncia.
 - **Foco**: la luz de las cámaras con foco.
 - **Sirena**: solo si está permitida en la configuración; se detiene sola al
   cabo de un minuto.
@@ -158,6 +162,12 @@ mientras no se añada). Gladys ofrece todos los dispositivos de la integración
 en la lista de cámaras del widget, «Cuenta EZVIZ» incluida: esa no es una
 cámara y se ignora.
 
+Cuando el widget muestra una sola cámara que puede ponerse en reposo, un botón
+la pone en reposo o la despierta (su **Modo reposo**, o si no su **Modo
+privacidad**), y su línea indica «En reposo». Con varias cámaras no hay sitio
+para un botón por cámara: use la acción de escena **Poner una cámara EZVIZ en
+reposo o despertarla**.
+
 ## Escenas
 
 ### Desencadenantes
@@ -185,6 +195,8 @@ alarma.
   abajo.
 - **Cambiar el modo de armado EZVIZ**: en casa, ausente o noche (si el armado
   está permitido en la configuración).
+- **Poner una cámara EZVIZ en reposo o despertarla**: su **Modo reposo**, o
+  si no su **Modo privacidad**, en reposo o despierta.
 
 ### Ideas de escenas
 
@@ -195,8 +207,9 @@ alarma.
 - **Alguien en el jardín de noche**: con **Detección por una cámara EZVIZ**,
   filtrada en la cámara del jardín y «persona», entre la puesta y la salida
   del sol, encender las luces del jardín y enviar la imagen.
-- **Intimidad en casa**: cuando hay alguien en casa, activar el **Modo
-  privacidad** de la cámara del salón; desactivarlo cuando la casa está vacía.
+- **Intimidad en casa**: cuando alguien vuelve a casa, **Poner una cámara
+  EZVIZ en reposo o despertarla** para cada cámara interior, en reposo;
+  despierta cuando la casa está vacía.
 
 ## Vídeo en directo (RTSP)
 

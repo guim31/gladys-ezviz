@@ -10,6 +10,16 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Added
+
+- **Sleep mode** switch on the cameras that announce it (EZVIZ switch 21 with
+  the SupportSleep capability, as Home Assistant reads them): no video and no
+  detection while asleep; the capture timer skips a sleeping camera.
+- Scene action **Put an EZVIZ camera to sleep or wake it**: its sleep mode,
+  else its privacy mode (lens hidden), for "I am home: indoor cameras asleep".
+- Widget: when it shows one camera that can sleep, a **Sleep** / **Wake up**
+  button, and the camera's line reads "Asleep".
+
 ## [1.1.1] - 2026-10-14
 
 ### Fixed

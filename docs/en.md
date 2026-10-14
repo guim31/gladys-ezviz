@@ -3,10 +3,10 @@
 Brings the **EZVIZ cameras and doorbells** of your EZVIZ account into Gladys,
 through the **EZVIZ cloud** (the one the EZVIZ app uses): the picture of each
 alarm, motion and person detections, doorbell rings, the arming mode of the
-account (at home, away, sleep), privacy mode, motion detection on/off,
-floodlight, siren, pan and tilt of motorized cameras, battery, Wi-Fi signal and
-SD card. No setting on the cameras, no open port: many EZVIZ cameras offer no
-ONVIF or RTSP without fiddling, the cloud covers them all.
+account (at home, away, sleep), privacy mode, sleep mode, motion detection
+on/off, floodlight, siren, pan and tilt of motorized cameras, battery, Wi-Fi
+signal and SD card. No setting on the cameras, no open port: many EZVIZ cameras
+offer no ONVIF or RTSP without fiddling, the cloud covers them all.
 
 > **Developed without the hardware: feedback welcome.** This integration was
 > written from the work of the Home Assistant `ezviz` integration and of the
@@ -117,6 +117,10 @@ features the model has:
 - **Motion detection**: the alarm notifications of the camera on or off (the
   bell of the EZVIZ app).
 - **Privacy mode**: the lens cover of the models that have one.
+- **Sleep mode**: no video and no detection, on the models that announce it
+  (the same switch as in the EZVIZ app). The pan/tilt models (C6N, C6CN…)
+  may announce the **Privacy mode** above instead: the lens hidden. Each
+  camera gets the switches it announces.
 - **Floodlight**: the light of the floodlight cameras.
 - **Siren**: only when allowed in the configuration; it stops by itself after
   a minute.
@@ -149,6 +153,11 @@ it is added). Gladys offers every device of the integration in the camera list
 of the widget, "EZVIZ account" included: that one is not a camera and is
 ignored.
 
+When the widget shows one camera that can sleep, a button puts it to sleep
+or wakes it (its **Sleep mode**, else its **Privacy mode**), and its line
+reads "Asleep". With several cameras, there is no room for one button each:
+use the scene action **Put an EZVIZ camera to sleep or wake it**.
+
 ## Scenes
 
 ### Triggers
@@ -174,6 +183,8 @@ kind of detection and the alarm picture.
 - **Turn an EZVIZ camera**: one step left, right, up or down.
 - **Set the EZVIZ arming mode**: at home, away or sleep (when allowed in the
   configuration).
+- **Put an EZVIZ camera to sleep or wake it**: its **Sleep mode**, else its
+  **Privacy mode**, asleep or awake.
 
 ### Scene ideas
 
@@ -184,8 +195,9 @@ kind of detection and the alarm picture.
 - **Someone in the garden at night**: on **Detection by an EZVIZ camera**,
   filtered on the garden camera and "person", between sunset and sunrise,
   turn the garden lights on and send the image.
-- **Privacy at home**: when someone is home, turn the **Privacy mode** of the
-  living room camera on; off when the house is empty.
+- **Privacy at home**: when someone comes home, **Put an EZVIZ camera to
+  sleep or wake it** for each indoor camera, asleep; awake when the house is
+  empty.
 
 ## Live video (RTSP)
 

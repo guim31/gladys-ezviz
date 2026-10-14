@@ -22,18 +22,19 @@ pan and tilt, battery, Wi-Fi and SD card.
   each alarm, then fresh captures on a timer, decrypted with the
   verification code when the camera encrypts its pictures), pan and tilt
   arrows on motorized cameras, motion, doorbell ring, last event ("Person ·
-  18:32"), online, motion detection on/off, privacy mode, floodlight, siren
-  (opt-in), battery, Wi-Fi signal, SD card state and size.
+  18:32"), online, motion detection on/off, privacy mode, sleep mode,
+  floodlight, siren (opt-in), battery, Wi-Fi signal, SD card state and size.
 - **The account**: its arming mode (at home, away, sleep), as on the home page
   of the EZVIZ app — one mode for the whole account, read-only if you prefer.
 - **Scene triggers**: _Detection by an EZVIZ camera_ (filter by camera and by
   motion, person or other alarm) and _Someone rang an EZVIZ doorbell_. The
   camera image is the alarm picture when the scene starts.
 - **Scene actions**: _Take a fresh EZVIZ picture_, _Turn an EZVIZ camera_
-  (one pan/tilt step), _Set the EZVIZ arming mode_.
+  (one pan/tilt step), _Set the EZVIZ arming mode_, _Put an EZVIZ camera to
+  sleep or wake it_.
 - **Dashboard widget** _EZVIZ_: the picture of the newest alarm of one,
-  several or all cameras, one line per camera, and buttons to switch the
-  EZVIZ account mode.
+  several or all cameras, one line per camera, buttons to switch the EZVIZ
+  account mode, and a sleep / wake button when it shows one camera.
 - **Configuration actions**: _Test the connection_, _Enter the verification
   code_ (two-step verification), _Set a camera verification code_ (kept in
   `/data`, checked on the last picture), _Show the RTSP address_ (for the
@@ -68,7 +69,7 @@ links it from the Configuration screen.
   `6002`), session renewal `PUT /v3/apigateway/login`, device list
   `GET /v3/userdevices/v1/resources/pagelist`, alarms
   `GET /v3/unifiedmsg/list`, arming mode `…/group/defenceMode` and
-  `…/group/switchDefenceMode`, switches (privacy 7, floodlight 303),
+  `…/group/switchDefenceMode`, switches (privacy 7, sleep 21, floodlight 303),
   motion detection `changeDefenceStatusReq`, siren `sendAlarm`, pan/tilt
   `ptzControl` (always START then STOP), capture `…/capture`, picture key
   `/api/device/query/encryptkey`. No dependency for HTTP: the `fetch` of

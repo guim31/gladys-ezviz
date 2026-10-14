@@ -49,7 +49,14 @@ import {
 } from './devices.js';
 import { WrongCodeError, decryptPicture, isEncrypted } from './ezviz/crypto.js';
 import { ERROR_KINDS, EzvizClient, EzvizError } from './ezviz/client.js';
-import { ALARM_KINDS, ARM_MODES, SWITCHES, parseAlarm, parseDeviceList } from './ezviz/model.js';
+import {
+  ALARM_KINDS,
+  ARM_MODES,
+  SWITCHES,
+  parseAlarm,
+  parseDeviceList,
+  restSwitch,
+} from './ezviz/model.js';
 import { toCameraImage } from './image.js';
 import {
   ACTION_TEXT,
@@ -402,7 +409,7 @@ export class EzvizHub {
     }
     this.cameras = new Map(
       cameras.map((camera) => {
-        for (const field of ['detection', 'privacy', 'light']) {
+        for (const field of ['detection', 'privacy', 'sleep', 'light']) {
           const hold = this.held.get(`${camera.serial}:${field}`);
           if (hold) {
             camera[field] = hold.value;
@@ -719,6 +726,7 @@ export class EzvizHub {
         !camera.online ||
         camera.batteryPowered ||
         camera.privacy === true ||
+        camera.sleep === true ||
         !this.isCreated(cameraIds(this.gladys, camera.serial).device) ||
         (last && this.now() - last.at < half)
       ) {
@@ -1131,13 +1139,7 @@ export class EzvizHub {
     const on = Number(value) === 1;
     const name = cameraName(camera);
     const say = (what) => logger.info(`${name}: ${what}`);
-    const hold = (field, state) => {
-      camera[field] = state;
-      this.held.set(`${camera.serial}:${field}`, {
-        value: state,
-        until: this.now() + this.timings.holdMs,
-      });
-    };
+    const hold = (field, state) => this.hold(camera, field, state);
     await this.command(name, async () => {
       switch (key) {
         case FEATURE_KEYS.MOVE: {
@@ -1157,6 +1159,11 @@ export class EzvizHub {
           await this.withSession((client) => client.setSwitch(camera.serial, SWITCHES.PRIVACY, on));
           hold('privacy', on);
           say(`privacy mode ${on ? 'on' : 'off'}`);
+          break;
+        case FEATURE_KEYS.SLEEP:
+          await this.withSession((client) => client.setSwitch(camera.serial, SWITCHES.SLEEP, on));
+          hold('sleep', on);
+          say(`sleep mode ${on ? 'on' : 'off'}`);
           break;
         case FEATURE_KEYS.LIGHT:
           await this.withSession((client) =>
@@ -1179,6 +1186,15 @@ export class EzvizHub {
     });
     await this.publishStates(camera);
     this.gladys.requestWidgetRefresh(WIDGET_KEY);
+  }
+
+  /** A state just commanded: it wins over the device list for a while (the cloud lags). */
+  hold(camera, field, state) {
+    camera[field] = state;
+    this.held.set(`${camera.serial}:${field}`, {
+      value: state,
+      until: this.now() + this.timings.holdMs,
+    });
   }
 
   /** Run a command; its failure is one warning line, then thrown to Gladys. */
@@ -1249,6 +1265,29 @@ export class EzvizHub {
       this.withSession((client) => client.move(camera.serial, direction)),
     );
     logger.info(`Scene action: ${cameraName(camera)} moved ${direction}`);
+  }
+
+  /**
+   * Scene action and widget button: put a camera to sleep or wake it — its
+   * sleep mode, else its privacy mode (src/ezviz/model.js restSwitch).
+   * @param {string} externalId the Gladys device of the camera
+   * @param {boolean} asleep
+   * @param {string} from who asked (for the log line)
+   */
+  async setCameraSleep(externalId, asleep, from) {
+    const camera = this.requireCamera(externalId);
+    const rest = restSwitch(camera);
+    if (!rest) {
+      throw new Error(pick(ACTION_TEXT.noSleep, this.language));
+    }
+    await this.command(cameraName(camera), () =>
+      this.withSession((client) => client.setSwitch(camera.serial, rest.type, asleep)),
+    );
+    this.hold(camera, rest.field, asleep);
+    logger.info(`${from}: ${cameraName(camera)} ${rest.field} mode ${asleep ? 'on' : 'off'}`);
+    await this.publishStates(camera);
+    this.gladys.requestWidgetRefresh(WIDGET_KEY);
+    return camera;
   }
 
   /** Scene action: a fresh capture now, sent to Gladys. */
