@@ -223,13 +223,15 @@ L’intégration donne des images à Gladys, pas une vidéo continue : elles ont
 jusqu’à l’intervalle de capture de retard sur la caméra (5 minutes par
 défaut). Pour le direct, beaucoup de caméras EZVIZ servent du RTSP sur le
 réseau local : activez-le dans l’app EZVIZ quand le modèle le propose
-(réglages de la caméra, « Visionnage en LAN » ou « RTSP »), enregistrez le
-code de vérification de la caméra avec **Code de vérification d’une caméra**,
-puis lancez **Afficher l’adresse RTSP** : copiez l’adresse dans l’intégration
-« Caméra RTSP » de Gladys. L’adresse est
+(réglages de la caméra, « Visionnage en LAN » ou « RTSP »), et enregistrez le code de vérification de la caméra avec **Code de
+vérification d’une caméra**. L’intégration donne alors à Gladys l’adresse
+locale du flux avec l’appareil caméra : le bouton **direct** de la box caméra
+du tableau de bord la lit, depuis votre réseau, sans le cloud (le serveur
+Gladys doit joindre la caméra). **Afficher l’adresse RTSP** donne la même
+adresse, pour un autre lecteur. L’adresse est
 `rtsp://admin:<code>@<IP locale>:554/Streaming/Channels/101` (`102` pour le
-flux secondaire, plus léger). Elle contient le code de la caméra : gardez-la
-pour vous. Les caméras sur batterie et les sonnettes n’ont en général pas de
+flux secondaire, plus léger). Elle contient le code de la caméra : gardez-la pour vous (Gladys la garde
+dans les paramètres de l’appareil caméra). Les caméras sur batterie et les sonnettes n’ont en général pas de
 RTSP.
 
 ## Rafraîchissement et limites du cloud

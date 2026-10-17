@@ -217,12 +217,15 @@ La integración da imágenes a Gladys, no un vídeo continuo: llevan hasta el
 intervalo de captura de retraso respecto a la cámara (5 minutos por defecto).
 Para el directo, muchas cámaras EZVIZ sirven RTSP en la red local: actívelo en
 la app EZVIZ cuando el modelo lo ofrezca (ajustes de la cámara, «Vista en LAN»
-o «RTSP»), guarde el código de verificación de la cámara con **Código de
-verificación de una cámara** y ejecute **Mostrar la dirección RTSP**: copie la
-dirección en la integración «Cámara RTSP» de Gladys. La dirección es
+o «RTSP»), y guarde el código de verificación de la cámara con **Código de
+verificación de una cámara**. La integración da entonces a Gladys la dirección
+local del flujo con el dispositivo cámara: el botón **directo** de la caja
+cámara del panel lo reproduce, desde su red, sin la nube (el servidor Gladys
+debe alcanzar la cámara). **Mostrar la dirección RTSP** da la misma
+dirección, para otro reproductor. La dirección es
 `rtsp://admin:<código>@<IP local>:554/Streaming/Channels/101` (`102` para el
-flujo secundario, más ligero). Contiene el código de la cámara: no la
-comparta. Las cámaras con batería y los timbres no suelen tener RTSP.
+flujo secundario, más ligero). Contiene el código de la cámara: no la comparta (Gladys la guarda en los
+parámetros del dispositivo cámara). Las cámaras con batería y los timbres no suelen tener RTSP.
 
 ## Actualización y límites de la nube
 

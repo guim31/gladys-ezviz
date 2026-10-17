@@ -302,3 +302,10 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
   `SupportSleep` (62). La C6CN réelle de la fixture annonce 40 et pas 62 : sa « veille » est la
   confidentialité. Le bouton du widget et l’action `set_camera_sleep` prennent la veille, sinon la
   confidentialité (`restSwitch`).
+- **Direct dans Gladys (17/10/2026, retour de spenceur, t/11183/13)** : le service `rtsp-camera` du
+  cœur lit le paramètre `CAMERA_URL` de **n'importe quel** appareil caméra (`startStreaming`, par
+  sélecteur) ; le bouton direct de la box caméra l'appelle sans regarder le service. Comme
+  l'intégration Netatmo de Terdious, on publie donc `CAMERA_URL` (RTSP local, code de vérification
+  compris) dès que l'IP locale et le code sont connus ; un appareil déjà créé reçoit le paramètre
+  par la republication de la découverte (upsert silencieux des `params`). Le code n'apparaît
+  jamais dans nos journaux ; le cœur le garde dans les paramètres de l'appareil.

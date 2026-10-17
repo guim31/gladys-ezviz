@@ -570,6 +570,21 @@ test('the RTSP address: with the verification code, shown and never logged', asy
   assert.equal(ack.success, false);
 });
 
+test('the live view: CAMERA_URL on the cameras whose local address and code are known', async (t) => {
+  const w = await world(t, {
+    config: { ...BASE_CONFIG, verification_codes: `${SERIALS.PTZ}:${VERIFICATION_CODE}` },
+  });
+  // The core's rtsp-camera service plays this param in the dashboard camera box.
+  assert.deepEqual(discovered(w, SERIALS.PTZ).params, [
+    {
+      name: 'CAMERA_URL',
+      value: 'rtsp://admin:ABCDEF@192.0.2.23:554/Streaming/Channels/101',
+    },
+  ]);
+  // Without its verification code: no live view, no param.
+  assert.equal(discovered(w, SERIALS.DRIVEWAY).params, undefined);
+});
+
 test('a device added later receives its values and its image at once', async (t) => {
   const w = await world(t);
   await w.hub.checkAlarms();

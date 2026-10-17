@@ -205,11 +205,15 @@ The integration gives Gladys pictures, not a continuous video: they lag behind
 the camera by up to the capture interval (5 minutes by default). For live
 video, many EZVIZ cameras serve RTSP on the local network: enable it in the
 EZVIZ app when the model offers it (camera settings, "LAN live view" or
-"RTSP"), save the verification code of the camera with **Set a camera
-verification code**, then run **Show the RTSP address**: copy the address into
-the "RTSP camera" integration of Gladys. The address is
+"RTSP"), and save the verification code of the camera with **Set a camera
+verification code**. The integration then gives the local address of the
+stream to Gladys with the camera device: the **live view** button of the
+dashboard camera box plays it, from your network, without the cloud (the
+Gladys server must reach the camera). **Show the RTSP address** gives the same
+address, for another player. The address is
 `rtsp://admin:<code>@<local IP>:554/Streaming/Channels/101` (`102` for the
-lighter sub-stream). It contains the code of the camera: keep it private.
+lighter sub-stream). It contains the code of the camera: keep it private (Gladys keeps it in the
+parameters of the camera device).
 Battery cameras and doorbells usually have no RTSP.
 
 ## Refresh and limits of the cloud
