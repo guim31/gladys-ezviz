@@ -217,13 +217,15 @@ Die Integration liefert Gladys Bilder, kein durchgehendes Video: Die Bilder
 hängen der Kamera um bis zu das Aufnahmeintervall hinterher (standardmäßig 5
 Minuten). Für Live-Bilder bieten viele EZVIZ-Kameras RTSP im lokalen Netz:
 Aktiviere es in der EZVIZ-App, wenn das Modell es anbietet
-(Kameraeinstellungen, „LAN-Liveansicht“ oder „RTSP“), speichere den
-Bestätigungscode der Kamera mit **Bestätigungscode einer Kamera** und starte
-dann **RTSP-Adresse anzeigen**: Kopiere die Adresse in die Integration
-„RTSP-Kamera“ von Gladys. Die Adresse lautet
+(Kameraeinstellungen, „LAN-Liveansicht“ oder „RTSP“), und speichere den Bestätigungscode der Kamera mit **Bestätigungscode einer
+Kamera**. Die Integration gibt Gladys dann die lokale Adresse des Streams mit
+dem Kameragerät: Die **Live**-Schaltfläche der Kamera-Box im Dashboard spielt
+ihn ab, aus deinem Netz, ohne Cloud (der Gladys-Server muss die Kamera
+erreichen). **RTSP-Adresse anzeigen** liefert dieselbe Adresse für einen
+anderen Player. Die Adresse lautet
 `rtsp://admin:<Code>@<lokale IP>:554/Streaming/Channels/101` (`102` für den
-leichteren Substream). Die Adresse enthält den Code der Kamera: Behalte sie
-für dich. Akkukameras und Türklingeln haben meist kein RTSP.
+leichteren Substream). Die Adresse enthält den Code der Kamera: Behalte sie für dich (Gladys
+speichert sie in den Parametern des Kamerageräts). Akkukameras und Türklingeln haben meist kein RTSP.
 
 ## Aktualisierung und Grenzen der Cloud
 

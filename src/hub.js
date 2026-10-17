@@ -787,6 +787,7 @@ export class EzvizHub {
         language: this.language,
         doorbell: this.doorbells.has(camera.serial),
         allowSiren: this.config?.allowSiren,
+        liveUrl: this.liveUrl(camera),
       }),
     );
     if (this.client && this.read.ok && this.accountUser) {
@@ -1384,16 +1385,24 @@ export class EzvizHub {
    */
   streamUrl(externalId) {
     const camera = this.requireCamera(externalId);
-    const code = this.codeOf(camera.serial);
     if (!camera.localIp) {
       return ACTION_TEXT.noLocalAddress;
     }
-    if (!code) {
+    const url = this.liveUrl(camera);
+    if (!url) {
       return ACTION_TEXT.streamNoCode;
     }
-    const url = `rtsp://admin:${code}@${camera.localIp}:${camera.rtspPort}/Streaming/Channels/101`;
     logger.info(`Configuration action: RTSP address of ${cameraName(camera)} shown`);
     return localized((language) => `${pick(ACTION_TEXT.stream, language)} ${url}`);
+  }
+
+  /** The local RTSP stream of a camera, null without its address or its code. Never logged. */
+  liveUrl(camera) {
+    const code = this.codeOf(camera.serial);
+    if (!camera.localIp || !code) {
+      return null;
+    }
+    return `rtsp://admin:${encodeURIComponent(code)}@${camera.localIp}:${camera.rtspPort}/Streaming/Channels/101`;
   }
 
   // --- Widget ----------------------------------------------------------------------

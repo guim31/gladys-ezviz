@@ -10,6 +10,13 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Added
+
+- Live view in Gladys: a camera whose local address and verification code are
+  known gives its local RTSP stream to Gladys, and the live button of the
+  dashboard camera box plays it, without the cloud. Enable RTSP on the camera
+  in the EZVIZ app first.
+
 ## [1.2.0] - 2026-10-14
 
 ### Added

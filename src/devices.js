@@ -312,7 +312,7 @@ export function cameraName(camera, language = 'en') {
 export function buildCamera(
   gladys,
   camera,
-  { language = 'en', doorbell = false, allowSiren = false } = {},
+  { language = 'en', doorbell = false, allowSiren = false, liveUrl = null } = {},
 ) {
   const ids = cameraIds(gladys, camera.serial);
   const names = NAMES[language] ?? NAMES.en;
@@ -322,6 +322,11 @@ export function buildCamera(
     external_id: ids.device,
     ...(camera.model ? { model: `EZVIZ ${camera.model}` } : {}),
     should_poll: false,
+    // The live view of the dashboard camera box: the core's rtsp-camera
+    // service plays the CAMERA_URL param of any camera device (as the
+    // Netatmo integration does). Only when the local address and the
+    // verification code are known.
+    ...(liveUrl ? { params: [{ name: 'CAMERA_URL', value: liveUrl }] } : {}),
     features: featureKeys(camera, { doorbell, allowSiren }).map((key) => ({
       ...DEFINITIONS[key],
       name: names[key],
