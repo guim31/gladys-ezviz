@@ -10,6 +10,14 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-10-22
+
+### Security
+
+- Rebuilt on Node.js 24.22.1, the October 2026 security release (remote code
+  execution in the Brotli decoder, CVE-2026-111497; TLS hostname and DNS
+  fixes).
+
 ## [1.3.0] - 2026-10-17
 
 ### Added
@@ -93,7 +101,8 @@ the notes of the version's GitHub Release.
 - Documentation in English, French, German and Spanish.
   [Unreleased]: https://github.com/guim31/gladys-ezviz/commits/main
 
-[Unreleased]: https://github.com/guim31/gladys-ezviz/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/guim31/gladys-ezviz/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/guim31/gladys-ezviz/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/guim31/gladys-ezviz/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/guim31/gladys-ezviz/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/guim31/gladys-ezviz/compare/v1.1.0...v1.1.1
