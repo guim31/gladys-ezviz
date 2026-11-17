@@ -10,6 +10,10 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Changed
+
+- Integration SDK 0.16.1.
+
 ## [1.3.1] - 2026-10-22
 
 ### Security
