@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-11-17
+
 ### Changed
 
 - Integration SDK 0.16.1.
@@ -105,7 +107,8 @@ the notes of the version's GitHub Release.
 - Documentation in English, French, German and Spanish.
   [Unreleased]: https://github.com/guim31/gladys-ezviz/commits/main
 
-[Unreleased]: https://github.com/guim31/gladys-ezviz/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/guim31/gladys-ezviz/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/guim31/gladys-ezviz/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/guim31/gladys-ezviz/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/guim31/gladys-ezviz/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/guim31/gladys-ezviz/compare/v1.1.1...v1.2.0
